@@ -170,7 +170,7 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
   } else {
     _testTerminal = view.subviews[0];
   }
-  _testTerminal.delegate = self;
+  _testTerminal.termDelegate = self;
   _testTerminal.backgroundColor = [UIColor blackColor];
   [_testTerminal setInputEnabled:NO];
   [_testTerminal loadTerminal];

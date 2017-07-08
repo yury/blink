@@ -181,7 +181,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 }
 @end
 
-@interface TermView () <UIKeyInput, UIGestureRecognizerDelegate, WKScriptMessageHandler>
+@interface TermView () <UIKeyInput, UIGestureRecognizerDelegate, WKScriptMessageHandler, UITextViewDelegate>
 @property UITapGestureRecognizer *tapBackground;
 @property UILongPressGestureRecognizer *longPressBackground;
 @property UIPinchGestureRecognizer *pinchGesture;
@@ -204,6 +204,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   NSMutableDictionary *_functionKeys;
   NSMutableDictionary *_functionTriggerKeys;
   NSString *_specialFKeysRow;
+  NSString *_markedText;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -238,15 +239,11 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   configuration.selectionGranularity = WKSelectionGranularityCharacter;
   [configuration.userContentController addScriptMessageHandler:self name:@"interOp"];
     
-  _webView = [[WKWebView alloc] initWithFrame:self.frame configuration:configuration];
+  _webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:configuration];
   [self addSubview:_webView];
-
+  
   _webView.opaque = NO;
-  _webView.translatesAutoresizingMaskIntoConstraints = NO;
-  [_webView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
-  [_webView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
-  [_webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-  [_webView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
+//  self.delegate = self;
 }
 
 - (void)addGestures
@@ -363,18 +360,18 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   NSDictionary *data = sentData[@"data"];
 
   if ([operation isEqualToString:@"sigwinch"]) {
-    if ([self.delegate respondsToSelector:@selector(updateTermRows:Cols:)]) {
+    if ([_termDelegate respondsToSelector:@selector(updateTermRows:Cols:)]) {
       self.rowCount = (int)[data[@"rows"]integerValue];
       self.columnCount = (int)[data[@"columns"]integerValue];
-      [self.delegate updateTermRows:data[@"rows"] Cols:data[@"columns"]];
+      [_termDelegate updateTermRows:data[@"rows"] Cols:data[@"columns"]];
     }
   } else if ([operation isEqualToString:@"terminalReady"]) {
-    if ([self.delegate respondsToSelector:@selector(terminalIsReady)]) {
-      [self.delegate terminalIsReady];
+    if ([_termDelegate respondsToSelector:@selector(terminalIsReady)]) {
+      [_termDelegate terminalIsReady];
     } 
   } else if ([operation isEqualToString:@"fontSizeChanged"]) {
-    if ([self.delegate respondsToSelector:@selector(fontSizeChanged:)]) {
-      [self.delegate fontSizeChanged:data[@"size"]];
+    if ([_termDelegate respondsToSelector:@selector(fontSizeChanged:)]) {
+      [_termDelegate fontSizeChanged:data[@"size"]];
     }
   } else if ([operation isEqualToString:@"copy"]) {
     [[UIPasteboard generalPasteboard] setString:data[@"content"]];
@@ -528,15 +525,23 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 
   _smartKeys.textInputDelegate = self;
   cover.hidden = YES;
-
-  [_webView evaluateJavaScript:@"focusTerm();" completionHandler:nil];
-  return [super becomeFirstResponder];
+  
+  BOOL result = [super becomeFirstResponder];
+  if (result) {
+    [_webView evaluateJavaScript:@"focusTerm();" completionHandler:nil];
+  } else {
+    [_webView evaluateJavaScript:@"blurTerm();" completionHandler:nil];
+  }
+  return result;
 }
 
 - (BOOL)resignFirstResponder
 {
-  [_webView evaluateJavaScript:@"blurTerm();" completionHandler:nil];
-  return [super resignFirstResponder];
+  BOOL result = [super resignFirstResponder];
+  if (result) {
+    [_webView evaluateJavaScript:@"blurTerm();" completionHandler:nil];
+  }
+  return result;
 }
 
 - (BOOL)hasText
@@ -547,11 +552,39 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 - (void)deleteBackward
 {
   // Send a delete backward key to the buffer
-  [_delegate write:@"\x7f"];
+  [_termDelegate write:@"\x7f"];
+  //[super deleteBackward];
+}
+
+- (void)setMarkedText:(NSString *)markedText selectedRange:(NSRange)selectedRange
+{
+  NSLog(@"!!!!!!");
+  //[super setMarkedText:markedText selectedRange:selectedRange];
+  _markedText = markedText;
+}
+
+- (void)unmarkText
+{
+  NSLog(@"unmark");
+  //[super unmarkText];
+  _markedText = nil;
 }
 
 - (void)insertText:(NSString *)text
 {
+  NSLog(@"markedText %@", self.markedTextRange);
+  
+  NSLog(@"text: %@", text);
+//  [super insertText:text];
+  
+  if (_markedText) {
+    [self write:text];
+    _markedText = nil;
+    return;
+  }
+  
+  _markedText = nil;
+  
   if (_disableAccents) {
     // If the accent switch is on, the next character should remove them.
     //CFStringTransform((__bridge CFMutableStringRef)mtext, nil, kCFStringTransformStripCombiningMarks, NO);
@@ -571,18 +604,18 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
     NSRange range = [text rangeOfString:@"FKEY"];
     if (range.location != NSNotFound) {
       NSString *value = [text substringFromIndex:(range.length)];
-      [_delegate write:[CC FKEY:[value integerValue]]];
+      [_termDelegate write:[CC FKEY:[value integerValue]]];
     } else {
-      [_delegate write:[CC KEY:text MOD:0 RAW:_raw]];
+      [_termDelegate write:[CC KEY:text MOD:0 RAW:_raw]];
     }
   } else {
     NSUInteger modifiers = [[_smartKeys view] modifiers];
     if (modifiers & KbdCtrlModifier) {
-      [_delegate write:[CC CTRL:text]];
+      [_termDelegate write:[CC CTRL:text]];
     } else if (modifiers & KbdAltModifier) {
-      [_delegate write:[CC ESC:text]];
+      [_termDelegate write:[CC ESC:text]];
     } else {
-      [_delegate write:[CC KEY:text MOD:0 RAW:_raw]];
+      [_termDelegate write:[CC KEY:text MOD:0 RAW:_raw]];
     }
   }
 }
@@ -617,6 +650,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 - (void)reset
 {
   [_webView evaluateJavaScript:@"reset" completionHandler:nil];
+//  self.text = @"";
 }
 
 
@@ -637,6 +671,8 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   }
 
   [_kbdCommands addObjectsFromArray:self.functionModifierKeys];
+  
+//  [_kbdCommands addObject:[UIKeyCommand keyCommandWithInput:@"e" modifierFlags:UIKeyModifierAlternate action:@selector(metaSeq:)]];
 }
 
 - (void)assignSequence:(NSString *)seq toModifier:(UIKeyModifierFlags)modifier
@@ -685,6 +721,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 
     [_controlKeys setObject:@[] forKey:[NSNumber numberWithInteger:modifier]];
   }
+  
   [self setKbdCommands];
 }
 
@@ -778,7 +815,13 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 
 - (NSArray<UIKeyCommand *> *)keyCommands
 {
-  return _kbdCommands;
+//  NSArray * cmds = [super keyCommands];
+  if (_markedText) {
+    return nil;
+  } else {
+    return _kbdCommands;
+  }
+//  return nil;
 }
 
 - (BOOL)capsMapped
@@ -792,7 +835,7 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   NSString *str = [UIPasteboard generalPasteboard].string;
 
   if (str) {
-    [_delegate write:str];
+    [_termDelegate write:str];
   }
 }
 
@@ -813,51 +856,53 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
 
 - (void)escSeq:(UIKeyCommand *)cmd
 {
-  [_delegate write:[CC ESC:cmd.input]];
+  [_termDelegate write:[CC ESC:cmd.input]];
 }
 
 - (void)arrowSeq:(UIKeyCommand *)cmd
 {
-  [_delegate write:[CC KEY:cmd.input MOD:cmd.modifierFlags RAW:_raw]];
+  [_termDelegate write:[CC KEY:cmd.input MOD:cmd.modifierFlags RAW:_raw]];
 }
 
 // Shift prints uppercase in the case CAPSLOCK is blocked
 - (void)shiftSeq:(UIKeyCommand *)cmd
 {
-  if ([cmd.input length] == 0) {
+  NSString *str = [cmd.input uppercaseString];
+  if (str.length == 0) {
     return;
   } else {
-    [_delegate write:[cmd.input uppercaseString]];
+    [self write:str];
   }
 }
 
 - (void)ctrlSeq:(UIKeyCommand *)cmd
 {
-  [_delegate write:[CC CTRL:cmd.input]];
+  [_termDelegate write:[CC CTRL:cmd.input]];
 }
 
 - (void)metaSeq:(UIKeyCommand *)cmd
 {
+  NSLog(@"%@", self.markedTextRange);
   if ([cmd.input isEqual:@"e"]) {
     //_disableAccents = YES;
   }
 
-  [_delegate write:[CC ESC:cmd.input]];
+  [_termDelegate write:[CC ESC:cmd.input]];
 }
 
 - (void)cursorSeq:(UIKeyCommand *)cmd
 {
   if (cmd.input == UIKeyInputUpArrow) {
-    [_delegate write:[CC KEY:SpecialCursorKeyPgUp MOD:0 RAW:_raw]];
+    [_termDelegate write:[CC KEY:SpecialCursorKeyPgUp MOD:0 RAW:_raw]];
   }
   if (cmd.input == UIKeyInputDownArrow) {
-    [_delegate write:[CC KEY:SpecialCursorKeyPgDown MOD:0 RAW:_raw]];
+    [_termDelegate write:[CC KEY:SpecialCursorKeyPgDown MOD:0 RAW:_raw]];
   }
   if (cmd.input == UIKeyInputLeftArrow) {
-    [_delegate write:[CC KEY:SpecialCursorKeyHome MOD:0 RAW:_raw]];
+    [_termDelegate write:[CC KEY:SpecialCursorKeyHome MOD:0 RAW:_raw]];
   }
   if (cmd.input == UIKeyInputRightArrow) {
-    [_delegate write:[CC KEY:SpecialCursorKeyEnd MOD:0 RAW:_raw]];
+    [_termDelegate write:[CC KEY:SpecialCursorKeyEnd MOD:0 RAW:_raw]];
   }
 }
 
@@ -866,18 +911,23 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   NSInteger value = [cmd.input integerValue];
   
   if (value == 0) {
-    [_delegate write:[CC FKEY:10]];
+    [_termDelegate write:[CC FKEY:10]];
   } else {
-    [_delegate write:[CC FKEY:value]];
+    [_termDelegate write:[CC FKEY:value]];
   }
 }
 
 - (void)autoRepeatSeq:(id)sender
 {
+  NSLog(@"%@", self.markedTextRange);
   UIKeyCommand *command = (UIKeyCommand*)sender;
-  [_delegate write:command.input];
+//  if (self.markedTextRange) {
+//    [self unmarkText];
+//    return;
+//  }
+  [self insertText:command.input];
+//  [_termDelegate write:command.input];
 }
-
 
 
 // This are all key commands capture by UIKeyInput and triggered
@@ -891,13 +941,15 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   // if ([sender isKindOfClass:[UIMenuController class]]) {
   //   [_webView copy:sender];
   // } else {
-    [_delegate write:[CC CTRL:@"c"]];
+    [_termDelegate write:[CC CTRL:@"c"]];
+  [super copy: sender];
     //  }
 }
 // Cmd+x
 - (void)cut:(id)sender
 {
-  [_delegate write:[CC CTRL:@"x"]];
+  [_termDelegate write:[CC CTRL:@"x"]];
+  [super cut: sender];
 }
 // Cmd+v
 - (void)paste:(id)sender
@@ -905,32 +957,43 @@ NSString *const TermViewAutoRepeateSeq = @"autoRepeatSeq:";
   if ([sender isKindOfClass:[UIMenuController class]] || !_cmdAsModifier) {
     [self yank:sender];
   } else {
-    [_delegate write:[CC CTRL:@"v"]];
+    [_termDelegate write:[CC CTRL:@"v"]];
   }
 }
 // Cmd+a
 - (void)selectAll:(id)sender
 {
-  [_delegate write:[CC CTRL:@"a"]];
+  [_termDelegate write:[CC CTRL:@"a"]];
+  [super selectAll:sender];
 }
 // Cmd+b
 - (void)toggleBoldface:(id)sender
 {
-  [_delegate write:[CC CTRL:@"b"]];
+  [_termDelegate write:[CC CTRL:@"b"]];
 }
 // Cmd+i
 - (void)toggleItalics:(id)sender
 {
-  [_delegate write:[CC CTRL:@"i"]];
+  [_termDelegate write:[CC CTRL:@"i"]];
 }
 // Cmd+u
 - (void)toggleUnderline:(id)sender
 {
-  [_delegate write:[CC CTRL:@"u"]];
+  [_termDelegate write:[CC CTRL:@"u"]];
+}
+
+- (void)layoutSubviews
+{
+  [super layoutSubviews];
+  _webView.frame = CGRectMake(0, 50, 800, 100);
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
+  if (_markedText) {
+    NSLog(@"markedText");
+    return [super canPerformAction:action withSender:sender];
+  }
   if ([sender isKindOfClass:[UIMenuController class]]) {
     // The menu can only perform paste methods
     if (action == @selector(paste:)) {
