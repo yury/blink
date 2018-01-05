@@ -235,5 +235,12 @@ NSString * const SecondarySpaceControllerKey = @"SecondarySpaceControllerKey";
   [stateManager save];
 }
 
+- (void)finishDecodingState
+{
+  StateManager *stateManager = [[StateManager alloc] init];
+  [stateManager reset];
+  [stateManager save];
+}
+
 
 @end

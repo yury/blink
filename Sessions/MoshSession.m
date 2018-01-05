@@ -216,11 +216,6 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
 
   NSString *locales_path = [[NSBundle mainBundle] pathForResource:@"locales" ofType:@"bundle"];
   setenv("PATH_LOCALE", [locales_path cStringUsingEncoding:1], 1);
-
-  // Mosh does not support scroll. Disable it to avoid problems.
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [_stream.control.terminal setScrollEnabled:NO];
-  });
   
   BOOL mode = [_stream.control rawMode];
   [_stream.control.terminal setRawMode:YES];
@@ -235,10 +230,6 @@ void __state_callback(const void *context, const void *buffer, size_t size) {
             self.sessionParameters.encodedState.bytes,
             self.sessionParameters.encodedState.length
             );
-  
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [_stream.control.terminal setScrollEnabled:YES];
-  });
   
   [_stream.control setRawMode:mode];
 

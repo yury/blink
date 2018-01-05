@@ -181,6 +181,9 @@
 		D23B188B1FFB76B300A6C903 /* SessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188A1FFB76B300A6C903 /* SessionParameters.m */; };
 		D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188D1FFB776000A6C903 /* MoshSessionParameters.m */; };
 		D2D0AD081FFB7A74007EC56A /* MCPSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */; };
+		D2EF4D3C1FFF71EB00C533B6 /* xterm.js in Resources */ = {isa = PBXBuildFile; fileRef = D2EF4D371FFF71EB00C533B6 /* xterm.js */; };
+		D2EF4D3D1FFF71EB00C533B6 /* xterm.css in Resources */ = {isa = PBXBuildFile; fileRef = D2EF4D3B1FFF71EB00C533B6 /* xterm.css */; };
+		D2EF4D461FFF948100C533B6 /* term.js in Resources */ = {isa = PBXBuildFile; fileRef = D2EF4D421FFF948100C533B6 /* term.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -451,6 +454,9 @@
 		D23B188D1FFB776000A6C903 /* MoshSessionParameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoshSessionParameters.m; sourceTree = "<group>"; };
 		D2D0AD061FFB7A74007EC56A /* MCPSessionParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCPSessionParameters.h; sourceTree = "<group>"; };
 		D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCPSessionParameters.m; sourceTree = "<group>"; };
+		D2EF4D371FFF71EB00C533B6 /* xterm.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = xterm.js; sourceTree = "<group>"; };
+		D2EF4D3B1FFF71EB00C533B6 /* xterm.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = xterm.css; sourceTree = "<group>"; };
+		D2EF4D421FFF948100C533B6 /* term.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = term.js; sourceTree = "<group>"; };
 		EA0BA18B1C0CC57B00719C1A /* Blink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0BA1A41C0CC57B00719C1A /* Blink.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Blink.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -537,6 +543,9 @@
 		0732F0481D062B9A00AB5438 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D2EF4D421FFF948100C533B6 /* term.js */,
+				D2EF4D3B1FFF71EB00C533B6 /* xterm.css */,
+				D2EF4D371FFF71EB00C533B6 /* xterm.js */,
 				C94437641D838ABF0096F84E /* Fonts */,
 				C944375F1D831CD30096F84E /* Themes */,
 				0759A8641D6361D1009CF12F /* HockeySDKResources.bundle */,
@@ -1138,6 +1147,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				07E3AED31D919272007BC086 /* css in Resources */,
+				D2EF4D3C1FFF71EB00C533B6 /* xterm.js in Resources */,
+				D2EF4D461FFF948100C533B6 /* term.js in Resources */,
 				073D26C01DC4137000965AB2 /* SmartKeys.xib in Resources */,
 				C94437601D831CD30096F84E /* Themes in Resources */,
 				07AA06571E08B12E008310B7 /* PasscodeLockView.xib in Resources */,
@@ -1148,6 +1159,7 @@
 				07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */,
 				C94437651D838ABF0096F84E /* Fonts in Resources */,
 				07AA064B1E08B12E008310B7 /* Info.plist in Resources */,
+				D2EF4D3D1FFF71EB00C533B6 /* xterm.css in Resources */,
 				0732F04C1D062B9A00AB5438 /* hterm_all.js in Resources */,
 				0732F04E1D062B9A00AB5438 /* term.html in Resources */,
 				07E3AED11D9191B4007BC086 /* blink.png in Resources */,

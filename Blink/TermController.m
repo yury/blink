@@ -269,6 +269,8 @@ static NSDictionary *bkModifierMaps = nil;
   _termerr = fterm_open(_terminal, 0);
   _termin = fdopen(_pinput[0], "r");
   _termsz = malloc(sizeof(struct winsize));
+  _sessionParameters.cols = 80;
+  _sessionParameters.rows = 80;
   _termsz->ws_col = _sessionParameters.cols;
   _termsz->ws_row = _sessionParameters.rows;
 }
@@ -339,9 +341,11 @@ static NSDictionary *bkModifierMaps = nil;
   }
 }
 
-- (void)terminalIsReady
+- (void)terminalIsReady:(NSDictionary *)size
 {
   [self setAppearanceFromSettings];
+  _sessionParameters.cols = [size[@"cols"] integerValue];
+  _sessionParameters.rows = [size[@"rows"] integerValue];
   [self startSession];
   if (self.userActivity) {
     [self restoreUserActivityState:self.userActivity];

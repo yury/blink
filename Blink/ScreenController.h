@@ -42,5 +42,6 @@
 - (void)moveCurrentShellToOtherScreen;
 - (void)suspend;
 - (void)resume;
+- (void)finishDecodingState;
 
 @end

@@ -365,10 +365,9 @@ NSString *const BKAppearanceChanged = @"BKAppearanceChanged";
 
 #pragma mark - Terminal
 
-- (void)terminalIsReady
+- (void)terminalIsReady:(NSDictionary *)size
 {
-  NSLog(@"reset");
-  [_testTerminal setColumnNumber:60];
+  [_testTerminal setColumnNumber:[size[@"cols"] integerValue]];
   BKTheme *selectedTheme = [BKTheme withName:[BKDefaults selectedThemeName]];
   if (selectedTheme) {
     [self showcaseTheme:selectedTheme];
