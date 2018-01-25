@@ -35,7 +35,6 @@
 #include <unistd.h>
 
 #import "Session.h"
-#import "fterm.h"
 
 
 int makeargs(const char *args, char ***aa)
@@ -72,14 +71,36 @@ void *run_session(void *params)
   [session main:argc argv:argv];
   free(argv);
   free(params);
+  
   [session.stream close];
-  [session.delegate performSelectorOnMainThread:@selector(sessionFinished) withObject:nil waitUntilDone:YES];
+  
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    [session.delegate sessionFinished];
+  });
+  
   session.stream = nil;
 
   return NULL;
 }
 
 @implementation TermStream
+
+- (TermStream *)dublicate
+{
+  TermStream *dupe = [[TermStream alloc] init];
+  dupe.in = fdopen(dup(fileno(_in)), "r");
+  
+  // If there is no underlying descriptor (writing to the WV), then duplicate the fterm.
+  dupe.out = fdopen(dup(fileno(_out)), "w");
+  dupe.err = fdopen(dup(fileno(_err)), "w");
+  setvbuf(dupe.out, NULL, _IONBF, 0);
+  setvbuf(dupe.err, NULL, _IONBF, 0);
+  
+  dupe.control = _control;
+  dupe.sz = _sz;
+  
+  return dupe;
+}
 
 - (void)close
 {
@@ -108,32 +129,11 @@ void *run_session(void *params)
   self = [super init];
 
   if (self) {
-    _stream = [self duplicateStream:stream];
+    _stream = [stream dublicate];
     _sessionParameters = parameters;
   }
 
   return self;
-}
-
-- (TermStream *)duplicateStream:(TermStream *)stream
-{
-  TermStream *dupe = [[TermStream alloc] init];
-  dupe.in = fdopen(dup(fileno(stream.in)), "r");
-
-  // If there is no underlying descriptor (writing to the WV), then duplicate the fterm.
-  dupe.out = fdopen(dup(fileno(stream.out)), "w");
-  if (dupe.out == NULL) {
-    dupe.out = fterm_open(stream.control.termView, 0);
-  }
-  dupe.err = fdopen(dup(fileno(stream.err)), "w");
-  if (dupe.err == NULL) {
-    dupe.err = fterm_open(stream.control.termView, 0);
-  }
-
-  dupe.control = stream.control;
-  dupe.sz = stream.sz;
-
-  return dupe;
 }
 
 - (void)executeWithArgs:(NSString *)args

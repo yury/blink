@@ -191,7 +191,7 @@ char* hints(const char * line, int *color, int *bold)
 
 - (void)setTitle
 {
-  fprintf(_stream.control.termout, "\033]0;blink\007");
+  fprintf(_stream.out, "\033]0;blink\007");
 }
 
 + (void)initialize
@@ -285,6 +285,8 @@ char* hints(const char * line, int *color, int *bold)
     }
 
     [self setTitle]; // Temporary, until the apps restore the right state.
+
+    [self.stream.control setRawMode:NO];
   }
 
   [self out:"Bye!"];
@@ -322,6 +324,7 @@ char* hints(const char * line, int *color, int *bold)
       [BKDefaults saveDefaults];
       [_stream.control reload];
     });
+
     return YES;
   }
 }
@@ -448,6 +451,7 @@ char* hints(const char * line, int *color, int *bold)
     fclose(_stream.in);
     _stream.in = NULL;
   }
+
 }
 
 - (void)suspend

@@ -45,7 +45,6 @@
 		076FBE1B1DB80AC900F6D997 /* BKHostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C989E53F1D6CC488003E0079 /* BKHostsViewController.m */; };
 		076FBE1C1DB80AC900F6D997 /* BKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00C1D6B612300B89F69 /* BKFont.m */; };
 		076FBE1D1DB80AC900F6D997 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 074F30781D062A2800A73445 /* main.m */; };
-		076FBE1E1DB80AC900F6D997 /* fterm.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635851D0E6602000473B1 /* fterm.m */; };
 		076FBE201DB80AC900F6D997 /* BKSupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEB21D8F6775007BC086 /* BKSupportViewController.m */; };
 		076FBE211DB80AC900F6D997 /* BKAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3AEC51D9190CF007BC086 /* BKAboutViewController.m */; };
 		076FBE221DB80AC900F6D997 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = D210E99C1D5B89910012E1C5 /* utf8.c */; };
@@ -93,7 +92,6 @@
 		076FBE551DB80AC900F6D997 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		076FBE561DB80AC900F6D997 /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1171D062CA000AB5438 /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		079635871D0E6602000473B1 /* TermView.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635841D0E6602000473B1 /* TermView.m */; };
-		079635881D0E6602000473B1 /* fterm.m in Sources */ = {isa = PBXBuildFile; fileRef = 079635851D0E6602000473B1 /* fterm.m */; };
 		07AA06491E08B12E008310B7 /* PasscodeLock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06331E08B12E008310B7 /* PasscodeLock.strings */; };
 		07AA064A1E08B12E008310B7 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA06351E08B12E008310B7 /* Functions.swift */; };
 		07AA064B1E08B12E008310B7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 07AA06361E08B12E008310B7 /* Info.plist */; };
@@ -200,6 +198,9 @@
 		D23B188B1FFB76B300A6C903 /* SessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188A1FFB76B300A6C903 /* SessionParameters.m */; };
 		D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D23B188D1FFB776000A6C903 /* MoshSessionParameters.m */; };
 		D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */ = {isa = PBXBuildFile; fileRef = D23D0FAC2008DAEB00B33A9F /* TermInput.m */; };
+		D2449C272019FF0A00D86DDC /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2449C212019FF0900D86DDC /* libsshd.a */; };
+		D2449C302019FF3100D86DDC /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2449C212019FF0900D86DDC /* libsshd.a */; };
+		D2449C332019FF8B00D86DDC /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2449C322019FF8B00D86DDC /* TermDevice.m */; };
 		D2496F3F20038B3300E75FE9 /* hterm_all.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F3B20038B3300E75FE9 /* hterm_all.min.js */; };
 		D2496F412003941B00E75FE9 /* term.js in Resources */ = {isa = PBXBuildFile; fileRef = D2496F402003941B00E75FE9 /* term.js */; };
 		D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */ = {isa = PBXBuildFile; fileRef = D29392B62004D785001FB2AA /* hterm_all.patches.js */; };
@@ -362,8 +363,6 @@
 		0795F29B1DC11C6B00CC8B83 /* Blink.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Blink.entitlements; sourceTree = "<group>"; };
 		079635831D0E6602000473B1 /* TermView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermView.h; sourceTree = "<group>"; };
 		079635841D0E6602000473B1 /* TermView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermView.m; sourceTree = "<group>"; };
-		079635851D0E6602000473B1 /* fterm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fterm.m; sourceTree = "<group>"; };
-		079635861D0E6602000473B1 /* fterm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fterm.h; sourceTree = "<group>"; };
 		07AA06341E08B12E008310B7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasscodeLock.strings; sourceTree = "<group>"; };
 		07AA06351E08B12E008310B7 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		07AA06361E08B12E008310B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -502,6 +501,16 @@
 		D23B188D1FFB776000A6C903 /* MoshSessionParameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoshSessionParameters.m; sourceTree = "<group>"; };
 		D23D0FAB2008DAEB00B33A9F /* TermInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermInput.h; sourceTree = "<group>"; };
 		D23D0FAC2008DAEB00B33A9F /* TermInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermInput.m; sourceTree = "<group>"; };
+		D2449C212019FF0900D86DDC /* libsshd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsshd.a; sourceTree = "<group>"; };
+		D2449C292019FF1700D86DDC /* libsshpp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = libsshpp.hpp; sourceTree = "<group>"; };
+		D2449C2A2019FF1700D86DDC /* legacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = legacy.h; sourceTree = "<group>"; };
+		D2449C2B2019FF1700D86DDC /* callbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = callbacks.h; sourceTree = "<group>"; };
+		D2449C2C2019FF1700D86DDC /* libssh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh.h; sourceTree = "<group>"; };
+		D2449C2D2019FF1700D86DDC /* sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sftp.h; sourceTree = "<group>"; };
+		D2449C2E2019FF1700D86DDC /* ssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssh2.h; sourceTree = "<group>"; };
+		D2449C2F2019FF1700D86DDC /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
+		D2449C312019FF8B00D86DDC /* TermDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermDevice.h; sourceTree = "<group>"; };
+		D2449C322019FF8B00D86DDC /* TermDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermDevice.m; sourceTree = "<group>"; };
 		D2496F3B20038B3300E75FE9 /* hterm_all.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = hterm_all.min.js; sourceTree = "<group>"; };
 		D2496F402003941B00E75FE9 /* term.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = term.js; sourceTree = "<group>"; };
 		D29392A72004C6C3001FB2AA /* FiraCode-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraCode-Bold.ttf"; sourceTree = "<group>"; };
@@ -528,6 +537,7 @@
 				076FBE3D1DB80AC900F6D997 /* libprotobuf.a in Frameworks */,
 				076FBE3E1DB80AC900F6D997 /* UICKeyChainStore.framework in Frameworks */,
 				076FBE3F1DB80AC900F6D997 /* MBProgressHUD.framework in Frameworks */,
+				D2449C302019FF3100D86DDC /* libsshd.a in Frameworks */,
 				076FBE401DB80AC900F6D997 /* openssl.framework in Frameworks */,
 				076FBE411DB80AC900F6D997 /* libssh2.framework in Frameworks */,
 				076FBE421DB80AC900F6D997 /* HockeySDK.framework in Frameworks */,
@@ -545,6 +555,7 @@
 				0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */,
 				B700AED81DD0F2C200100EBF /* CloudKit.framework in Frameworks */,
 				0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */,
+				D2449C272019FF0A00D86DDC /* libsshd.a in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
 				076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */,
@@ -578,8 +589,6 @@
 				079635841D0E6602000473B1 /* TermView.m */,
 				D20A28BC1E185BDB00055791 /* ScreenController.h */,
 				D20A28BD1E185BDB00055791 /* ScreenController.m */,
-				079635851D0E6602000473B1 /* fterm.m */,
-				079635861D0E6602000473B1 /* fterm.h */,
 				D23B18831FF7CEBA00A6C903 /* StateManager.h */,
 				D23B18841FF7CEBA00A6C903 /* StateManager.m */,
 				D23D0FAB2008DAEB00B33A9F /* TermInput.h */,
@@ -587,6 +596,8 @@
 				D215E59B2010C77E00D893EB /* TermJS.h */,
 				D2A92350201732B600043596 /* MusicManager.h */,
 				D2A92351201732B600043596 /* MusicManager.m */,
+				D2449C312019FF8B00D86DDC /* TermDevice.h */,
+				D2449C322019FF8B00D86DDC /* TermDevice.m */,
 			);
 			path = Blink;
 			sourceTree = "<group>";
@@ -642,6 +653,7 @@
 		0732F0541D062BB300AB5438 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				D2449C282019FF1700D86DDC /* libssh */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -649,6 +661,7 @@
 		0732F0561D062BB300AB5438 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				D2449C212019FF0900D86DDC /* libsshd.a */,
 				076FBD511DB6BE1D00F6D997 /* libprotobuf.a */,
 			);
 			path = lib;
@@ -973,6 +986,20 @@
 				B75112C71DE4A7680040C693 /* UserConfiguration */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D2449C282019FF1700D86DDC /* libssh */ = {
+			isa = PBXGroup;
+			children = (
+				D2449C292019FF1700D86DDC /* libsshpp.hpp */,
+				D2449C2A2019FF1700D86DDC /* legacy.h */,
+				D2449C2B2019FF1700D86DDC /* callbacks.h */,
+				D2449C2C2019FF1700D86DDC /* libssh.h */,
+				D2449C2D2019FF1700D86DDC /* sftp.h */,
+				D2449C2E2019FF1700D86DDC /* ssh2.h */,
+				D2449C2F2019FF1700D86DDC /* server.h */,
+			);
+			path = libssh;
 			sourceTree = "<group>";
 		};
 		D266E19F2007802D007365FD /* fonts */ = {
@@ -1319,7 +1346,6 @@
 				076FBE1B1DB80AC900F6D997 /* BKHostsViewController.m in Sources */,
 				076FBE1C1DB80AC900F6D997 /* BKFont.m in Sources */,
 				076FBE1D1DB80AC900F6D997 /* main.m in Sources */,
-				076FBE1E1DB80AC900F6D997 /* fterm.m in Sources */,
 				076FBE201DB80AC900F6D997 /* BKSupportViewController.m in Sources */,
 				076FBE211DB80AC900F6D997 /* BKAboutViewController.m in Sources */,
 				076FBE221DB80AC900F6D997 /* utf8.c in Sources */,
@@ -1379,13 +1405,13 @@
 				C989E54B1D6CC488003E0079 /* BKHostsViewController.m in Sources */,
 				B7A487691DC7C48D007BA809 /* UIDevice+DeviceName.m in Sources */,
 				D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */,
+				D2449C332019FF8B00D86DDC /* TermDevice.m in Sources */,
 				07AA06501E08B12E008310B7 /* SetPasscodeState.swift in Sources */,
 				C9B2E0321D6B612400B89F69 /* BKFont.m in Sources */,
 				073D26BD1DC4137000965AB2 /* SKModifierButton.m in Sources */,
 				074F30791D062A2800A73445 /* main.m in Sources */,
 				07AA06511E08B12E008310B7 /* PasscodeLockPresenter.swift in Sources */,
 				D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */,
-				079635881D0E6602000473B1 /* fterm.m in Sources */,
 				07E3AEB31D8F6775007BC086 /* BKSupportViewController.m in Sources */,
 				07AA065B1E08B61F008310B7 /* PasscodeLockConfiguration.swift in Sources */,
 				07E3AEC61D9190CF007BC086 /* BKAboutViewController.m in Sources */,

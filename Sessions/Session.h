@@ -52,6 +52,7 @@ typedef struct SessionParams {
 @property struct winsize *sz;
 
 - (void)close;
+- (TermStream *)dublicate;
 
 @end
 
