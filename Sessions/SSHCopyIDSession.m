@@ -2,7 +2,7 @@
 //
 // B L I N K
 //
-// Copyright (C) 2016 Blink Mobile Shell Project
+// Copyright (C) 2016-2018 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -56,7 +56,7 @@ static const char *usage_format =
   }
   const char *public_key = [[pkcard publicKey] UTF8String];
 
-  SSHSession *sshSession = [[SSHSession alloc] initWithStream:_stream];
+  SSHSession *sshSession = [[SSHSession alloc] initWithStream:_stream andParametes:nil];
   
   // Pipe public key
   int pinput[2];
@@ -79,7 +79,7 @@ static const char *usage_format =
 
 - (int)dieMsg:(NSString *)msg
 {
-  fprintf(_stream.out, "%s\r\n", [msg UTF8String]);
+  fprintf(_stream.out, "%s\n", [msg UTF8String]);
   return -1;
 }
 

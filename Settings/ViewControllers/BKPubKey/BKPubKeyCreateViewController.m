@@ -2,7 +2,7 @@
 //
 // B L I N K
 //
-// Copyright (C) 2016 Blink Mobile Shell Project
+// Copyright (C) 2016-2018 Blink Mobile Shell Project
 //
 // This file is part of Blink.
 //
@@ -103,6 +103,7 @@
       int length = [[_sizeField titleForSegmentAtIndex:selectedIndex] intValue];
       // Create and return
       SshRsa *key = _key ? _key : [[SshRsa alloc] initWithLength:length];
+      // saves the key into iOS keychain
       _pubkey = [BKPubKey saveCard:_nameField.text privateKey:[key privateKeyWithPassphrase:_passphraseField.text] publicKey:[key publicKeyWithComment:_commentsField.text]];
       if (!_pubkey) {
         errorMsg = @"OpenSSL error. Could not create Public Key.";
