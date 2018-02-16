@@ -85,9 +85,10 @@ We made a ton easier to build and install Blink yourself on your iOS devices thr
 git clone --recursive https://github.com/holzschu/blink.git && \
 cd blink && ./get_frameworks.sh
 ```
+
 This will download Blink and the associated frameworks: `libssh2`, `OpenSSL`, `libmoshios`, `protobuf` and `ios_system`. 
 
-Although this is the quickest method to get you up and running, if you would like to compile all libraries and resources yourself, refer to [BUILD](https://github.com/holzschu/blink/blob/master/BUILD.md). Please let us know if you find any issues. Blink is a complex project with multiple low level dependencies and we are still looking for ways to simplify and automate the full compilation process.
+Although this is the quickest method to get you up and running, if you would like to compile all libraries and resources yourself, refer to [BUILD](https://github.com/blinksh/blink/blob/master/BUILD.md). Please let us know if you find any issues. Blink is a complex project with multiple low level dependencies and we are still looking for ways to simplify and automate the full compilation process.
 
 ## Packages
 

@@ -62,6 +62,19 @@ NSDictionary *__commandHints;
 static NSString* fullCommandPath = @"";
 static NSArray *directoriesInPath;
 
+NSArray<NSString *> *splitCommandAndArgs(NSString *cmdline)
+{
+  NSRange rng = [cmdline rangeOfString:@" "];
+  if (rng.location == NSNotFound) {
+    return @[ cmdline, @"" ];
+  } else {
+    return @[
+       [cmdline substringToIndex:rng.location],
+       [cmdline substringFromIndex:rng.location + 1]
+    ];
+  }
+}
+
 NSArray<NSString *> *commandsByPrefix(NSString *prefix)
 {
   if (prefix.length == 0) {
@@ -114,47 +127,6 @@ NSArray<NSString *> *themesByPrefix(NSString *prefix) {
   }
   NSPredicate * prefixPred = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] %@", prefix];
   return [themeNames filteredArrayUsingPredicate:prefixPred];
-}
-
-void completion(const char *line, linenoiseCompletions *lc) {
-  NSString* prefix = [NSString stringWithUTF8String:line];
-  NSArray *commands = commandsByPrefix(prefix);
-  
-  if (commands.count > 0) {
-    NSArray * advancedCompletion = @[@"ssh", @"mosh", @"theme", @"music", @"history"];
-    for (NSString * cmd in commands) {
-      if ([advancedCompletion indexOfObject:cmd] != NSNotFound) {
-        linenoiseAddCompletion(lc, [cmd stringByAppendingString:@" "].UTF8String);
-      } else {
-        linenoiseAddCompletion(lc, cmd.UTF8String);
-      }
-    }
-    return;
-  }
-  
-  NSArray *cmdAndArgs = splitCommandAndArgs(prefix);
-  NSString *cmd = cmdAndArgs[0];
-  NSString *args = cmdAndArgs[1];
-  NSArray *completions = @[];
-  
-  if ([args isEqualToString:@""]) {
-    return;
-  }
-  
-  if ([cmd isEqualToString:@"ssh"] || [cmd isEqualToString:@"mosh"]) {
-    completions = hostsByPrefix(args);
-  } else if ([cmd isEqualToString:@"music"]) {
-    completions = musicActionsByPrefix(args);
-  } else if ([cmd isEqualToString:@"theme"]) {
-    completions = themesByPrefix(args);
-  } else if ([cmd isEqualToString:@"history"]) {
-    completions = historyActionsByPrefix(args);
-  }
-  
-  
-  for (NSString *c in completions) {
-    linenoiseAddCompletion(lc, [@[cmd, c] componentsJoinedByString:@" "].UTF8String);
-  }
 }
 
 char* hints(const char * line, int *color, int *bold)
@@ -304,8 +276,9 @@ void completion(const char *command, linenoiseCompletions *lc) {
       }
     }
   }
+}
 
-+ (void)initialize
+(void)initialize
 {
   __commandList = [
     @[@"help", @"mosh", @"ssh", @"exit", @"ssh-copy-id", @"config", @"theme", @"music", @"history", @"clear"]
@@ -372,6 +345,9 @@ void completion(const char *command, linenoiseCompletions *lc) {
       linenoiseHistorySave(history);
 
       NSString *cmdline = [[NSString alloc] initWithFormat:@"%s", line];
+      /*
+       NH: wrote this as a more robust way to split command and args.
+       TODO: check if still required
       // separate into arguments, parse and execute:
       NSArray *listArgvMaybeEmpty = [cmdline componentsSeparatedByString:@" "];
       // Remove empty strings (extra spaces)
@@ -381,7 +357,17 @@ void completion(const char *command, linenoiseCompletions *lc) {
       
       [self.delegate indexCommand:listArgv];
       NSString *cmd = listArgv[0];
+      */
+      free(line);
+
+      cmdline = [cmdline stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+      NSArray *arr = splitCommandAndArgs(cmdline);
+      NSString *cmd = arr[0];
+      NSString *args = arr[1];
+
+=======
       
+>>>>>>> fa8989615c8b50cbd6170eb143e6564687cafc4a
       if ([cmd isEqualToString:@"help"]) {
         [self _showHelp];
       } else if ([cmd isEqualToString:@"mosh"]) {
@@ -539,8 +525,10 @@ void completion(const char *command, linenoiseCompletions *lc) {
 
 - (void)_runMoshWithArgs:(NSString *)args
 {
-  
-  _childSession = [[MoshSession alloc] initWithStream:_stream];
+  [self.delegate indexCommand:args];
+  self.sessionParameters.childSessionParameters = [[MoshParameters alloc] init];
+  self.sessionParameters.childSessionType = @"mosh";
+  _childSession = [[MoshSession alloc] initWithStream:_stream andParametes:self.sessionParameters.childSessionParameters];
   [_childSession executeAttachedWithArgs:args];
   
   _childSession = nil;
@@ -548,7 +536,10 @@ void completion(const char *command, linenoiseCompletions *lc) {
 
 - (void)_runSSHWithArgs:(NSString *)args
 {
-  _childSession = [[SSHSession alloc] initWithStream:_stream];
+  self.sessionParameters.childSessionParameters = nil;
+  [self.delegate indexCommand:args];
+  _childSession = [[SSHSession alloc] initWithStream:_stream andParametes:self.sessionParameters.childSessionParameters];
+  self.sessionParameters.childSessionType = @"ssh";
   [_childSession executeAttachedWithArgs:args];
   _childSession = nil;
 }
