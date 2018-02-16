@@ -791,6 +791,12 @@
   [_termInput resignFirstResponder];
 }
 
+- (BOOL)executeCommand:(NSMutableArray*) listArgv
+{
+  TermController *term = [self currentTerm];
+  return [term executeCommand:listArgv];
+}
+
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   // Fix for github issue #299
