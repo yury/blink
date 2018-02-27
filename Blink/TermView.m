@@ -37,6 +37,7 @@
 #import "BKFont.h"
 #import "BKTheme.h"
 #import "TermJS.h"
+#import <ARKit/ARKit.h>
 
 @implementation BKWebView
 
@@ -70,21 +71,26 @@
   
 }
 
-
 @end
 
 
-@interface TermView () <UIGestureRecognizerDelegate, WKScriptMessageHandler>
+@interface TermView () <UIGestureRecognizerDelegate, WKScriptMessageHandler, ARSCNViewDelegate>
 @end
 
 @implementation TermView {
   WKWebView *_webView;
+  
+  ARSCNView *_sceneView;
   
   BOOL _focused;
   
   BOOL _jsIsBusy;
   dispatch_queue_t _jsQueue;
   NSMutableString *_jsBuffer;
+  
+  NSOperationQueue *_queue;
+  SCNNode *_planeNode;
+  SCNPlane *_plane;
 }
 
 
@@ -97,16 +103,64 @@
     _jsQueue = dispatch_queue_create(@"TermView.js".UTF8String, DISPATCH_QUEUE_SERIAL);
     _jsBuffer = [[NSMutableString alloc] init];
 
+
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self _addWebView];
+    
+    _queue = [[NSOperationQueue alloc] init];
   }
 
   return self;
 }
 
-- (void)didMoveToWindow
+
+- (void)startAR
 {
-  [super didMoveToWindow];
+  _sceneView = [[ARSCNView alloc] initWithFrame:self.bounds];
+  [self addSubview:_sceneView];
+  _sceneView.delegate = self;
+  
+  ARWorldTrackingConfiguration *cfg = [[ARWorldTrackingConfiguration alloc] init];
+  [_sceneView.session runWithConfiguration:cfg];
+  
+  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_createPlane)];
+  [_sceneView addGestureRecognizer:tap];
+}
+
+- (void)_createPlane
+{
+  ARFrame * frame = _sceneView.session.currentFrame;
+  if (!frame) {
+    return;
+  }
+  
+  _plane = [SCNPlane planeWithWidth:0.5 height:0.4];
+  
+  _planeNode = [SCNNode nodeWithGeometry:_plane];
+  [_sceneView.scene.rootNode addChildNode:_planeNode];
+  
+  
+  simd_float4x4 translation = matrix_identity_float4x4;
+  
+  translation = SCNMatrix4ToMat4(SCNMatrix4Rotate(SCNMatrix4FromMat4(translation), 1.5708, 0, 0, 1));
+  translation.columns[3].z = - 0.1;
+  
+  _planeNode.simdTransform = matrix_multiply(frame.camera.transform, translation);
+  
+  [self _startLoop];
+}
+
+- (void)_startLoop
+{
+  [_webView takeSnapshotWithConfiguration:nil completionHandler:^(UIImage * _Nullable snapshotImage, NSError * _Nullable error) {
+    _plane.firstMaterial.diffuse.contents = snapshotImage;
+    [_queue addOperationWithBlock:^{
+      [NSThread sleepForTimeInterval:.3];
+      [NSOperationQueue.mainQueue addOperationWithBlock:^{
+        [self _startLoop];
+      }];
+    }];
+  }];
 }
 
 - (BOOL)canBecomeFirstResponder {

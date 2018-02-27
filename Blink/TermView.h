@@ -78,6 +78,7 @@
 - (void)copy:(id)sender;
 - (void)terminate;
 - (void)reset;
+- (void)startAR;
 
 - (void)blur;
 - (void)focus; 

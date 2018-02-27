@@ -292,6 +292,10 @@ char* hints(const char * line, int *color, int *bold)
         }
       } else if ([cmd isEqualToString:@"music"]) {
         [self _controlMusic: args];
+      } else if ([cmd isEqualToString:@"ar"]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [_stream.control.termView startAR];
+        });
       } else if ([cmd isEqualToString:@"ssh-copy-id"]) {
         [self _runSSHCopyIDWithArgs:cmdline];
       } else if ([cmd isEqualToString:@"config"]) {
