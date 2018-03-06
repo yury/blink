@@ -444,18 +444,9 @@ hterm.Screen.prototype.overwriteString = function(str, wcwidth = undefined) {
     return;
   }
 
-  // Blink optimization: Nothing to delete, just insert
-  if (
-    this.cursorOffset_ === 0 &&
-    this.cursorPosition.column === 0 &&
-    this.cursorRowNode_.textContent.length === 0
-  ) {
-    this.insertString(str, wcwidth);
-  } else {
-    var wcwidthLeft = this.overwriteNode_(str, wcwidth);
-    if (wcwidthLeft > 0) {
-      this.deleteChars(wcwidthLeft);
-    }
+  var wcwidthLeft = this.overwriteNode_(str, wcwidth);
+  if (wcwidthLeft > 0) {
+    this.deleteChars(wcwidthLeft);
   }
 };
 
@@ -582,6 +573,7 @@ hterm.Screen.prototype.overwriteNode_ = function(str, wcwidth) {
 
   if (offset === 0) {
     // At the beginning of the cursor node, the check the previous sibling.
+    
     var previousSibling = cursorNode.previousSibling;
     if (
       previousSibling &&
@@ -590,15 +582,18 @@ hterm.Screen.prototype.overwriteNode_ = function(str, wcwidth) {
       setNodeText(previousSibling, previousSibling.textContent + str);
       this.cursorNode_ = previousSibling;
       this.cursorOffset_ = hterm.TextAttributes.nodeWidth(previousSibling);
-      return wcwidthLeft;
+    } else {
+      var newNode = this.textAttributes.createContainer(str, wcwidth);
+      this.cursorRowNode_.insertBefore(newNode, cursorNode);
+      this.cursorNode_ = newNode;
+      this.cursorOffset_ = wcwidth;
     }
-
-    var newNode = this.textAttributes.createContainer(str, wcwidth);
-    this.cursorRowNode_.insertBefore(newNode, cursorNode);
-    this.cursorNode_ = newNode;
-    this.cursorOffset_ = wcwidth;
+    
     var cursorNodeWCWidth = hterm.TextAttributes.nodeWidth(cursorNode);
-    if (cursorNodeWCWidth <= wcwidth) {
+    if (cursorNodeWCWidth === 0 && !cursorNode.nextSibling) {
+      this.cursorRowNode_.removeChild(cursorNode);
+      wcwidthLeft = 0;
+    } else if (cursorNodeWCWidth <= wcwidth) {
       this.cursorRowNode_.removeChild(cursorNode);
       wcwidthLeft = wcwidth - cursorNodeWCWidth;
     } else {

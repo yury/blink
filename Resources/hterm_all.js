@@ -33,7 +33,7 @@ function _reattachNode(node) {
   
   if (parent) {
     parent.removeChild(node);
-    parent[next ? 'insertBefore' : 'appendChild'](node, next);
+    parent.insertBefore(node, next);
   }
 }
 
