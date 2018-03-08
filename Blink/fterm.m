@@ -140,18 +140,18 @@ static int closefn(void *handler)
     NSUInteger outLength = len - [_splitChar length];
     output = [[NSString alloc] initWithBytes:[data bytes] length:outLength encoding:NSUTF8StringEncoding];
     if (output) {
-      [_wv write:output];
+      [_wv writeData:output];
     } else {
-      [_wv writeB64:[data subdataWithRange:NSMakeRange(0, outLength)]];
+      [_wv writeData:[data subdataWithRange:NSMakeRange(0, outLength)]];
     }
     return;
   }
   
   output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
   if (output) {
-    [_wv write:output];
+    [_wv writeData:output];
   } else {
-    [_wv writeB64:data];
+    [_wv writeData:data];
   }
 }
 @end

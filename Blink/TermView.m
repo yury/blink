@@ -37,6 +37,9 @@
 #import "BKFont.h"
 #import "BKTheme.h"
 #import "TermJS.h"
+#import "PSWebSocketServer.h"
+
+static int __port = 9000;
 
 @implementation BKWebView
 
@@ -74,11 +77,13 @@
 @end
 
 
-@interface TermView () <UIGestureRecognizerDelegate, WKScriptMessageHandler>
+@interface TermView () <UIGestureRecognizerDelegate, WKScriptMessageHandler, PSWebSocketServerDelegate>
 @end
 
 @implementation TermView {
   WKWebView *_webView;
+  PSWebSocketServer *_wsServer;
+  PSWebSocket *_wsSocket;
   
   BOOL _focused;
   
@@ -86,6 +91,7 @@
   BOOL _allowBuffering;
   dispatch_queue_t _jsQueue;
   NSMutableString *_jsBuffer;
+  int _port;
 }
 
 
@@ -98,7 +104,12 @@
     _jsQueue = dispatch_queue_create(@"TermView.js".UTF8String, DISPATCH_QUEUE_SERIAL);
     _jsBuffer = [[NSMutableString alloc] init];
     _allowBuffering = YES;
+    _port = __port ++;
+    _wsServer = [PSWebSocketServer serverWithHost:nil port:_port];
+    _wsServer.delegate = self;
+    [_wsServer start];
 
+    
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self _addWebView];
   }
@@ -264,6 +275,11 @@
     });
     
   });
+}
+
+- (void)writeData:(id)data
+{
+  [_wsSocket send:data];
 }
 
 - (void)writeB64:(NSData *)data
@@ -445,6 +461,7 @@
   
   [script addObject:@"function applyUserSettings() {"];
   {
+    [script addObject: [NSString stringWithFormat:@"term_connect(%@);", @(_port)]];
     if (fontFamily) {
       [script addObject: term_setFontFamily(fontFamily)];
     }
@@ -480,6 +497,32 @@
 {
   // Disconnect message handler
   [_webView.configuration.userContentController removeScriptMessageHandlerForName:@"interOp"];
+}
+
+#pragma mark - PSWebSocketServerDelegate
+
+- (void)serverDidStart:(PSWebSocketServer *)server {
+  NSLog(@"Server did start…");
+}
+- (void)serverDidStop:(PSWebSocketServer *)server {
+  NSLog(@"Server did stop…");
+}
+- (BOOL)server:(PSWebSocketServer *)server acceptWebSocketWithRequest:(NSURLRequest *)request {
+  NSLog(@"Server should accept request: %@", request);
+  return YES;
+}
+- (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message {
+  NSLog(@"Server websocket did receive message: %@", message);
+}
+- (void)server:(PSWebSocketServer *)server webSocketDidOpen:(PSWebSocket *)webSocket {
+  _wsSocket = webSocket;
+  NSLog(@"Server websocket did open");
+}
+- (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+  NSLog(@"Server websocket did close with code: %@, reason: %@, wasClean: %@", @(code), reason, @(wasClean));
+}
+- (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didFailWithError:(NSError *)error {
+  NSLog(@"Server websocket did fail with error: %@", error);
 }
 
 @end

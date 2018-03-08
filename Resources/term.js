@@ -417,3 +417,45 @@ function term_applySexyTheme(theme) {
   term_set('foreground-color', theme.foreground);
   term_set('background-color', theme.background);
 }
+
+
+var term_write_data = null;
+
+if (typeof TextDecoder !== 'undefined') {
+  var _utf8TextDecoder = new TextDecoder('utf8');
+  term_write_data = function term_write_data_TextDecoder(bytes) {
+    var data = _utf8TextDecoder.decode(bytes);
+    t.interpret(data);
+  }
+} else {
+  // ios 10 support
+  var _fileReader = new FileReader();
+  var _blobOptions = {type: 'text/plain; charset=utf-8'};
+  
+  _fileReader.onload = function () {
+    t.interpret(_fileReader.result);
+  };
+  
+  term_write_data = function term_write_data_blob(bytes) {
+    _fileReader.readAsText(new Blob([bytes], _blobOptions));
+  }
+}
+
+function term_socket_write(ev) {
+  if (typeof ev.data === 'string') {
+    t.interpret(ev.data);
+  } else if (typeof ev.data === 'object') {
+    term_write_data(ev.data);
+  }
+}
+
+var _socket = null;
+function term_connect(port) {
+  _socket = new WebSocket("ws://127.0.0.1:" + port);
+  _socket.binaryType = "arraybuffer";
+  _socket.addEventListener('message', term_socket_write);
+  
+  _socket.onopen = function() {
+    
+  }
+}

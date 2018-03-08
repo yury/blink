@@ -185,6 +185,14 @@
 		D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A8C153201F377D002F415A /* TouchOverlay.m */; };
 		D2A92352201732B600043596 /* MusicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A92351201732B600043596 /* MusicManager.m */; };
 		D2D0AD081FFB7A74007EC56A /* MCPSessionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */; };
+		D2D6D77620515FC3003CBEC4 /* PSWebSocketInflater.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D75E20515FC3003CBEC4 /* PSWebSocketInflater.m */; };
+		D2D6D77720515FC3003CBEC4 /* PSWebSocketDeflater.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D75F20515FC3003CBEC4 /* PSWebSocketDeflater.m */; };
+		D2D6D77820515FC3003CBEC4 /* PSWebSocketUTF8Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D76220515FC3003CBEC4 /* PSWebSocketUTF8Decoder.m */; };
+		D2D6D77920515FC3003CBEC4 /* PSWebSocketDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D76620515FC3003CBEC4 /* PSWebSocketDriver.m */; };
+		D2D6D77A20515FC3003CBEC4 /* PSWebSocketBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D76720515FC3003CBEC4 /* PSWebSocketBuffer.m */; };
+		D2D6D77B20515FC3003CBEC4 /* PSWebSocketNetworkThread.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D76B20515FC3003CBEC4 /* PSWebSocketNetworkThread.m */; };
+		D2D6D77C20515FC3003CBEC4 /* PSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D76E20515FC3003CBEC4 /* PSWebSocket.m */; };
+		D2D6D77D20515FC3003CBEC4 /* PSWebSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D77020515FC3003CBEC4 /* PSWebSocketServer.m */; };
 		D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
 /* End PBXBuildFile section */
 
@@ -484,6 +492,25 @@
 		D2A92351201732B600043596 /* MusicManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MusicManager.m; sourceTree = "<group>"; };
 		D2D0AD061FFB7A74007EC56A /* MCPSessionParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCPSessionParameters.h; sourceTree = "<group>"; };
 		D2D0AD071FFB7A74007EC56A /* MCPSessionParameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCPSessionParameters.m; sourceTree = "<group>"; };
+		D2D6D75E20515FC3003CBEC4 /* PSWebSocketInflater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketInflater.m; sourceTree = "<group>"; };
+		D2D6D75F20515FC3003CBEC4 /* PSWebSocketDeflater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketDeflater.m; sourceTree = "<group>"; };
+		D2D6D76020515FC3003CBEC4 /* PSWebSocketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketBuffer.h; sourceTree = "<group>"; };
+		D2D6D76120515FC3003CBEC4 /* PSWebSocketNetworkThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketNetworkThread.h; sourceTree = "<group>"; };
+		D2D6D76220515FC3003CBEC4 /* PSWebSocketUTF8Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketUTF8Decoder.m; sourceTree = "<group>"; };
+		D2D6D76320515FC3003CBEC4 /* PSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocket.h; sourceTree = "<group>"; };
+		D2D6D76420515FC3003CBEC4 /* PSWebSocketInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketInternal.h; sourceTree = "<group>"; };
+		D2D6D76520515FC3003CBEC4 /* PSWebSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketServer.h; sourceTree = "<group>"; };
+		D2D6D76620515FC3003CBEC4 /* PSWebSocketDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketDriver.m; sourceTree = "<group>"; };
+		D2D6D76720515FC3003CBEC4 /* PSWebSocketBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketBuffer.m; sourceTree = "<group>"; };
+		D2D6D76820515FC3003CBEC4 /* PSWebSocketDeflater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketDeflater.h; sourceTree = "<group>"; };
+		D2D6D76920515FC3003CBEC4 /* PSWebSocketInflater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketInflater.h; sourceTree = "<group>"; };
+		D2D6D76A20515FC3003CBEC4 /* PSWebSocketUTF8Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketUTF8Decoder.h; sourceTree = "<group>"; };
+		D2D6D76B20515FC3003CBEC4 /* PSWebSocketNetworkThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketNetworkThread.m; sourceTree = "<group>"; };
+		D2D6D76C20515FC3003CBEC4 /* PSWebSocketTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketTypes.h; sourceTree = "<group>"; };
+		D2D6D76D20515FC3003CBEC4 /* PocketSocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PocketSocket-Prefix.pch"; sourceTree = "<group>"; };
+		D2D6D76E20515FC3003CBEC4 /* PSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocket.m; sourceTree = "<group>"; };
+		D2D6D76F20515FC3003CBEC4 /* PSWebSocketDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketDriver.h; sourceTree = "<group>"; };
+		D2D6D77020515FC3003CBEC4 /* PSWebSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketServer.m; sourceTree = "<group>"; };
 		D2F30EAC205009CD008C5F35 /* base64js.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base64js.min.js; sourceTree = "<group>"; };
 		EA0BA18B1C0CC57B00719C1A /* Blink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0BA1A41C0CC57B00719C1A /* Blink.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Blink.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -601,6 +628,7 @@
 		0732F04F1D062BB300AB5438 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2D6D75D20515FC3003CBEC4 /* PocketSocket */,
 				07AA06321E08B12E008310B7 /* PasscodeLock */,
 				B700AED71DD0F2C200100EBF /* CloudKit.framework */,
 				076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */,
@@ -954,6 +982,32 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		D2D6D75D20515FC3003CBEC4 /* PocketSocket */ = {
+			isa = PBXGroup;
+			children = (
+				D2D6D75E20515FC3003CBEC4 /* PSWebSocketInflater.m */,
+				D2D6D75F20515FC3003CBEC4 /* PSWebSocketDeflater.m */,
+				D2D6D76020515FC3003CBEC4 /* PSWebSocketBuffer.h */,
+				D2D6D76120515FC3003CBEC4 /* PSWebSocketNetworkThread.h */,
+				D2D6D76220515FC3003CBEC4 /* PSWebSocketUTF8Decoder.m */,
+				D2D6D76320515FC3003CBEC4 /* PSWebSocket.h */,
+				D2D6D76420515FC3003CBEC4 /* PSWebSocketInternal.h */,
+				D2D6D76520515FC3003CBEC4 /* PSWebSocketServer.h */,
+				D2D6D76620515FC3003CBEC4 /* PSWebSocketDriver.m */,
+				D2D6D76720515FC3003CBEC4 /* PSWebSocketBuffer.m */,
+				D2D6D76820515FC3003CBEC4 /* PSWebSocketDeflater.h */,
+				D2D6D76920515FC3003CBEC4 /* PSWebSocketInflater.h */,
+				D2D6D76A20515FC3003CBEC4 /* PSWebSocketUTF8Decoder.h */,
+				D2D6D76B20515FC3003CBEC4 /* PSWebSocketNetworkThread.m */,
+				D2D6D76C20515FC3003CBEC4 /* PSWebSocketTypes.h */,
+				D2D6D76D20515FC3003CBEC4 /* PocketSocket-Prefix.pch */,
+				D2D6D76E20515FC3003CBEC4 /* PSWebSocket.m */,
+				D2D6D76F20515FC3003CBEC4 /* PSWebSocketDriver.h */,
+				D2D6D77020515FC3003CBEC4 /* PSWebSocketServer.m */,
+			);
+			path = PocketSocket;
+			sourceTree = "<group>";
+		};
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
@@ -1299,6 +1353,7 @@
 				073D26BE1DC4137000965AB2 /* SKNonModifierButton.m in Sources */,
 				B7703BCF1E29233600B698DD /* BKKeyboardShortcutsViewController.m in Sources */,
 				07AA06541E08B12E008310B7 /* PasscodeLockStateType.swift in Sources */,
+				D2D6D77D20515FC3003CBEC4 /* PSWebSocketServer.m in Sources */,
 				07AA064E1E08B12E008310B7 /* EnterPasscodeState.swift in Sources */,
 				C9B2E0301D6B612400B89F69 /* BKPubKey.m in Sources */,
 				B7D4503C1DD4706000CE0DBE /* Reachability.m in Sources */,
@@ -1311,13 +1366,16 @@
 				B752EE2B1DFEF19D00E305C8 /* BKUserConfigurationManager.m in Sources */,
 				D23B188B1FFB76B300A6C903 /* SessionParameters.m in Sources */,
 				C9B2E0351D6B612400B89F69 /* BKSettingsFileDownloader.m in Sources */,
+				D2D6D77820515FC3003CBEC4 /* PSWebSocketUTF8Decoder.m in Sources */,
 				C989E5561D6CC4A1003E0079 /* BKAppearanceViewController.m in Sources */,
 				C989E54B1D6CC488003E0079 /* BKHostsViewController.m in Sources */,
 				B7A487691DC7C48D007BA809 /* UIDevice+DeviceName.m in Sources */,
 				D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */,
 				07AA06501E08B12E008310B7 /* SetPasscodeState.swift in Sources */,
+				D2D6D77A20515FC3003CBEC4 /* PSWebSocketBuffer.m in Sources */,
 				C9B2E0321D6B612400B89F69 /* BKFont.m in Sources */,
 				073D26BD1DC4137000965AB2 /* SKModifierButton.m in Sources */,
+				D2D6D77620515FC3003CBEC4 /* PSWebSocketInflater.m in Sources */,
 				074F30791D062A2800A73445 /* main.m in Sources */,
 				07AA06511E08B12E008310B7 /* PasscodeLockPresenter.swift in Sources */,
 				D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */,
@@ -1336,6 +1394,7 @@
 				07E3AEB61D8F6E2E007BC086 /* BKLinkActions.m in Sources */,
 				C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */,
 				07AA064A1E08B12E008310B7 /* Functions.swift in Sources */,
+				D2D6D77920515FC3003CBEC4 /* PSWebSocketDriver.m in Sources */,
 				0728A1DA1E0AE80400ABD31B /* SmartKeysController.m in Sources */,
 				D2A92352201732B600043596 /* MusicManager.m in Sources */,
 				C989E54A1D6CC488003E0079 /* BKHostsDetailViewController.m in Sources */,
@@ -1343,8 +1402,11 @@
 				07E3AEB01D8F6758007BC086 /* BKFeedbackViewController.m in Sources */,
 				07F670711D05EEE200C0A53C /* linenoise.c in Sources */,
 				B7D450361DD3A87200CE0DBE /* BKiCloudSyncHandler.m in Sources */,
+				D2D6D77C20515FC3003CBEC4 /* PSWebSocket.m in Sources */,
 				D2D0AD081FFB7A74007EC56A /* MCPSessionParameters.m in Sources */,
+				D2D6D77B20515FC3003CBEC4 /* PSWebSocketNetworkThread.m in Sources */,
 				C989E54C1D6CC488003E0079 /* BKPredictionViewController.m in Sources */,
+				D2D6D77720515FC3003CBEC4 /* PSWebSocketDeflater.m in Sources */,
 				07AA06521E08B12E008310B7 /* PasscodeLockViewController.swift in Sources */,
 				D23B188E1FFB776000A6C903 /* MoshSessionParameters.m in Sources */,
 				C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */,
