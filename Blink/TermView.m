@@ -84,7 +84,7 @@
   
   BOOL _jsIsBusy;
   dispatch_queue_t _jsQueue;
-  NSMutableString *_jsBuffer;
+  dispatch_data_t _jsBuffer;
 }
 
 
@@ -95,7 +95,7 @@
   if (self) {
     
     _jsQueue = dispatch_queue_create(@"TermView.js".UTF8String, DISPATCH_QUEUE_SERIAL);
-    _jsBuffer = [[NSMutableString alloc] init];
+    _jsBuffer = nil;
 
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self _addWebView];
@@ -234,23 +234,28 @@
 }
 
 // Write data to terminal control
-- (void)write:(NSString *)data
+- (void)write:(dispatch_data_t)data
 {
   dispatch_async(_jsQueue, ^{
-    [_jsBuffer appendString:data];
+    if (_jsBuffer) {
+      if (data) {
+        _jsBuffer = dispatch_data_create_concat(_jsBuffer, data);
+      }
+    } else {
+      _jsBuffer = data;
+    }
     
     if (_jsIsBusy) {
       return;
     }
 
-    NSString * buffer = _jsBuffer;
-    if (buffer.length == 0) {
+    dispatch_data_t buffer = _jsBuffer;
+    if (!buffer) {
       return;
     }
   
     _jsIsBusy = YES;
-    _jsBuffer = [[NSMutableString alloc] init];
-    
+    _jsBuffer = nil;
     NSString *jsScript = term_write(buffer);
     [self _evalJSScript:jsScript];
   });
@@ -261,12 +266,12 @@
   dispatch_async(_jsQueue, ^{
     _jsIsBusy = YES;
 
-    NSString * buffer = _jsBuffer;
-    _jsBuffer = [[NSMutableString alloc] init];
+    dispatch_data_t buffer = _jsBuffer;
+    _jsBuffer = nil;
     
     NSString *jsScript = term_writeB64(data);
     
-    if (buffer.length > 0) {
+    if (buffer) {
       jsScript = [term_write(buffer) stringByAppendingString:jsScript];
     }
     [self _evalJSScript:jsScript];
@@ -279,8 +284,8 @@
     [_webView evaluateJavaScript: jsScript completionHandler:^(id result, NSError *error) {
       dispatch_async(_jsQueue, ^{
         _jsIsBusy = NO;
-        if (_jsBuffer.length > 0) {
-          [self write:@""];
+        if (_jsBuffer) {
+          [self write:nil];
         }
       });
     }];
@@ -319,7 +324,7 @@
   } else if ([operation isEqualToString:@"copy"]) {
     [[UIPasteboard generalPasteboard] setString:data[@"content"]];
   } else if ([operation isEqualToString:@"sendString"]) {
-    [_termDelegate write:data[@"string"]];
+//    [_termDelegate write:data[@"string"]];
   }
 }
 

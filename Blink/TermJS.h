@@ -32,6 +32,177 @@
 #ifndef TermJS_h
 #define TermJS_h
 
+static size_t extra_space(dispatch_data_t data)
+{
+  __block size_t result = 0;
+  __block int iter = 0;
+  dispatch_data_apply(data, ^bool(dispatch_data_t  _Nonnull region, size_t offset, const void * _Nonnull buffer, size_t size) {
+    iter ++;
+    const char * buf = buffer;
+    for (size_t i = 0; i < size; i++ )
+    {
+      const char c = buf[i];
+      switch (c)
+      {
+        case '"':
+        case '\\':
+        case '\b':
+        case '\f':
+        case '\n':
+        case '\r':
+        case '\t':
+        {
+          // from c (1 byte) to \x (2 bytes)
+          result += 1;
+          break;
+        }
+          
+        default:
+        {
+          if (c >= 0x00 && c <= 0x1f)
+          {
+            // from c (1 byte) to \uxxxx (6 bytes)
+            result += 5;
+          }
+          break;
+        }
+      }
+    }
+    return true;
+  });
+  
+  return result;
+}
+
+static char* escape_string(dispatch_data_t data, size_t *newLen)
+{
+  size_t space = extra_space(data);
+  if (space == 0)
+  {
+    return NULL;
+  }
+  
+  size_t len = dispatch_data_get_size(data);
+  *newLen = len + space;
+  char * result = malloc(*newLen);
+  memset(result, '\\', *newLen);
+  __block size_t pos = 0;
+  
+  dispatch_data_apply(data, ^bool(dispatch_data_t  _Nonnull region, size_t offset, const void * _Nonnull buffer, size_t size) {
+    const char * buf = buffer;
+    
+    for (size_t i = 0; i < size; i++)
+    {
+      char c = buf[i];
+      switch (c)
+      {
+          // quotation mark (0x22)
+        case '"':
+        {
+          result[pos + 1] = '"';
+          pos += 2;
+          break;
+        }
+          
+          // reverse solidus (0x5c)
+        case '\\':
+        {
+          // nothing to change
+          pos += 2;
+          break;
+        }
+          
+          // backspace (0x08)
+        case '\b':
+        {
+          result[pos + 1] = 'b';
+          pos += 2;
+          break;
+        }
+          
+          // formfeed (0x0c)
+        case '\f':
+        {
+          result[pos + 1] = 'f';
+          pos += 2;
+          break;
+        }
+          
+          // newline (0x0a)
+        case '\n':
+        {
+          result[pos + 1] = 'n';
+          pos += 2;
+          break;
+        }
+          
+          // carriage return (0x0d)
+        case '\r':
+        {
+          result[pos + 1] = 'r';
+          pos += 2;
+          break;
+        }
+          
+          // horizontal tab (0x09)
+        case '\t':
+        {
+          result[pos + 1] = 't';
+          pos += 2;
+          break;
+        }
+          
+        default:
+        {
+          if (c >= 0x00 && c <= 0x1f)
+          {
+            // print character c as \uxxxx
+            sprintf(&result[pos + 1], "u%04x", (UInt8)c);
+            pos += 6;
+            // overwrite trailing null character
+            result[pos] = '\\';
+          }
+          else
+          {
+            // all other characters are added as-is
+            result[pos++] = c;
+          }
+          break;
+        }
+      }
+    }
+    
+    return true;
+  });
+  
+  
+  
+  return result;
+}
+
+NSString *__encodeString(NSString *format, dispatch_data_t ddata)
+{
+  size_t newLen = 0;
+  char *newBuff = escape_string(ddata, &newLen);
+  NSString * res = nil;
+  if (newBuff) {
+    res = [[NSString alloc] initWithBytesNoCopy:newBuff length:newLen encoding:NSUTF8StringEncoding freeWhenDone:NO];
+  } else {
+    NSData *data = (NSData *)ddata;
+    const char *buffer = [data bytes];
+    size_t len = data.length;
+    res = [[NSString alloc] initWithBytesNoCopy:buffer length:len encoding:NSUTF8StringEncoding freeWhenDone:NO];
+  }
+  
+  NSString *cmd = [NSString stringWithFormat:format, res];
+  
+  if (newBuff) {
+    free(newBuff);
+  }
+  return cmd;
+}
+
+
 NSString *_encodeString(NSString *str)
 {
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:@[ str ] options:0 error:nil];
@@ -43,8 +214,8 @@ NSString *term_init()
   return @"term_init();";
 }
 
-NSString *term_write(NSString *data) {
-  return [NSString stringWithFormat:@"term_write(%@[0]);", _encodeString(data)];
+NSString *term_write(dispatch_data_t data) {
+  return __encodeString(@"term_write(\"%@\");", data);
 }
 
 NSString *term_writeB64(NSData *data) {

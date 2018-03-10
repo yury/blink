@@ -100,17 +100,19 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   
   NSData * nsData = (NSData *)data;
   
-  NSString *output =  [[NSString alloc] initWithData:nsData encoding:NSUTF8StringEncoding];
-  
+  const char *buffer = [nsData bytes];
+  size_t len = nsData.length;
   // Best case. We got good utf8 seq.
-  if (output) {
-    [_view write:output];
+  CFStringRef cfOutput = CFStringCreateWithBytesNoCopy(kCFAllocatorDefault, buffer, len, kCFStringEncodingUTF8, NO, kCFAllocatorNull);
+  if (cfOutput) {
+    CFRelease(cfOutput);
+    [_view write:data];
     return;
   }
   
   // May be we have incomplete utf8 seq at the end;
-  const char *buffer = [nsData bytes];
-  size_t len = nsData.length;
+//  const char *buffer = [nsData bytes];
+//  size_t len = nsData.length;
   int incompleteSize = __sizeOfIncompleteSequenceAtTheEnd(buffer, len);
   
   if (incompleteSize == 0) {
@@ -126,10 +128,11 @@ static int __sizeOfIncompleteSequenceAtTheEnd(const char *buffer, size_t len) {
   // We stripped incomplete seq.
   // Let's try to create string again with range
   
-  output = [[NSString alloc] initWithBytes:buffer length:len - incompleteSize encoding:NSUTF8StringEncoding];
-  if (output) {
+  cfOutput = CFStringCreateWithBytesNoCopy(kCFAllocatorDefault, buffer, len - incompleteSize, kCFStringEncodingUTF8, NO, kCFAllocatorNull);
+  if (cfOutput) {
     // Good seq. Write it as string.
-    [_view write:output];
+    CFRelease(cfOutput);
+    [_view write:dispatch_data_create_subrange(data, 0, len - incompleteSize)];
     return;
   }
   

@@ -68,7 +68,6 @@
 - (void)clear;
 - (void)setWidth:(NSInteger)count;
 - (void)setFontSize:(NSNumber *)newSize;
-- (void)write:(NSString *)data;
 - (void)setCursorBlink:(BOOL)state;
 - (void)setBoldAsBright:(BOOL)state;
 - (void)setBoldEnabled:(NSUInteger)state;
@@ -83,6 +82,7 @@
 - (void)increaseFontSize;
 - (void)decreaseFontSize;
 - (void)resetFontSize;
+- (void)write:(dispatch_data_t)data;
 - (void)writeB64:(NSData *)data;
 
 - (void)modifySideOfSelection;
