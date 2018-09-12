@@ -106,6 +106,8 @@
 		C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00E1D6B612300B89F69 /* BKHosts.m */; };
 		C9B2E0341D6B612400B89F69 /* BKTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0101D6B612300B89F69 /* BKTheme.m */; };
 		C9B2E0351D6B612400B89F69 /* BKSettingsFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0131D6B612300B89F69 /* BKSettingsFileDownloader.m */; };
+		D20427A72147FF37007D1DF1 /* host2ip.c in Sources */ = {isa = PBXBuildFile; fileRef = D20427A52147FF36007D1DF1 /* host2ip.c */; };
+		D20427A92147FF47007D1DF1 /* udptunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D20427A82147FF47007D1DF1 /* udptunnel.m */; };
 		D2060A5120E2501E00CF5122 /* libssh_threadsd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2060A4A20E2501E00CF5122 /* libssh_threadsd.a */; };
 		D2060A5420E2644400CF5122 /* SSHClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D2060A5320E2644400CF5122 /* SSHClient.m */; };
 		D2094662204D3FC5003C4F72 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D209465B204D3FC5003C4F72 /* cacert.pem */; };
@@ -136,6 +138,7 @@
 		D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */; };
 		D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
 		D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BBA1B20529FFF00AEA303 /* TermStream.m */; };
+		D27FE37C2147C41500B35AF7 /* SSHAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = D27FE37B2147C41500B35AF7 /* SSHAgent.m */; };
 		D28DB3AC210B110C008A1139 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28DB3AB210B110B008A1139 /* libcompression.tbd */; };
 		D29392B72004D785001FB2AA /* hterm_all.patches.js in Resources */ = {isa = PBXBuildFile; fileRef = D29392B62004D785001FB2AA /* hterm_all.patches.js */; };
 		D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
@@ -437,6 +440,9 @@
 		C9B2E0101D6B612300B89F69 /* BKTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKTheme.m; sourceTree = "<group>"; };
 		C9B2E0121D6B612300B89F69 /* BKSettingsFileDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKSettingsFileDownloader.h; sourceTree = "<group>"; };
 		C9B2E0131D6B612300B89F69 /* BKSettingsFileDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKSettingsFileDownloader.m; sourceTree = "<group>"; };
+		D20427A52147FF36007D1DF1 /* host2ip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = host2ip.c; sourceTree = "<group>"; };
+		D20427A62147FF37007D1DF1 /* host2ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = host2ip.h; sourceTree = "<group>"; };
+		D20427A82147FF47007D1DF1 /* udptunnel.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = udptunnel.m; sourceTree = "<group>"; };
 		D2060A4A20E2501E00CF5122 /* libssh_threadsd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssh_threadsd.a; sourceTree = "<group>"; };
 		D2060A5220E2644400CF5122 /* SSHClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClient.h; sourceTree = "<group>"; };
 		D2060A5320E2644400CF5122 /* SSHClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClient.m; sourceTree = "<group>"; };
@@ -499,6 +505,8 @@
 		D263489720BEBFE000A8E89F /* libsshd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsshd.a; sourceTree = "<group>"; };
 		D27BBA1A20529FFF00AEA303 /* TermStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermStream.h; sourceTree = "<group>"; };
 		D27BBA1B20529FFF00AEA303 /* TermStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermStream.m; sourceTree = "<group>"; };
+		D27FE37A2147C41500B35AF7 /* SSHAgent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHAgent.h; sourceTree = "<group>"; };
+		D27FE37B2147C41500B35AF7 /* SSHAgent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHAgent.m; sourceTree = "<group>"; };
 		D28DB3AB210B110B008A1139 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		D29392B62004D785001FB2AA /* hterm_all.patches.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = hterm_all.patches.js; sourceTree = "<group>"; };
 		D298D67B2110803600992CA4 /* SSHClientPortListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClientPortListener.h; sourceTree = "<group>"; };
@@ -873,6 +881,8 @@
 				07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */,
 				07F6706F1D05EEE200C0A53C /* SSHSession.h */,
 				07F670701D05EEE200C0A53C /* SSHSession.m */,
+				D27FE37A2147C41500B35AF7 /* SSHAgent.h */,
+				D27FE37B2147C41500B35AF7 /* SSHAgent.m */,
 			);
 			path = Sessions;
 			sourceTree = SOURCE_ROOT;
@@ -1039,6 +1049,16 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		D204279E2147FF22007D1DF1 /* udptunnel */ = {
+			isa = PBXGroup;
+			children = (
+				D20427A82147FF47007D1DF1 /* udptunnel.m */,
+				D20427A52147FF36007D1DF1 /* host2ip.c */,
+				D20427A62147FF37007D1DF1 /* host2ip.h */,
+			);
+			path = udptunnel;
+			sourceTree = "<group>";
+		};
 		D23970DC20A07B5800881637 /* replxx */ = {
 			isa = PBXGroup;
 			children = (
@@ -1113,6 +1133,7 @@
 		D2F330C520A6C8E20074ADD7 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				D204279E2147FF22007D1DF1 /* udptunnel */,
 				D240806020BC8DF800F30099 /* tool_main.c */,
 				D2F330D320A6F1DF0074ADD7 /* clear.m */,
 				D2F330CB20A6D98C0074ADD7 /* config.m */,
@@ -1393,6 +1414,7 @@
 				07F670721D05EEE200C0A53C /* MCPSession.m in Sources */,
 				D23742CA21106ADF00366359 /* bench.m in Sources */,
 				D239710820A07B9100881637 /* windows.cxx in Sources */,
+				D20427A92147FF47007D1DF1 /* udptunnel.m in Sources */,
 				D240806120BC8DF800F30099 /* tool_main.c in Sources */,
 				B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */,
 				D239710420A07B9100881637 /* inputbuffer.cxx in Sources */,
@@ -1476,6 +1498,8 @@
 				D239710520A07B9100881637 /* history.cxx in Sources */,
 				C989E5671D6CC95A003E0079 /* BKPubKeyViewController.m in Sources */,
 				D2F330CC20A6D98C0074ADD7 /* config.m in Sources */,
+				D20427A72147FF37007D1DF1 /* host2ip.c in Sources */,
+				D27FE37C2147C41500B35AF7 /* SSHAgent.m in Sources */,
 				B7A487651DC7BD65007BA809 /* BKDefaultUserViewController.m in Sources */,
 				D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */,
 				073D26BC1DC4137000965AB2 /* SKButton.m in Sources */,
