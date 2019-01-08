@@ -189,6 +189,9 @@
 		D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
 		D29FE54A208DC860004679D0 /* commandDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE548208DC860004679D0 /* commandDictionary.plist */; };
 		D29FE54B208DC860004679D0 /* extraCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */; };
+		D2A0EB0F21E49C1000A3F5A9 /* wss.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A0EB0E21E49C1000A3F5A9 /* wss.m */; };
+		D2A0EB4421E49EC300A3F5A9 /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A0EB3221E49E1600A3F5A9 /* SocketRocket.framework */; };
+		D2A0EB4521E49EC300A3F5A9 /* SocketRocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A0EB3221E49E1600A3F5A9 /* SocketRocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; };
 		D2A3F4EC20690B71006BB305 /* shell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; };
 		D2A3F4F020690B71006BB305 /* tar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E720690B71006BB305 /* tar.framework */; };
@@ -283,6 +286,62 @@
 			remoteGlobalIDString = 148993CF1D8F2515000132F7;
 			remoteInfo = TestHost;
 		};
+		D2A0EB3121E49E1600A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 81D6478D1D2CA78800690609;
+			remoteInfo = "SocketRocket-iOS";
+		};
+		D2A0EB3321E49E1600A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D4227621BB4358C000C1A6C;
+			remoteInfo = "SocketRocket-iOS-Dynamic";
+		};
+		D2A0EB3521E49E1600A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F668C880153E91210044DBAC;
+			remoteInfo = "SocketRocket-macOS";
+		};
+		D2A0EB3721E49E1600A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3345DC901C52ACD70083CCB8;
+			remoteInfo = "SocketRocket-tvOS";
+		};
+		D2A0EB3921E49E1600A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F6BDA802145900D200FE3253;
+			remoteInfo = "SocketRocketTests-iOS";
+		};
+		D2A0EB3B21E49E1600A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F62417E314D52F3C003CE997;
+			remoteInfo = TestChat;
+		};
+		D2A0EB4221E49E7100A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 81D6475F1D2CA78800690609;
+			remoteInfo = "SocketRocket-iOS";
+		};
+		D2A0EB4621E49EC300A3F5A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 81D6475F1D2CA78800690609;
+			remoteInfo = "SocketRocket-iOS";
+		};
 		D2A3F4DC206909A8006BB305 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
@@ -322,6 +381,7 @@
 				D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */,
 				D2A3F50020690D44006BB305 /* network_ios.framework in Embed Frameworks */,
 				0732F11F1D062DDB00AB5438 /* UICKeyChainStore.framework in Embed Frameworks */,
+				D2A0EB4521E49EC300A3F5A9 /* SocketRocket.framework in Embed Frameworks */,
 				D2A3F4FA20690CDF006BB305 /* ios_system.framework in Embed Frameworks */,
 				D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */,
 				D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */,
@@ -631,6 +691,8 @@
 		D29FE548208DC860004679D0 /* commandDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = commandDictionary.plist; sourceTree = "<group>"; };
 		D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = extraCommandsDictionary.plist; sourceTree = "<group>"; };
 		D2A0C63E20AAD98D001CF38F /* ios_error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ios_error.h; sourceTree = "<group>"; };
+		D2A0EB0E21E49C1000A3F5A9 /* wss.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wss.m; sourceTree = "<group>"; };
+		D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		D2A3F4E120690B70006BB305 /* text.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = text.framework; sourceTree = "<group>"; };
 		D2A3F4E220690B70006BB305 /* awk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = awk.framework; sourceTree = "<group>"; };
 		D2A3F4E320690B70006BB305 /* shell.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = shell.framework; sourceTree = "<group>"; };
@@ -694,6 +756,7 @@
 				D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */,
 				0732F1221D062DDB00AB5438 /* MBProgressHUD.framework in Frameworks */,
 				0732F0D11D062BB400AB5438 /* openssl.framework in Frameworks */,
+				D2A0EB4421E49EC300A3F5A9 /* SocketRocket.framework in Frameworks */,
 				0732F0BE1D062BB400AB5438 /* libssh2.framework in Frameworks */,
 				076FBD501DB6BD9400F6D997 /* libmoshios.framework in Frameworks */,
 				D2A3F4F120690B71006BB305 /* network_ios.framework in Frameworks */,
@@ -810,6 +873,7 @@
 		0732F04F1D062BB300AB5438 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */,
 				D28DB3AB210B110B008A1139 /* libcompression.tbd */,
 				D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */,
 				D2A3F4F520690C24006BB305 /* awk.framework */,
@@ -1344,6 +1408,19 @@
 			path = ed25519;
 			sourceTree = "<group>";
 		};
+		D2A0EB2921E49E1600A3F5A9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2A0EB3221E49E1600A3F5A9 /* SocketRocket.framework */,
+				D2A0EB3421E49E1600A3F5A9 /* SocketRocket.framework */,
+				D2A0EB3621E49E1600A3F5A9 /* SocketRocket.framework */,
+				D2A0EB3821E49E1600A3F5A9 /* SocketRocket.framework */,
+				D2A0EB3A21E49E1600A3F5A9 /* SocketRocketTests-iOS.xctest */,
+				D2A0EB3C21E49E1600A3F5A9 /* TestChat.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D2E4F92A20B2BB4500B30F7B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1367,6 +1444,7 @@
 				D2F330D520A6F4F50074ADD7 /* history.m */,
 				D2A90ADB20D277DF0073BF3D /* ssh.m */,
 				D23742C921106ADF00366359 /* bench.m */,
+				D2A0EB0E21E49C1000A3F5A9 /* wss.m */,
 				D2179F2E2136DBC600B0850A /* geo.m */,
 				D2C8D30921B544B100AC39C3 /* say.m */,
 				D2F330D120A6EF020074ADD7 /* showkey.m */,
@@ -1417,6 +1495,8 @@
 			dependencies = (
 				0732F1211D062DDB00AB5438 /* PBXTargetDependency */,
 				0732F1251D062DDC00AB5438 /* PBXTargetDependency */,
+				D2A0EB4321E49E7100A3F5A9 /* PBXTargetDependency */,
+				D2A0EB4721E49EC300A3F5A9 /* PBXTargetDependency */,
 			);
 			name = Blink;
 			productName = Blink;
@@ -1511,6 +1591,10 @@
 					ProjectRef = 0732F1051D062BF700AB5438 /* MBProgressHUD.xcodeproj */;
 				},
 				{
+					ProductGroup = D2A0EB2921E49E1600A3F5A9 /* Products */;
+					ProjectRef = D2A0EB2821E49E1600A3F5A9 /* SocketRocket.xcodeproj */;
+				},
+				{
 					ProductGroup = 0732F1111D062C9F00AB5438 /* Products */;
 					ProjectRef = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
 				},
@@ -1564,6 +1648,48 @@
 			fileType = wrapper.application;
 			path = TestHost.app;
 			remoteRef = 0747D63D2018182D00CF8F0C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2A0EB3221E49E1600A3F5A9 /* SocketRocket.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketRocket.framework;
+			remoteRef = D2A0EB3121E49E1600A3F5A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2A0EB3421E49E1600A3F5A9 /* SocketRocket.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketRocket.framework;
+			remoteRef = D2A0EB3321E49E1600A3F5A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2A0EB3621E49E1600A3F5A9 /* SocketRocket.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketRocket.framework;
+			remoteRef = D2A0EB3521E49E1600A3F5A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2A0EB3821E49E1600A3F5A9 /* SocketRocket.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketRocket.framework;
+			remoteRef = D2A0EB3721E49E1600A3F5A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2A0EB3A21E49E1600A3F5A9 /* SocketRocketTests-iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SocketRocketTests-iOS.xctest";
+			remoteRef = D2A0EB3921E49E1600A3F5A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2A0EB3C21E49E1600A3F5A9 /* TestChat.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestChat.app;
+			remoteRef = D2A0EB3B21E49E1600A3F5A9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		D2A3F4DD206909A8006BB305 /* MBProgressHUD.framework */ = {
@@ -1774,6 +1900,7 @@
 				07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */,
 				C989E5571D6CC4A1003E0079 /* BKFontCreateViewController.m in Sources */,
 				C9472D561D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m in Sources */,
+				D2A0EB0F21E49C1000A3F5A9 /* wss.m in Sources */,
 				D296197C214F8ABE0070935A /* atomicio.c in Sources */,
 				C989E5661D6CC95A003E0079 /* BKPubKeyDetailsViewController.m in Sources */,
 				D296199F214F995D0070935A /* ge25519.c in Sources */,
@@ -1810,6 +1937,16 @@
 			isa = PBXTargetDependency;
 			name = "MBProgressHUD Framework";
 			targetProxy = 0732F1241D062DDC00AB5438 /* PBXContainerItemProxy */;
+		};
+		D2A0EB4321E49E7100A3F5A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SocketRocket-iOS";
+			targetProxy = D2A0EB4221E49E7100A3F5A9 /* PBXContainerItemProxy */;
+		};
+		D2A0EB4721E49EC300A3F5A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SocketRocket-iOS";
+			targetProxy = D2A0EB4621E49EC300A3F5A9 /* PBXContainerItemProxy */;
 		};
 		EA0BA1A61C0CC57B00719C1A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
