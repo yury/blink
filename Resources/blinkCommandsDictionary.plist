@@ -121,5 +121,12 @@
     <string>ap:j:b:</string>
     <string>no</string>
   </array>
+  <key>bunkr</key>
+  <array>
+    <string>MAIN</string>
+    <string>bunkr_main</string>
+    <string></string>
+    <string>no</string>
+  </array>
 </dict>
 </plist>

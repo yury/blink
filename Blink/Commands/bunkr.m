@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 //
 // B L I N K
 //
@@ -29,39 +29,32 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <stdio.h>
+#include "ios_system/ios_system.h"
+#include "ios_error.h"
+#include "bk_getopts.h"
+#include "xcall.h"
+#import <AVFoundation/AVFoundation.h>
+#import "MCPSession.h"
 
-#ifndef xcall_h
-#define xcall_h
 
-@interface BlinkXCall: NSObject
+int bunkr_main(int argc, char *argv[]) {
+  thread_optind = 1;
+  
+  BlinkXCall *call = [[BlinkXCall alloc] init];
+  call.xURL = [NSURL URLWithString:@"bunkr://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with"];
+  
+  int result = [call execute];
+  if (result == 0) {
+    puts("success");
+    NSString * output = [NSString stringWithFormat:@"fileID: %@\npubkey: %@", call.resultParams[@"fileID"], call.resultParams[@"b64pubkey"]];
+    puts(output.UTF8String);
+  } else if (result == -1) {
+    puts("error");
+  } else if (result == -2) {
+    puts("canceled");
+  }
+  
+  return 0;
+}
 
-@property NSString *callID;
-
-@property BOOL async;
-@property BOOL verbose;
-
-@property NSURL *xURL;
-@property NSURL *xCallbackURL;
-
-@property NSURL *xSuccessURL;
-@property NSURL *xErrorURL;
-@property NSURL *xCancelURL;
-
-@property NSURL *xOriginalSuccessURL;
-@property NSURL *xOriginalErrorURL;
-@property NSURL *xOriginalCancelURL;
-
-@property NSMutableArray<NSArray<NSString *> *> *parseOutputParams; // [<paramName>, <decoder:json|base64>]
-@property NSMutableArray<NSArray<NSString *> *> *encodeInputParams; // [<paramName>, <value>]
-@property NSMutableDictionary<NSString *, NSString *> *resultParams;
-
-@property NSString *stdInParameterName;
-
-- (int)execute;
-
-@end
-
-void blink_xcall(NSURL *url);
-void blink_handle_url(NSURL *url);
-
-#endif /* xcall_h */

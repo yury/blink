@@ -218,6 +218,7 @@
 		D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
 		D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
 		D2E4F91B20B0537D00B30F7B /* Migrator.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4F91A20B0537D00B30F7B /* Migrator.m */; };
+		D2EB7DA5224E06F000C59E74 /* bunkr.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EB7D9E224E06F000C59E74 /* bunkr.m */; };
 		D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
 		D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
 		D2F330CA20A6CB840074ADD7 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330C920A6CB840074ADD7 /* help.m */; };
@@ -669,6 +670,7 @@
 		D2E4F91920B0537D00B30F7B /* Migrator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Migrator.h; sourceTree = "<group>"; };
 		D2E4F91A20B0537D00B30F7B /* Migrator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Migrator.m; sourceTree = "<group>"; };
 		D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl_ios_static.xcodeproj; path = ios_system/curl_ios_static.xcodeproj; sourceTree = "<group>"; };
+		D2EB7D9E224E06F000C59E74 /* bunkr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bunkr.m; sourceTree = "<group>"; };
 		D2EFE1EE20B7FAFC0087888B /* link_files.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = link_files.m; sourceTree = "<group>"; };
 		D2F30EAC205009CD008C5F35 /* base64js.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base64js.min.js; sourceTree = "<group>"; };
 		D2F330C920A6CB840074ADD7 /* help.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = help.m; sourceTree = "<group>"; };
@@ -1380,6 +1382,7 @@
 				D23742C921106ADF00366359 /* bench.m */,
 				D2179F2E2136DBC600B0850A /* geo.m */,
 				D2C8D30921B544B100AC39C3 /* say.m */,
+				D2EB7D9E224E06F000C59E74 /* bunkr.m */,
 				D2AC674A22031EE600177BC5 /* openurl.h */,
 				D2AC6742220303D900177BC5 /* openurl.m */,
 				D27AD9BD222FDD5700379872 /* xcall.h */,
@@ -1784,6 +1787,7 @@
 				C989E5671D6CC95A003E0079 /* BKPubKeyViewController.m in Sources */,
 				D2334D1D21495DAE00D26AC3 /* host2ip.c in Sources */,
 				D2F330CC20A6D98C0074ADD7 /* config.m in Sources */,
+				D2EB7DA5224E06F000C59E74 /* bunkr.m in Sources */,
 				B7A487651DC7BD65007BA809 /* BKDefaultUserViewController.m in Sources */,
 				D2A8C154201F377D002F415A /* TouchOverlay.m in Sources */,
 				073D26BC1DC4137000965AB2 /* SKButton.m in Sources */,

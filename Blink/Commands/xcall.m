@@ -36,6 +36,9 @@
 #include "xcall.h"
 #include "openurl.h"
 
+
+void __blink_call_cleanup_callback(void *callData);
+
 @implementation BlinkXCall {
   NSCondition *_condition;
 }
@@ -58,6 +61,8 @@
     _parseOutputParams = [[NSMutableArray alloc] init];
     _encodeInputParams = [[NSMutableArray alloc] init];
     
+    _resultParams =      [[NSMutableDictionary alloc] init];
+    
     _xSuccessURL = [NSURL URLWithString: [NSString stringWithFormat:@"blinkshell://x-success/%@", _callID]];
     _xErrorURL = [NSURL URLWithString: [NSString stringWithFormat:@"blinkshell://x-error/%@", _callID]];
     _xCancelURL = [NSURL URLWithString: [NSString stringWithFormat:@"blinkshell://x-cancel/%@", _callID]];
@@ -73,7 +78,14 @@
   [[BlinkXCall _registry] removeObjectForKey:_callID];
 }
 
-- (int)run {
+- (int)execute {
+  pthread_cleanup_push(__blink_call_cleanup_callback, (__bridge void *)self);
+  [self _run];
+  return [self _exitCode];
+  pthread_cleanup_pop(YES);
+}
+
+- (int)_run {
 
   if (!_xURL) {
     puts("no url");
@@ -148,6 +160,8 @@
   NSURLComponents *comps = [NSURLComponents componentsWithURL:_xCallbackURL resolvingAgainstBaseURL:YES];
   NSArray<NSURLQueryItem *> *queryItems = [comps queryItems];
   for (NSURLQueryItem *item in queryItems) {
+    _resultParams[item.name] = item.value;
+    
     for (NSArray * decode in _parseOutputParams) {
       NSString *param = decode.firstObject;
       if (![param isEqual:item.name]) {
@@ -226,6 +240,12 @@
 
 @end
 
+void __blink_call_cleanup_callback(void *callData) {
+  BlinkXCall *call = (__bridge BlinkXCall *)callData;
+  [call _unregister];
+}
+
+
 void blink_handle_url(NSURL *url) {
 
   NSString *xType = url.host;
@@ -244,10 +264,6 @@ void blink_handle_url(NSURL *url) {
   [call onCallback:url];
 }
 
-void __blink_call_cleanup_callback(void *callData) {
-  BlinkXCall *call = (__bridge BlinkXCall *)callData;
-  [call _unregister];
-}
 
 int blink_xcall_main(int argc, char *argv[]) {
   thread_optind = 1;
@@ -354,10 +370,6 @@ int blink_xcall_main(int argc, char *argv[]) {
     }
   }
   
-  pthread_cleanup_push(__blink_call_cleanup_callback, (__bridge void *)call);
-  [call run];
-  pthread_cleanup_pop(YES);
-  
-  return [call _exitCode];
+  return [call execute];
 }
 
