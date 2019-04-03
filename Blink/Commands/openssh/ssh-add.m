@@ -226,12 +226,12 @@ add_file(int agent_fd, const char *filename, int key_only, int qflag)
    * Since we'll try to load a keyfile multiple times, permission errors
    * will occur multiple times, so check perms first and bail if wrong.
    */
-  if (fd != STDIN_FILENO && pk == nil) {
-    if (sshkey_perm_ok(fd, filename) != 0) {
-      close(fd);
-      return -1;
-    }
-  }
+//  if (fd != STDIN_FILENO && pk == nil) {
+//    if (sshkey_perm_ok(fd, filename) != 0) {
+//      close(fd);
+//      return -1;
+//    }
+//  }
   if ((keyblob = sshbuf_new()) == NULL)
     fatal("%s: sshbuf_new failed", __func__);
   

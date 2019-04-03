@@ -574,6 +574,7 @@
 		D23E143B20A977AB000FCF5C /* Repl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Repl.h; sourceTree = "<group>"; };
 		D23E143C20A977AB000FCF5C /* Repl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Repl.m; sourceTree = "<group>"; };
 		D240806020BC8DF800F30099 /* tool_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tool_main.c; path = Frameworks/ios_system/curl/curl/src/tool_main.c; sourceTree = SOURCE_ROOT; };
+		D241A4CE2251F6D000FD08AC /* bunkr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bunkr.h; sourceTree = "<group>"; };
 		D2496F3B20038B3300E75FE9 /* hterm_all.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = hterm_all.min.js; sourceTree = "<group>"; };
 		D2496F402003941B00E75FE9 /* term.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = term.js; sourceTree = "<group>"; };
 		D24D18C721D4CFB200239C9D /* KeyInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyInput.h; sourceTree = "<group>"; };
@@ -1382,6 +1383,7 @@
 				D23742C921106ADF00366359 /* bench.m */,
 				D2179F2E2136DBC600B0850A /* geo.m */,
 				D2C8D30921B544B100AC39C3 /* say.m */,
+				D241A4CE2251F6D000FD08AC /* bunkr.h */,
 				D2EB7D9E224E06F000C59E74 /* bunkr.m */,
 				D2AC674A22031EE600177BC5 /* openurl.h */,
 				D2AC6742220303D900177BC5 /* openurl.m */,

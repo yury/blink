@@ -90,6 +90,7 @@
 #include "ios_system/ios_system.h"
 
 #include "blink-compat.h"
+#include "bunkr.h"
 
 #ifdef ENABLE_PKCS11
 #include "ssh-pkcs11.h"
@@ -126,7 +127,10 @@ mktemp_proto(char *s, size_t len)
     fatal("%s: template string too short", __func__);
 }
 
-
+int
+sshkey_bunkr_sign(char *bunkr_id,
+                  u_char **sigp, size_t *lenp,
+                  const u_char *data, size_t datalen, const char *alg, u_int compat);
 
 static int
 unix_listener(const char *path, int backlog, int unlink_first)
@@ -235,6 +239,7 @@ typedef struct identity {
   struct sshkey *key;
   char *comment;
   char *provider;
+  char *blink_id;
   time_t death;
   u_int confirm;
 } Identity;
@@ -303,6 +308,10 @@ free_identity(Identity *id)
   sshkey_free(id->key);
   free(id->provider);
   free(id->comment);
+  if (id->blink_id) {
+    free(id->blink_id);
+    id->blink_id = NULL;
+  }
   free(id);
 }
 
@@ -365,6 +374,7 @@ process_request_identities(SocketEntry *e)
     fatal("%s: buffer error: %s", __func__, ssh_err(r));
   }
   TAILQ_FOREACH(id, &idtab->idlist, next) {
+
     if ((r = sshkey_puts(id->key, msg))
         != 0 ||
         (r = sshbuf_put_cstring(msg, id->comment)) != 0) {
@@ -376,6 +386,7 @@ process_request_identities(SocketEntry *e)
   if ((r = sshbuf_put_stringb(e->output, msg)) != 0) {
     fatal("%s: buffer error: %s", __func__, ssh_err(r));
   }
+  
   sshbuf_free(msg);
 }
 
@@ -423,7 +434,14 @@ process_sign_request2(SocketEntry *e)
     verbose("%s: user refused key", __func__);
     goto send;
   }
-  if ((r = sshkey_sign(id->key, &signature, &slen,
+  
+  if (id->blink_id) {
+    if ((r = sshkey_bunkr_sign(id->blink_id, &signature, &slen,
+                     data, dlen, agent_decode_alg(key, flags), compat)) != 0) {
+      error("%s: sshkey_sign: %s", __func__, ssh_err(r));
+      goto send;
+    }
+  } else if ((r = sshkey_sign(id->key, &signature, &slen,
                        data, dlen, agent_decode_alg(key, flags), compat)) != 0) {
     error("%s: sshkey_sign: %s", __func__, ssh_err(r));
     goto send;
@@ -594,11 +612,92 @@ process_add_identity(SocketEntry *e)
   }
   id->key = k;
   id->comment = comment;
-  id->death = death;
+  id->death = 0;
   id->confirm = confirm;
 send:
   send_status(e, success);
 }
+
+static void load_bunkr_keys() {
+  NSArray *bunkrKeys = bunkrLoadKeys();
+  
+  for (NSDictionary *keyJSON in bunkrKeys) {
+    NSString *fileID = keyJSON[@"fileID"];
+    NSString *capID = keyJSON[@"capID"];
+    NSString *bunkrID = [NSString stringWithFormat:@"%@:%@", fileID, capID];
+    NSData * pkData = [[NSData alloc] initWithBase64EncodedString:keyJSON[@"b64pubkey"] options:kNilOptions];
+    
+    if (!pkData || [pkData isEqual: NSNull.null]) {
+      continue;
+    }
+    
+    if (!fileID || [fileID isEqual: NSNull.null]) {
+      continue;
+    }
+    
+    if (!capID || [capID isEqual: NSNull.null]) {
+      continue;
+    }
+    
+    struct sshkey *key = sshkey_new(KEY_ECDSA);
+    char * buf = strdup(pkData.bytes);
+    if (sshkey_read(key, &buf) != 0) {
+      sshkey_free(key);
+      continue;
+    }
+//    key->ecdsa_nid = 256;
+    
+    Identity *id;
+    
+    if ((id = lookup_identity(key)) == NULL) {
+      id = calloc(1, sizeof(Identity));
+      TAILQ_INSERT_TAIL(&idtab->idlist, id, next);
+      /* Increment the number of identities. */
+      idtab->nentries++;
+    } else {
+      /* key state might have been updated */
+      sshkey_free(id->key);
+      free(id->comment);
+    }
+    id->blink_id = strdup(bunkrID.UTF8String);
+    id->key = key;
+    id->comment = buf;
+    id->death = 0;
+    id->confirm = 0;
+  }
+}
+
+int
+sshkey_bunkr_sign(char *bunkr_id,
+            u_char **sigp, size_t *lenp,
+            const u_char *data, size_t datalen, const char *alg, u_int compat)
+{
+  if (sigp != NULL)
+    *sigp = NULL;
+  if (lenp != NULL)
+    *lenp = 0;
+  if (datalen > SSH_KEY_MAX_SIGN_DATA_SIZE)
+    return SSH_ERR_INVALID_ARGUMENT;
+  
+  NSArray<NSString *> *fileIDAndCapID = [@(bunkr_id) componentsSeparatedByString:@":"];
+  NSString *fileID = fileIDAndCapID[0];
+  NSString *capID = fileIDAndCapID[1];
+  
+  NSData *nsData = [NSData dataWithBytes:data length:datalen];
+  
+  NSData *sig = bunkr_sign(fileID, capID, nsData, alg != NULL ? @(alg) : @"alg");
+  
+  if (sig) {
+    *lenp = sig.length;
+    *sigp = calloc(sig.length, sizeof(u_char));
+    memcpy(*sigp, sig.bytes, *lenp);
+    return 0;
+  }
+  
+  //return ssh_ed25519_sign(key, sigp, lenp, data, datalen, compat);
+  return 1;
+}
+
 
 /* XXX todo: encrypt sensitive data with passphrase */
 static void
@@ -1448,6 +1547,8 @@ skip:
   if (ac > 0)
     parent_alive_interval = 10;
   idtab_init();
+  
+  load_bunkr_keys();
 
   pthread_cleanup_push(thread_cleanup_handler, NULL);
 //  signal(SIGPIPE, SIG_IGN);
