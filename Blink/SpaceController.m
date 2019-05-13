@@ -42,6 +42,7 @@
 #import "TouchOverlay.h"
 #import "BKTouchIDAuthManager.h"
 #import "GeoManager.h"
+#import "Blink-Swift.h"
 
 @interface SpaceController () <
   UIPageViewControllerDataSource,
@@ -58,7 +59,8 @@
 @end
 
 @implementation SpaceController {
-  UIPageViewController *_viewportsController;
+//  UIPageViewController *_viewportsController;
+  SplitViewController *_splitViewController;
   NSMutableArray *_viewports;
   
   MBProgressHUD *_hud;
@@ -104,26 +106,31 @@
                            [NSNumber numberWithInt:UIPageViewControllerSpineLocationMid]
                                                       forKey:UIPageViewControllerOptionSpineLocationKey];
   
-  _viewportsController = [[UIPageViewController alloc]
-                          initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
-                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-                          options:options];
-  _viewportsController.view.opaque = YES;
-  _viewportsController.dataSource = self;
-  _viewportsController.delegate = self;
+  _splitViewController = [[SplitViewController alloc] init];
+    [self addChildViewController:_splitViewController];
+    _splitViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
-  [self addChildViewController:_viewportsController];
-  _viewportsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  _viewportsController.view.layoutMargins = UIEdgeInsetsZero;
-  _viewportsController.view.frame = self.view.bounds;
-  [self.view addSubview:_viewportsController.view];
-  [_viewportsController didMoveToParentViewController:self];
+  
+//  _viewportsController = [[UIPageViewController alloc]
+//                          initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+//                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+//                          options:options];
+//  _viewportsController.view.opaque = YES;
+//  _viewportsController.dataSource = self;
+//  _viewportsController.delegate = self;
+//
+//  [self addChildViewController:_viewportsController];
+//  _viewportsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//  _viewportsController.view.layoutMargins = UIEdgeInsetsZero;
+//  _viewportsController.view.frame = self.view.bounds;
+//  [self.view addSubview:_viewportsController.view];
+//  [_viewportsController didMoveToParentViewController:self];
   
   _touchOverlay = [[TouchOverlay alloc] initWithFrame:self.view.bounds];
   [self.view addSubview:_touchOverlay];
   _touchOverlay.touchDelegate = self;
   _touchOverlay.controlPanel.controlPanelDelegate = self;
-  [_touchOverlay attachPageViewController:_viewportsController];
+//  [_touchOverlay attachPageViewController:_splitViewController];
   
   _termInput = [[TermInput alloc] init];
   [self.view addSubview:_termInput];
@@ -201,15 +208,15 @@
   [self loadViewIfNeeded];
   self.view.backgroundColor = bgColor;
   
-  __weak typeof(self) weakSelf = self;
-  [_viewportsController setViewControllers:@[term]
-                                 direction:UIPageViewControllerNavigationDirectionForward
-                                  animated:NO
-                                completion:^(BOOL complete) {
-                                  if (complete) {
-                                    [weakSelf _attachInputToCurrentTerm];
-                                  }
-                                }];
+//  __weak typeof(self) weakSelf = self;
+//  [_viewportsController setViewControllers:@[term]
+//                                 direction:UIPageViewControllerNavigationDirectionForward
+//                                  animated:NO
+//                                completion:^(BOOL complete) {
+//                                  if (complete) {
+//                                    [weakSelf _attachInputToCurrentTerm];
+//                                  }
+//                                }];
   [self.view setNeedsLayout];
   [self.view layoutIfNeeded];
 }
@@ -429,7 +436,8 @@
 #pragma mark Spaces
 - (TermController *)currentTerm
 {
-  return _viewportsController.viewControllers[0];
+  return _viewports[0];
+//  return _viewportsController.viewControllers[0];
 }
 
 - (TermDevice *)currentDevice
@@ -475,7 +483,8 @@
   
   if (currentTerm.view.backgroundColor && currentTerm.view.backgroundColor != [UIColor clearColor]) {
     self.view.backgroundColor = currentTerm.view.backgroundColor;
-    _viewportsController.view.backgroundColor = currentTerm.view.backgroundColor;
+//    _viewportsController.view.backgroundColor = currentTerm.view.backgroundColor;
+    _splitViewController.view.backgroundColor = currentTerm.view.backgroundColor;
     self.view.window.backgroundColor = currentTerm.view.backgroundColor;
   }
 
@@ -524,40 +533,42 @@
   if(idx == NSNotFound) {
     return;
   }
+  return;
+  // TODO:
 
-  NSInteger numViewports = [_viewports count];
-
-  __weak typeof(self) weakSelf = self;
-  if (idx == 0 && numViewports == 1) {
-    // Only one viewport. Create a new one to replace this
-    [_viewports removeObjectAtIndex:0];
-    [self _createShellWithUserActivity: nil sessionStateKey:nil animated:NO completion:nil];
-  } else if (idx >= [_viewports count] - 1) {
-    // Last viewport, go to the previous.
-    [_viewports removeLastObject];
-    [_viewportsController setViewControllers:@[ _viewports[idx - 1] ]
-				   direction:UIPageViewControllerNavigationDirectionReverse
-				    animated:YES
-				  completion:^(BOOL didComplete) {
-				    // Remove viewport from the list after animation
-            if (didComplete) {
-              [weakSelf _displayHUD];
-              [weakSelf _attachInputToCurrentTerm];
-            }
-				  }];
-  } else {
-    [_viewports removeObjectAtIndex:idx];
-    [_viewportsController setViewControllers:@[ _viewports[idx] ]
-				   direction:UIPageViewControllerNavigationDirectionForward
-				    animated:YES
-				  completion:^(BOOL didComplete) {
-				    // Remove viewport from the list after animation
-				    if (didComplete) {
-              [weakSelf _displayHUD];
-              [weakSelf _attachInputToCurrentTerm];
-				    }
-				  }];
-  }
+//  NSInteger numViewports = [_viewports count];
+//
+//  __weak typeof(self) weakSelf = self;
+//  if (idx == 0 && numViewports == 1) {
+//    // Only one viewport. Create a new one to replace this
+//    [_viewports removeObjectAtIndex:0];
+//    [self _createShellWithUserActivity: nil sessionStateKey:nil animated:NO completion:nil];
+//  } else if (idx >= [_viewports count] - 1) {
+//    // Last viewport, go to the previous.
+//    [_viewports removeLastObject];
+//    [_viewportsController setViewControllers:@[ _viewports[idx - 1] ]
+//           direction:UIPageViewControllerNavigationDirectionReverse
+//            animated:YES
+//          completion:^(BOOL didComplete) {
+//            // Remove viewport from the list after animation
+//            if (didComplete) {
+//              [weakSelf _displayHUD];
+//              [weakSelf _attachInputToCurrentTerm];
+//            }
+//          }];
+//  } else {
+//    [_viewports removeObjectAtIndex:idx];
+//    [_viewportsController setViewControllers:@[ _viewports[idx] ]
+//           direction:UIPageViewControllerNavigationDirectionForward
+//            animated:YES
+//          completion:^(BOOL didComplete) {
+//            // Remove viewport from the list after animation
+//            if (didComplete) {
+//              [weakSelf _displayHUD];
+//              [weakSelf _attachInputToCurrentTerm];
+//            }
+//          }];
+//  }
 }
 
 - (void)_createShellWithUserActivity:(NSUserActivity *) userActivity
@@ -785,17 +796,18 @@
   }
   
   UIViewController *ctrl = _viewports[idx];
-  
-  __weak typeof(self) weakSelf = self;
-  [_viewportsController setViewControllers:@[ ctrl ]
-				 direction:direction
-				  animated:animated
-				completion:^(BOOL didComplete) {
-          if (didComplete) {
-            [weakSelf _displayHUD];
-            [weakSelf _attachInputToCurrentTerm];
-          }
-				}];
+
+  [_splitViewController.collectionView scrollToItemAtIndexPath:NSIndexPath indexPathForRow:idx inSection:0 atScrollPosition:UICollectionViewScrollPositionBottom animated:animated];
+//  __weak typeof(self) weakSelf = self;
+//  [_viewportsController setViewControllers:@[ ctrl ]
+//         direction:direction
+//          animated:animated
+//        completion:^(BOOL didComplete) {
+//          if (didComplete) {
+//            [weakSelf _displayHUD];
+//            [weakSelf _attachInputToCurrentTerm];
+//          }
+//        }];
 }
 
 - (void)nextShell:(UIKeyCommand *)cmd

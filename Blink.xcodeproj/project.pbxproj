@@ -218,6 +218,11 @@
 		D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
 		D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
 		D2E4F91B20B0537D00B30F7B /* Migrator.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E4F91A20B0537D00B30F7B /* Migrator.m */; };
+		D2E5EA0922896D2F00322E29 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5EA0822896D2F00322E29 /* SplitViewController.swift */; };
+		D2E5EA0C22896FAB00322E29 /* LayoutNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5EA0B22896FAB00322E29 /* LayoutNode.swift */; };
+		D2E5EA0E2289717E00322E29 /* LayoutSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5EA0D2289717E00322E29 /* LayoutSeparatorView.swift */; };
+		D2E5EA10228971E600322E29 /* LayoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5EA0F228971E600322E29 /* LayoutCell.swift */; };
+		D2E5EA122289725700322E29 /* CollectionViewSplitLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E5EA112289725700322E29 /* CollectionViewSplitLayout.swift */; };
 		D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
 		D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
 		D2F330CA20A6CB840074ADD7 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330C920A6CB840074ADD7 /* help.m */; };
@@ -669,6 +674,11 @@
 		D2E4F91920B0537D00B30F7B /* Migrator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Migrator.h; sourceTree = "<group>"; };
 		D2E4F91A20B0537D00B30F7B /* Migrator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Migrator.m; sourceTree = "<group>"; };
 		D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl_ios_static.xcodeproj; path = ios_system/curl_ios_static.xcodeproj; sourceTree = "<group>"; };
+		D2E5EA0822896D2F00322E29 /* SplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
+		D2E5EA0B22896FAB00322E29 /* LayoutNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutNode.swift; sourceTree = "<group>"; };
+		D2E5EA0D2289717E00322E29 /* LayoutSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSeparatorView.swift; sourceTree = "<group>"; };
+		D2E5EA0F228971E600322E29 /* LayoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutCell.swift; sourceTree = "<group>"; };
+		D2E5EA112289725700322E29 /* CollectionViewSplitLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewSplitLayout.swift; sourceTree = "<group>"; };
 		D2EFE1EE20B7FAFC0087888B /* link_files.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = link_files.m; sourceTree = "<group>"; };
 		D2F30EAC205009CD008C5F35 /* base64js.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = base64js.min.js; sourceTree = "<group>"; };
 		D2F330C920A6CB840074ADD7 /* help.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = help.m; sourceTree = "<group>"; };
@@ -723,6 +733,7 @@
 		0716B5231CFFAB9300268B5B /* Blink */ = {
 			isa = PBXGroup;
 			children = (
+				D2E5EA0A22896F8000322E29 /* SplitLayout */,
 				D2A0C63E20AAD98D001CF38F /* ios_error.h */,
 				D23E143B20A977AB000FCF5C /* Repl.h */,
 				D23E143C20A977AB000FCF5C /* Repl.m */,
@@ -1363,6 +1374,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D2E5EA0A22896F8000322E29 /* SplitLayout */ = {
+			isa = PBXGroup;
+			children = (
+				D2E5EA0822896D2F00322E29 /* SplitViewController.swift */,
+				D2E5EA0B22896FAB00322E29 /* LayoutNode.swift */,
+				D2E5EA0D2289717E00322E29 /* LayoutSeparatorView.swift */,
+				D2E5EA0F228971E600322E29 /* LayoutCell.swift */,
+				D2E5EA112289725700322E29 /* CollectionViewSplitLayout.swift */,
+			);
+			path = SplitLayout;
+			sourceTree = "<group>";
+		};
 		D2F330C520A6C8E20074ADD7 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
@@ -1670,12 +1693,14 @@
 				D239710620A07B9100881637 /* escape.cxx in Sources */,
 				C94E9B631D6BA21C00DA4DD6 /* DismissSegue.m in Sources */,
 				0716B5721CFFAB9300268B5B /* AppDelegate.m in Sources */,
+				D2E5EA10228971E600322E29 /* LayoutCell.swift in Sources */,
 				D239710920A07B9100881637 /* wcwidth.cpp in Sources */,
 				07F670731D05EEE200C0A53C /* MoshSession.m in Sources */,
 				07F670721D05EEE200C0A53C /* MCPSession.m in Sources */,
 				D23742CA21106ADF00366359 /* bench.m in Sources */,
 				D2071B83215101DC000156D7 /* blink-compat.c in Sources */,
 				D239710820A07B9100881637 /* windows.cxx in Sources */,
+				D2E5EA0922896D2F00322E29 /* SplitViewController.swift in Sources */,
 				D240806120BC8DF800F30099 /* tool_main.c in Sources */,
 				D29619AD214FB5EA0070935A /* ssh-ed25519.c in Sources */,
 				B7D6A6291E2D43A800EDF7B0 /* BKSmartKeysConfigViewController.m in Sources */,
@@ -1691,6 +1716,7 @@
 				07AA064E1E08B12E008310B7 /* EnterPasscodeState.swift in Sources */,
 				C9B2E0301D6B612400B89F69 /* BKPubKey.m in Sources */,
 				D27BBA1C20529FFF00AEA303 /* TermStream.m in Sources */,
+				D2E5EA0E2289717E00322E29 /* LayoutSeparatorView.swift in Sources */,
 				D296198D214F96D50070935A /* digest-openssl.c in Sources */,
 				B7D4503C1DD4706000CE0DBE /* Reachability.m in Sources */,
 				07AA065D1E08B6EB008310B7 /* UserDefaultsPasscodeRepository.swift in Sources */,
@@ -1761,6 +1787,7 @@
 				D239710020A07B9100881637 /* conversion.cxx in Sources */,
 				C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */,
 				07AA064A1E08B12E008310B7 /* Functions.swift in Sources */,
+				D2E5EA122289725700322E29 /* CollectionViewSplitLayout.swift in Sources */,
 				D2F330D220A6EF030074ADD7 /* showkey.m in Sources */,
 				0728A1DA1E0AE80400ABD31B /* SmartKeysController.m in Sources */,
 				D2071B7E2150EE77000156D7 /* authfd.c in Sources */,
@@ -1791,6 +1818,7 @@
 				B75112CD1DE4A7B10040C693 /* BKiCloudConfigurationViewController.m in Sources */,
 				07AA064D1E08B12E008310B7 /* ConfirmPasscodeState.swift in Sources */,
 				C989E5571D6CC4A1003E0079 /* BKFontCreateViewController.m in Sources */,
+				D2E5EA0C22896FAB00322E29 /* LayoutNode.swift in Sources */,
 				C9472D561D74E9BA001B6022 /* BKKeyboardFuncTriggersViewController.m in Sources */,
 				D2AC6749220303D900177BC5 /* openurl.m in Sources */,
 				D296197C214F8ABE0070935A /* atomicio.c in Sources */,
