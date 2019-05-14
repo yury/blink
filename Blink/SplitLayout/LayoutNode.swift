@@ -31,8 +31,6 @@
 
 import UIKit
 
-typealias NodeKey = NSString
-
 // shortcut type
 typealias LayoutAttrs = UICollectionViewLayoutAttributes
 
@@ -52,8 +50,8 @@ struct LayoutSplit {
   let nodes: (a: LayoutNode, b: LayoutNode)
 }
 
-class LayoutNode {
-  var key: NodeKey
+public class LayoutNode: NSObject {
+  var key: String
   
   weak var parent: LayoutNode? = nil;
   
@@ -66,7 +64,7 @@ class LayoutNode {
     }
   }
   
-  init(key: NodeKey) {
+  @objc public init(key: String) {
     self.key = key
   }
   
@@ -339,9 +337,9 @@ class LayoutNode {
   }
 }
 
-extension LayoutNode: Equatable {
-  static func genKey() -> NodeKey {
-    return ProcessInfo.processInfo.globallyUniqueString as NodeKey
+extension LayoutNode {
+  static func genKey() -> String {
+    return ProcessInfo.processInfo.globallyUniqueString
   }
 
   static func == (lhs: LayoutNode, rhs: LayoutNode) -> Bool {

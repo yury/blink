@@ -47,11 +47,16 @@ class LayoutResizeContext {
   var _longPress2TouchesRecognizer: UILongPressGestureRecognizer?
   var _resizeCtx: LayoutResizeContext? = nil
   
-  init(splitLayout: CollectionViewSplitLayout) {
+  @objc public init(splitLayout: CollectionViewSplitLayout) {
     _root = splitLayout.root
     super.init(collectionViewLayout: splitLayout)
   }
   
+  required init?(coder aDecoder: NSCoder) {
+    _root = LayoutNode(key: LayoutNode.genKey())
+    super.init(coder: aDecoder)
+  }
+
   @objc func _onTap(recognizer: UITapGestureRecognizer) {
     guard let cv = collectionView else {
       return
@@ -142,10 +147,6 @@ class LayoutResizeContext {
   
   override public var collectionViewLayout: CollectionViewSplitLayout {
     get { return super.collectionViewLayout as! CollectionViewSplitLayout }
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
   override public func viewDidLoad() {

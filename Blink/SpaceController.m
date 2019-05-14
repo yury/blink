@@ -45,8 +45,6 @@
 #import "Blink-Swift.h"
 
 @interface SpaceController () <
-  UIPageViewControllerDataSource,
-  UIPageViewControllerDelegate,
   UIDropInteractionDelegate,
   TermControlDelegate,
   TouchOverlayDelegate,
@@ -59,9 +57,12 @@
 @end
 
 @implementation SpaceController {
-//  UIPageViewController *_viewportsController;
   SplitViewController *_splitViewController;
-  NSMutableArray *_viewports;
+  CollectionViewSplitLayout *_layout;
+  LayoutNode *_rootNode;
+  NSMutableArray *_ctrls;
+  NSUInteger _currentCtrlIdx;
+  NSMutableDictionary *_ctrlsMap;
   
   MBProgressHUD *_hud;
   MBProgressHUD *_musicHUD;
@@ -100,31 +101,23 @@
 {
   [super viewDidLoad];
   
+  _currentCtrlIdx = 0;
+  
+  _ctrls = [[NSMutableArray alloc] init];
+  _ctrlsMap = [[NSMutableDictionary alloc] init];
+  
   self.view.opaque = YES;
   
-  NSDictionary *options = [NSDictionary dictionaryWithObject:
-                           [NSNumber numberWithInt:UIPageViewControllerSpineLocationMid]
-                                                      forKey:UIPageViewControllerOptionSpineLocationKey];
+//  _rootNode = [[LayoutNode alloc] initWithKey: [LayoutNode genKey]];
+  _rootNode = [[LayoutNode alloc] initWithKey:@"root"];
   
-  _splitViewController = [[SplitViewController alloc] init];
+  CollectionViewSplitLayout *layout = [[CollectionViewSplitLayout alloc] initWithRoot:_rootNode];
+  _splitViewController = [[SplitViewController alloc] initWithSplitLayout: layout];
     [self addChildViewController:_splitViewController];
     _splitViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
-  
-//  _viewportsController = [[UIPageViewController alloc]
-//                          initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
-//                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-//                          options:options];
-//  _viewportsController.view.opaque = YES;
-//  _viewportsController.dataSource = self;
-//  _viewportsController.delegate = self;
-//
-//  [self addChildViewController:_viewportsController];
-//  _viewportsController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//  _viewportsController.view.layoutMargins = UIEdgeInsetsZero;
-//  _viewportsController.view.frame = self.view.bounds;
-//  [self.view addSubview:_viewportsController.view];
-//  [_viewportsController didMoveToParentViewController:self];
+   [_splitViewController didMoveToParentViewController:self];
+    _splitViewController.view.frame = self.view.bounds;
   
   _touchOverlay = [[TouchOverlay alloc] initWithFrame:self.view.bounds];
   [self.view addSubview:_touchOverlay];
@@ -137,7 +130,7 @@
   [self registerForNotifications];
 
   [self setKbdCommands];
-  if (_viewports == nil) {
+  if (_ctrls.count == 0) {
     [self _createShellWithUserActivity: nil sessionStateKey:nil animated:YES completion:nil];
   }
   
@@ -189,7 +182,7 @@
   _unfocused = [coder decodeBoolForKey:@"_unfocused"];
   NSArray *sessionStateKeys = [coder decodeObjectForKey:@"sessionStateKeys"];
   
-  _viewports = [[NSMutableArray alloc] init];
+  _ctrls = [[NSMutableArray alloc] init];
   
   for (NSString *sessionStateKey in sessionStateKeys) {
     TermController *term = [[TermController alloc] init];
@@ -199,11 +192,12 @@
     term.userActivity = nil;
     term.bgColor = bgColor;
     
-    [_viewports addObject:term];
+    [_ctrls addObject:term];
   }
   
   NSInteger idx = [coder decodeIntegerForKey:@"idx"];
-  TermController *term = _viewports[idx];
+  _currentCtrlIdx = idx;
+  TermController *term = _ctrls[idx];
   
   [self loadViewIfNeeded];
   self.view.backgroundColor = bgColor;
@@ -226,11 +220,11 @@
   [super encodeRestorableStateWithCoder:coder];
   NSMutableArray *sessionStateKeys = [[NSMutableArray alloc] init];
   
-  for (TermController *term in _viewports) {
+  for (TermController *term in _ctrls) {
     [sessionStateKeys addObject:term.sessionStateKey];
   }
   
-  NSInteger idx = [_viewports indexOfObject:self.currentTerm];
+  NSInteger idx = [_ctrls indexOfObject:self.currentTerm];
   if(idx == NSNotFound) {
     idx = 0;
   }
@@ -389,34 +383,6 @@
   [self updateKbBottomSafeMargins:bottomInset];
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-       viewControllerAfterViewController:(UIViewController *)viewController
-{
-  if (nil == viewController) {
-    return _viewports[0];
-  }
-  NSInteger idx = [_viewports indexOfObject:viewController];
-
-  if (idx >= [_viewports count] - 1) {
-    return nil;
-  }
-  return _viewports[idx + 1];
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-      viewControllerBeforeViewController:(UIViewController *)viewController
-{
-  if (nil == viewController) {
-    return _viewports[0];
-  }
-  NSInteger idx = [_viewports indexOfObject:viewController];
-
-  if (idx <= 0 || idx == NSNotFound) {
-    return nil;
-  }
-  return _viewports[idx - 1];
-}
-
 - (void)pageViewController:(UIPageViewController *)pageViewController
         didFinishAnimating:(BOOL)finished
    previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers
@@ -436,8 +402,7 @@
 #pragma mark Spaces
 - (TermController *)currentTerm
 {
-  return _viewports[0];
-//  return _viewportsController.viewControllers[0];
+  return _ctrls[_currentCtrlIdx];
 }
 
 - (TermDevice *)currentDevice
@@ -497,8 +462,8 @@
   
   UIPageControl *pages = [[UIPageControl alloc] init];
   pages.currentPageIndicatorTintColor = [UIColor cyanColor];
-  pages.numberOfPages = [_viewports count];
-  pages.currentPage = [_viewports indexOfObject:currentTerm];
+  pages.numberOfPages = [_ctrls count];
+  pages.currentPage = [_ctrls indexOfObject:currentTerm];
   
   _hud.customView = pages;
   
@@ -529,7 +494,7 @@
 
 - (void)removeCurrentSpace {
   
-  NSInteger idx = [_viewports indexOfObject:self.currentTerm];
+  NSInteger idx = [_ctrls indexOfObject:self.currentTerm];
   if(idx == NSNotFound) {
     return;
   }
@@ -582,38 +547,20 @@
   term.userActivity = userActivity;
   term.bgColor = self.view.backgroundColor ?: [UIColor blackColor];
   
-
-  if (_viewports == nil) {
-    _viewports = [[NSMutableArray alloc] init];
-  }
-  NSInteger numViewports = [_viewports count];
+  NSInteger numViewports = [_ctrls count];
 
   if (numViewports == 0) {
-    [_viewports addObject:term];
+    [_ctrls addObject:term];
   } else {
-    NSInteger idx = [_viewports indexOfObject:self.currentTerm];
+    NSInteger idx = [_ctrls indexOfObject:self.currentTerm];
     if (idx == numViewports - 1) {
       // If it is the last one, insert there.
-      [_viewports addObject:term];
+      [_ctrls addObject:term];
     } else {
       // Insert next to the current terminal.
-      [_viewports insertObject:term atIndex:idx + 1];
+      [_ctrls insertObject:term atIndex:idx + 1];
     }
   }
-
-  __weak typeof(self) weakSelf = self;
-  [_viewportsController setViewControllers:@[ term ]
-				 direction:UIPageViewControllerNavigationDirectionForward
-				  animated:animated
-				completion:^(BOOL didComplete) {
-				  if (didComplete) {
-            [weakSelf _displayHUD];
-            [weakSelf _attachInputToCurrentTerm];
-				  }
-          if (completion) {
-            completion(didComplete);
-          }
-				}];
 }
 
 #pragma mark TermControlDelegate
@@ -788,50 +735,25 @@
   }];
 }
 
-- (void)switchShellIdx:(NSInteger)idx direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL) animated
+- (void)switchShellIdx:(NSInteger)idx animated:(BOOL) animated
 {
-  if (idx < 0 || idx >= _viewports.count) {
+  if (idx < 0 || idx >= _ctrls.count) {
     [self _displayHUD];
     return;
   }
-  
-  UIViewController *ctrl = _viewports[idx];
 
-  [_splitViewController.collectionView scrollToItemAtIndexPath:NSIndexPath indexPathForRow:idx inSection:0 atScrollPosition:UICollectionViewScrollPositionBottom animated:animated];
-//  __weak typeof(self) weakSelf = self;
-//  [_viewportsController setViewControllers:@[ ctrl ]
-//         direction:direction
-//          animated:animated
-//        completion:^(BOOL didComplete) {
-//          if (didComplete) {
-//            [weakSelf _displayHUD];
-//            [weakSelf _attachInputToCurrentTerm];
-//          }
-//        }];
+  [_splitViewController.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:animated];
+  _currentCtrlIdx = idx;
 }
 
 - (void)nextShell:(UIKeyCommand *)cmd
 {
-  NSInteger idx = [_viewports indexOfObject:self.currentTerm];
-  if(idx == NSNotFound) {
-    return;
-  }
- 
-  [self switchShellIdx: idx + 1
-             direction: UIPageViewControllerNavigationDirectionForward
-              animated: YES];
+  [self switchShellIdx: _currentCtrlIdx + 1 animated: YES];
 }
 
 - (void)prevShell:(UIKeyCommand *)cmd
 {
-  NSInteger idx = [_viewports indexOfObject:self.currentTerm];
-  if(idx == NSNotFound) {
-    return;
-  }
- 
-  [self switchShellIdx: idx - 1
-             direction: UIPageViewControllerNavigationDirectionReverse
-              animated: YES];
+  [self switchShellIdx: _currentCtrlIdx - 1 animated: YES];
 }
 
 - (void)switchToShellN:(UIKeyCommand *)cmd
@@ -847,22 +769,7 @@
 
 - (void)switchToTargetIndex:(NSInteger)targetIdx
 {
-  NSInteger idx = [_viewports indexOfObject:self.currentTerm];
-  if(idx == NSNotFound) {
-    return;
-  }
-  
-  if (idx == targetIdx) {
-    // We are on this page already.
-    return;
-  }
-
-  UIPageViewControllerNavigationDirection direction =
-    idx < targetIdx ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-  
-  
   [self switchShellIdx: targetIdx
-             direction: direction
               animated: YES];
 }
 
@@ -870,9 +777,9 @@
 
 - (void)moveAllShellsFromSpaceController:(SpaceController *)spaceController
 {
-  for (TermController *ctrl in spaceController->_viewports) {
+  for (TermController *ctrl in spaceController->_ctrls) {
     ctrl.delegate = self;
-    [_viewports addObject:ctrl];
+    [_ctrls addObject:ctrl];
   }
 
   [self _displayHUD];
@@ -882,7 +789,7 @@
 {
   TermController *term = spaceController.currentTerm;
   term.delegate = self;
-  [_viewports addObject:term];
+  [_ctrls addObject:term];
   [spaceController removeCurrentSpace];
   [self _displayHUD];
 }
@@ -916,7 +823,7 @@
 - (void)restoreUserActivityState:(NSUserActivity *)activity
 {
   // somehow we don't have current term... so we just create new one
-  NSInteger idx = [_viewports indexOfObject:self.currentTerm];
+  NSInteger idx = [_ctrls indexOfObject:self.currentTerm];
   if(idx == NSNotFound) {
     [self _createShellWithUserActivity:activity sessionStateKey:nil animated:YES completion:nil];
     return;
@@ -924,7 +831,7 @@
 
 
   // 1. Find terminal with excact command that is running right now
-  NSInteger targetIdx = [_viewports indexOfObjectPassingTest:^BOOL(TermController *term, NSUInteger idx, BOOL * _Nonnull stop) {
+  NSInteger targetIdx = [_ctrls indexOfObjectPassingTest:^BOOL(TermController *term, NSUInteger idx, BOOL * _Nonnull stop) {
     return [activity.title isEqualToString:term.activityKey] && [term isRunningCmd];
   }];
   
@@ -935,13 +842,7 @@
       return;
     }
     
-    // switch to terminal that is running command.
-    UIPageViewControllerNavigationDirection direction =
-    idx < targetIdx ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-    
-    [self switchShellIdx: targetIdx
-               direction: direction
-                animated: NO];
+    [self switchShellIdx: targetIdx animated: NO];
     return;
   }
 
@@ -954,7 +855,7 @@
   }
   
   // 3. Find terminal that can run this command.
-  targetIdx = [_viewports indexOfObjectPassingTest:^BOOL(TermController *term, NSUInteger idx, BOOL * _Nonnull stop) {
+  targetIdx = [_ctrls indexOfObjectPassingTest:^BOOL(TermController *term, NSUInteger idx, BOOL * _Nonnull stop) {
     return [term canRestoreUserActivityState:activity];
   }];
   
@@ -964,22 +865,16 @@
     return;
   }
   
-  // Switch to terminal and run command.
-  UIPageViewControllerNavigationDirection direction =
-  idx < targetIdx ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
-  
-  TermController *term = _viewports[targetIdx];
+  TermController *term = _ctrls[targetIdx];
   [term.termDevice attachInput:_termInput];
   [term.termDevice focus];
   [term restoreUserActivityState:activity];
-  [self switchShellIdx: targetIdx
-             direction: direction
-              animated: NO];
+  [self switchShellIdx: targetIdx animated: NO];
 }
 
 - (void)suspendWith:(StateManager *) stateManager
 {
-  for (TermController * term in _viewports) {
+  for (TermController * term in _ctrls) {
     [term suspend];
     [stateManager snapshotState:term];
   }
@@ -987,7 +882,7 @@
 
 - (void)resumeWith:(StateManager *)stateManager
 {
-  for (TermController * term in _viewports) {
+  for (TermController * term in _ctrls) {
     [stateManager restoreState:term];
     [term resume];
   };
@@ -1110,7 +1005,7 @@ API_AVAILABLE(ios(11.0)){
 }
 
 - (void)_onGeoLock {
-  NSUInteger count = _viewports.count;
+  NSUInteger count = _ctrls.count;
   for (int i = 0; i < count; i++) {
     [self removeCurrentSpace];
   }

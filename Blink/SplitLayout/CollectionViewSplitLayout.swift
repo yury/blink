@@ -34,7 +34,7 @@ import UIKit
 public class CollectionViewSplitLayout: UICollectionViewLayout {
   var root: LayoutNode
   
-  init(root: LayoutNode) {
+   @objc public init(root: LayoutNode) {
     self.root = root
     super.init()
   }
