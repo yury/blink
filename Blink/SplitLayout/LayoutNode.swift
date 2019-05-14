@@ -39,7 +39,7 @@ struct LayoutElement {
   static let separator = "separator"
 }
 
-enum LayoutFlow: Int {
+@objc public enum LayoutFlow: Int {
   case row = 0
   case column = 1
 }
@@ -51,7 +51,7 @@ struct LayoutSplit {
 }
 
 public class LayoutNode: NSObject {
-  var key: String
+  @objc public var key: String
   
   weak var parent: LayoutNode? = nil;
   
@@ -170,7 +170,7 @@ public class LayoutNode: NSObject {
     a.parent = self
     b.parent = self
     
-    self.key = LayoutNode.genKey()
+    self.key = genNodeKey()
     
     let split = LayoutSplit(
       flow: flow,
@@ -180,7 +180,7 @@ public class LayoutNode: NSObject {
     self.split = split
   }
   
-  func insert(
+  @objc public func insert(
     at indexPath: IndexPath,
     node n: LayoutNode,
     flow: LayoutFlow
@@ -337,11 +337,11 @@ public class LayoutNode: NSObject {
   }
 }
 
-extension LayoutNode {
-  static func genKey() -> String {
-    return ProcessInfo.processInfo.globallyUniqueString
-  }
+public func genNodeKey() -> String {
+  return ProcessInfo.processInfo.globallyUniqueString
+}
 
+extension LayoutNode {
   static func == (lhs: LayoutNode, rhs: LayoutNode) -> Bool {
     return lhs.key == rhs.key
   }

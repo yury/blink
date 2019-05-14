@@ -113,6 +113,7 @@
 		D2071B86215135A9000156D7 /* openssl-compat.c in Sources */ = {isa = PBXBuildFile; fileRef = D2071B84215135A9000156D7 /* openssl-compat.c */; };
 		D2094662204D3FC5003C4F72 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D209465B204D3FC5003C4F72 /* cacert.pem */; };
 		D20A28BE1E185BDB00055791 /* ScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20A28BD1E185BDB00055791 /* ScreenController.m */; };
+		D20B59A3228AA7B300E20085 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D20B59A2228AA7B300E20085 /* AppDelegate.m */; };
 		D2179F2D2136A5DC00B0850A /* GeoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2C2136A5DC00B0850A /* GeoManager.m */; };
 		D2179F2F2136DBC600B0850A /* geo.m in Sources */ = {isa = PBXBuildFile; fileRef = D2179F2E2136DBC600B0850A /* geo.m */; };
 		D21A3FD721943BE200269705 /* dark-settings-ipad-29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = D21A3FC621943BE200269705 /* dark-settings-ipad-29pt.png */; };
@@ -512,6 +513,7 @@
 		D209465B204D3FC5003C4F72 /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
 		D20A28BC1E185BDB00055791 /* ScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenController.h; sourceTree = "<group>"; };
 		D20A28BD1E185BDB00055791 /* ScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenController.m; sourceTree = "<group>"; };
+		D20B59A2228AA7B300E20085 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D215E59B2010C77E00D893EB /* TermJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermJS.h; sourceTree = "<group>"; };
 		D2179F2B2136A5DC00B0850A /* GeoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeoManager.h; sourceTree = "<group>"; };
 		D2179F2C2136A5DC00B0850A /* GeoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeoManager.m; sourceTree = "<group>"; };
@@ -744,6 +746,7 @@
 				0716B53C1CFFAB9300268B5B /* Info.plist */,
 				0716B5291CFFAB9300268B5B /* AppDelegate.h */,
 				0716B52A1CFFAB9300268B5B /* AppDelegate.m */,
+				D20B59A2228AA7B300E20085 /* AppDelegate.m */,
 				0716B52C1CFFAB9300268B5B /* LaunchScreen.storyboard */,
 				0716B5581CFFAB9300268B5B /* SpaceController.h */,
 				0716B5591CFFAB9300268B5B /* SpaceController.m */,
@@ -1779,6 +1782,7 @@
 				07F670751D05EEE200C0A53C /* Session.m in Sources */,
 				85047E77201F9B0E0090E974 /* ControlPanel.m in Sources */,
 				C989E5581D6CC4A1003E0079 /* BKThemeCreateViewController.m in Sources */,
+				D20B59A3228AA7B300E20085 /* AppDelegate.m in Sources */,
 				D23B18851FF7CEBA00A6C903 /* StateManager.m in Sources */,
 				07E3AEB61D8F6E2E007BC086 /* BKLinkActions.m in Sources */,
 				D23E142B20A970C3000FCF5C /* BlinkPaths.m in Sources */,

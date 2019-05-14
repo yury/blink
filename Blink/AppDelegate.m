@@ -206,12 +206,12 @@ void __setupProcessEnv() {
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(nonnull NSCoder *)coder
 {
-  return YES;
+  return NO;
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(nonnull NSCoder *)coder
 {
-  return YES;
+  return NO;
 }
 
 - (void) application:(UIApplication *)application didDecodeRestorableStateWithCoder:(NSCoder *)coder

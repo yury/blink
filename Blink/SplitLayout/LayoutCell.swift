@@ -32,7 +32,17 @@
 
 import UIKit
 
-class LayoutCell: UICollectionViewCell {
+public class LayoutCell: UICollectionViewCell {
+  
+  var _controller: UIViewController? = nil
+  
+  @objc public func set(controller: UIViewController, parent: UIViewController) {
+    _controller = controller;
+    controller.willMove(toParent: parent)
+    contentView.addSubview(controller.view)
+    parent.addChild(controller)
+    controller.didMove(toParent: parent)
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -42,17 +52,16 @@ class LayoutCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func layoutSubviews() {
+  public override func layoutSubviews() {
     super.layoutSubviews()
+    _controller?.view.frame = contentView.bounds
   }
   
-  func configWith(node: LayoutNode) {
-
-  }
-  
-  
-  override func prepareForReuse() {
+  public override func prepareForReuse() {
     super.prepareForReuse()
+    _controller?.willMove(toParent: nil)
+    _controller?.view.removeFromSuperview()
+    _controller?.removeFromParent()
   }
 }
 

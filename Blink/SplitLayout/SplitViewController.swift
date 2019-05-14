@@ -42,10 +42,16 @@ class LayoutResizeContext {
   }
 }
 
+@objc public protocol SplitViewControllerDelegate: class {
+  func configure(splitViewCell: LayoutCell, for key: String)
+}
+
 @objc public class SplitViewController: UICollectionViewController {
   var _root: LayoutNode
+  @objc public var root: LayoutNode { get { return _root }}
   var _longPress2TouchesRecognizer: UILongPressGestureRecognizer?
   var _resizeCtx: LayoutResizeContext? = nil
+  @objc public weak var splitViewDelegate: SplitViewControllerDelegate? = nil
   
   @objc public init(splitLayout: CollectionViewSplitLayout) {
     _root = splitLayout.root
@@ -53,7 +59,7 @@ class LayoutResizeContext {
   }
   
   required init?(coder aDecoder: NSCoder) {
-    _root = LayoutNode(key: LayoutNode.genKey())
+    _root = LayoutNode(key: genNodeKey())
     super.init(coder: aDecoder)
   }
 
@@ -94,7 +100,7 @@ class LayoutResizeContext {
         
         _resizeCtx = ctx
         
-        n1.split(with: LayoutNode(key: LayoutNode.genKey()), flow: flow, at: ratio)
+        n1.split(with: LayoutNode(key: genNodeKey()), flow: flow, at: ratio)
         var indexPath = ip1
         indexPath.row += 1
         cv.insertItems(at: [indexPath])
@@ -199,8 +205,8 @@ class LayoutResizeContext {
       else {
         return UICollectionViewCell()
     }
-    
-    cell.configWith(node: node)
+   
+    self.splitViewDelegate?.configure(splitViewCell: cell, for: node.key)
     
     return cell
   }

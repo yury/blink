@@ -46,6 +46,7 @@
 
 @interface SpaceController () <
   UIDropInteractionDelegate,
+  SplitViewControllerDelegate,
   TermControlDelegate,
   TouchOverlayDelegate,
   ControlPanelDelegate
@@ -112,12 +113,19 @@
   _rootNode = [[LayoutNode alloc] initWithKey:@"root"];
   
   CollectionViewSplitLayout *layout = [[CollectionViewSplitLayout alloc] initWithRoot:_rootNode];
+  
   _splitViewController = [[SplitViewController alloc] initWithSplitLayout: layout];
-    [self addChildViewController:_splitViewController];
+  
+  [self addChildViewController:_splitViewController];
     _splitViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
+  _splitViewController.view.frame = self.view.bounds;
+  [self.view addSubview:_splitViewController.view];
+  
    [_splitViewController didMoveToParentViewController:self];
-    _splitViewController.view.frame = self.view.bounds;
+  
+  _splitViewController.splitViewDelegate = self;
+  
   
   _touchOverlay = [[TouchOverlay alloc] initWithFrame:self.view.bounds];
   [self.view addSubview:_touchOverlay];
@@ -541,6 +549,9 @@
                             animated:(BOOL)animated
                           completion:(void (^)(BOOL finished))completion
 {
+  if (!sessionStateKey) {
+    sessionStateKey = NSProcessInfo.processInfo.globallyUniqueString;
+  }
   TermController *term = [[TermController alloc] init];
   term.sessionStateKey = sessionStateKey;
   term.delegate = self;
@@ -548,19 +559,27 @@
   term.bgColor = self.view.backgroundColor ?: [UIColor blackColor];
   
   NSInteger numViewports = [_ctrls count];
+  
 
   if (numViewports == 0) {
     [_ctrls addObject:term];
+    _splitViewController.root.key = sessionStateKey;
   } else {
+    LayoutNode *node = [[LayoutNode alloc] initWithKey:sessionStateKey];
     NSInteger idx = [_ctrls indexOfObject:self.currentTerm];
     if (idx == numViewports - 1) {
       // If it is the last one, insert there.
       [_ctrls addObject:term];
+      [_splitViewController.root insertAt:[NSIndexPath indexPathForRow:idx inSection:0] node:node flow:LayoutFlowColumn];
     } else {
       // Insert next to the current terminal.
       [_ctrls insertObject:term atIndex:idx + 1];
+      [_splitViewController.root insertAt:[NSIndexPath indexPathForRow:idx + 1 inSection:0] node:node flow:LayoutFlowColumn];
     }
   }
+  _ctrlsMap[sessionStateKey] = term;
+  [_splitViewController.collectionViewLayout invalidateLayout];
+  [_splitViewController.collectionView reloadData];
 }
 
 #pragma mark TermControlDelegate
@@ -1009,6 +1028,22 @@ API_AVAILABLE(ios(11.0)){
   for (int i = 0; i < count; i++) {
     [self removeCurrentSpace];
   }
+}
+
+- (void)configureWithSplitViewCell:(LayoutCell * _Nonnull)splitViewCell for:(NSString * _Nonnull)key {
+  UIViewController *ctrl = _ctrlsMap[key];
+  if (!ctrl) {
+    TermController *term = [[TermController alloc] init];
+    term.sessionStateKey = key;
+    term.delegate = self;
+    term.userActivity = nil;
+    term.bgColor = self.view.backgroundColor ?: [UIColor blackColor];
+    _ctrlsMap[key] = term;
+    ctrl = term;
+    
+  }
+  
+  [splitViewCell setWithController:ctrl parent:_splitViewController];
 }
 
 @end
