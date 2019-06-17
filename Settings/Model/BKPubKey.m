@@ -229,7 +229,6 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
 @implementation BKPubKey {
   NSString *_privateKeyRef;
   NSString *_publicKey;
-  NSString *_bunkrJSON;
 }
 
 + (void)initialize
@@ -288,7 +287,7 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
 
   BKPubKey *card = [BKPubKey withID:ID];
   if (!card) {
-    card = [[BKPubKey alloc] initWithID:ID privateKeyRef:privateKeyRef publicKey:publicKey bunkrJSON:nil];
+    card = [[BKPubKey alloc] initWithID:ID privateKeyRef:privateKeyRef publicKey:publicKey];
     [Identities addObject:card];
   } else {
     card->_privateKeyRef = privateKeyRef;
@@ -303,25 +302,6 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
   return card;
 }
 
-+ (id)saveBunkrCard:(NSString *)ID publicKey:(NSString *)publicKey bunkrJSON:(NSString *)bunkrJSON {
-  BKPubKey *card = [BKPubKey withID:ID];
-  if (!card) {
-    card = [[BKPubKey alloc] initWithID:ID privateKeyRef:nil publicKey:publicKey bunkrJSON:bunkrJSON];
-    [Identities addObject:card];
-  } else {
-    card->_privateKeyRef = nil;
-    card->_publicKey = publicKey;
-    card->_bunkrJSON = bunkrJSON;
-  }
-  
-  if (![BKPubKey saveIDS]) {
-    // This should never fail, but it is kept for testing purposes.
-    return nil;
-  }
-  
-  return card;
-}
-
 + (NSInteger)count
 {
   return [Identities count];
@@ -329,12 +309,11 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-  NSString * ID = [coder decodeObjectForKey:@"ID"];
-  NSString * privateKeyRef = [coder decodeObjectForKey:@"privateKeyRef"];
-  NSString * publicKey = [coder decodeObjectForKey:@"publicKey"];
-  NSString * bunkrJSON = [coder decodeObjectForKey:@"bunkrJSON"];
+  _ID = [coder decodeObjectForKey:@"ID"];
+  _privateKeyRef = [coder decodeObjectForKey:@"privateKeyRef"];
+  _publicKey = [coder decodeObjectForKey:@"publicKey"];
 
-  return [self initWithID:ID privateKeyRef:privateKeyRef publicKey:publicKey bunkrJSON:bunkrJSON];
+  return [self initWithID:_ID privateKeyRef:_privateKeyRef publicKey:_publicKey];
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder
@@ -342,10 +321,9 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
   [coder encodeObject:_ID forKey:@"ID"];
   [coder encodeObject:_privateKeyRef forKey:@"privateKeyRef"];
   [coder encodeObject:_publicKey forKey:@"publicKey"];
-  [coder encodeObject:_bunkrJSON forKey:@"bunkrJSON"];
 }
 
-- (id)initWithID:(NSString *)ID privateKeyRef:(NSString *)privateKeyRef publicKey:(NSString *)publicKey bunkrJSON:(NSString *)bunkrJSON
+- (id)initWithID:(NSString *)ID privateKeyRef:(NSString *)privateKeyRef publicKey:(NSString *)publicKey
 {
   self = [self init];
   if (self == nil)
@@ -354,7 +332,6 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
   _ID = ID;
   _privateKeyRef = privateKeyRef;
   _publicKey = publicKey;
-  _bunkrJSON = bunkrJSON;
 
   return self;
 }
@@ -366,9 +343,6 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
 
 - (NSString *)privateKey
 {
-  if (_bunkrJSON) {
-    return nil;
-  }
   return [Keychain stringForKey:_privateKeyRef];
 }
 
@@ -428,10 +402,6 @@ int __ssh_auth_callback (const char *prompt, char *buf, size_t len,
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController dataTypeIdentifierForActivityType:(UIActivityType)activityType
 {
   return @"public.text";
-}
-
-- (NSArray<BKPubKey *> *)bunkrKeys {
-  return [[BKPubKey all] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bunkrJSON != nil"]];
 }
 
 @end
