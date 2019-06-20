@@ -37,38 +37,7 @@
 #include "xcall.h"
 #import <AVFoundation/AVFoundation.h>
 #import "MCPSession.h"
-
-void _store_key(NSDictionary *key) {
-  if (!key) {
-    return;
-  }
-  
-  NSString *path = [BlinkPaths.blink stringByAppendingPathComponent:@"bunkr.keys"];
-  
-  NSData *data = [NSData dataWithContentsOfFile:path];
-  NSMutableDictionary *keysJSON;
-  NSMutableArray *keysList;
-  if (data) {
-    keysJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    if (!keysJSON) {
-      keysJSON = [[NSMutableDictionary alloc] init];
-    }
-    keysList = [[NSMutableArray alloc] init];
-    id keys = keysJSON[@"keys"];
-    if (keys && [keys isKindOfClass: [NSMutableArray class]]) {
-      keysList = keys;
-    }
-  } else {
-    keysJSON = [[NSMutableDictionary alloc] init];
-    keysList = [[NSMutableArray alloc] init];
-  }
-  
-  [keysList addObject:key];
-  keysJSON[@"keys"] = keysList;
-  
-  data = [NSJSONSerialization dataWithJSONObject:keysJSON options:kNilOptions error:nil];
-  [data writeToFile:path atomically:YES];
-}
+#import "BKPubKey.h"
 
 NSArray *bunkrLoadKeys() {
   NSString *path = [BlinkPaths.blink stringByAppendingPathComponent:@"bunkr.keys"];
@@ -88,35 +57,6 @@ NSArray *bunkrLoadKeys() {
     keysList = keys;
   }
   return keysList;
-}
-
-NSDictionary *bunkrKeyForId(NSString *fileIDAndCapId) {
-  if (!fileIDAndCapId) {
-    return nil;
-  }
-  
-  NSArray *parts = [fileIDAndCapId componentsSeparatedByString:@":"];
-  NSString *fileId = parts[0];
-  NSString *capId = parts[1];
-  
-  NSString *path = [BlinkPaths.blink stringByAppendingPathComponent:@"bunkr.keys"];
-  NSData *data = [NSData dataWithContentsOfFile:path];
-  NSMutableDictionary *keysJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-  if (!keysJSON) {
-    keysJSON = [[NSMutableDictionary alloc] init];
-  }
-  NSMutableArray *keysList = [[NSMutableArray alloc] init];
-  id keys = keysJSON[@"keys"];
-  if (keys && [keys isKindOfClass: [NSMutableArray class]]) {
-    keysList = keys;
-  }
-  
-  for (NSDictionary *key in keysList) {
-    if ([fileId isEqualToString:key[@"fileID"]] && [capId isEqualToString:key[@"capID"]]) {
-      return key;
-    }
-  }
-  return nil;
 }
 
 NSData *bunkr_sign(NSString *fileID, NSString *capID, NSData *data, NSString *alg) {
@@ -144,27 +84,53 @@ NSData *bunkr_sign(NSString *fileID, NSString *capID, NSData *data, NSString *al
     return [[NSData alloc] initWithBase64EncodedString:b64sign options:kNilOptions];
   }
   
-  
   return nil;
 }
 
+int bunkr_genkey(NSString *bunkrSchema, NSString *keyName) {
+  Pki * pki = [[Pki alloc] initWithType:BK_KEYTYPE_ECDSA andBits:256];
+  NSString *privateKey = pki.privateKey;
+  NSString *publicKey = [pki publicKeyWithComment:keyName];
+  
+  return 0;
+}
 
-int bunkr_main(int argc, char *argv[]) {
-  thread_optind = 1;
+int bunkr_linkkey(NSString *bunkrSchema, NSString *keyName) {
   
   BlinkXCall *call = [[BlinkXCall alloc] init];
-  call.xURL = [NSURL URLWithString:@"bunkr://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with"];
+  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
+  call.xURL = [NSURL URLWithString:urlStr];
   
   int result = [call execute];
   if (result == 0) {
     puts("success");
-    NSString * output = [NSString stringWithFormat:@"fileID: %@\npubkey: %@", call.resultParams[@"fileID"], call.resultParams[@"b64pubkey"]];
+    
+    NSString *b64pubkey = call.resultParams[@"b64pubkey"];
+    if (!b64pubkey) {
+      puts("no public key");
+      return -1;
+    }
+    NSData * pubKeyData = [[NSData alloc] initWithBase64EncodedString:b64pubkey options:kNilOptions];
+    NSString * pubKey = [[NSString alloc] initWithData:pubKeyData encoding:NSUTF8StringEncoding];
+    
+    if (!pubKey) {
+      puts("invalid public key");
+      return -1;
+    }
+    
     NSDictionary *key = @{
-      @"b64pubkey": call.resultParams[@"b64pubkey"] ?: NSNull.null,
-      @"fileID": call.resultParams[@"fileID"] ?: NSNull.null,
-      @"capID": call.resultParams[@"capID"] ?: NSNull.null
-      };
-    _store_key(key);
+                          @"fileID": call.resultParams[@"fileID"] ?: NSNull.null,
+                          @"capID": call.resultParams[@"capID"] ?: NSNull.null,
+                          @"env": call.resultParams[@"env"] ?: NSNull.null
+                          };
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:key options:kNilOptions error:nil];
+    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    [BKPubKey saveBunkrCard:keyName publicKey:pubKey bunkrJSON:jsonStr];
+    
+    NSUInteger count = [BKPubKey bunkrKeys].count;
+    NSString * output = [NSString stringWithFormat:@"fileID: %@\npubkey: %@. count: %@", call.resultParams[@"fileID"], b64pubkey, @(count)];
     puts(output.UTF8String);
   } else if (result == -1) {
     puts("error");
@@ -173,6 +139,35 @@ int bunkr_main(int argc, char *argv[]) {
   }
   
   return 0;
+}
+
+int bunkr_main(int argc, char *argv[]) {
+  NSString *bunkrSchema = @(argv[0]);
+  
+  thread_optind = 1;
+  
+  NSString *usage = [@[
+                      @"Usage: bunkr linkkey <name>",
+                      @"       bunkr genkey <name>"
+                      ] componentsJoinedByString:@"\n"];;
+  
+  if (argc <= 2) {
+    puts(usage.UTF8String);
+    return -1;
+  }
+  
+  NSString *command = @(argv[1]);
+  NSString *keyName = @(argv[2]);
+  
+  if ([@"linkkey" isEqual:command]) {
+    return bunkr_linkkey(bunkrSchema, keyName);
+  } else if ([@"linkkey" isEqual:command]) {
+    return bunkr_genkey(bunkrSchema, keyName);
+  }
+  
+  puts(usage.UTF8String);
+  
+  return -1;
 }
 
 

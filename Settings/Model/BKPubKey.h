@@ -55,12 +55,15 @@ extern const NSString *BK_KEYTYPE_Ed25519;
 @property NSString *ID;
 @property (readonly) NSString *privateKey;
 @property (readonly) NSString *publicKey;
+@property (readonly) NSString *bunkrJSON;
 
 + (void)initialize;
 + (instancetype)withID:(NSString *)ID;
 + (void)loadIDS;
 + (BOOL)saveIDS;
 + (id)saveCard:(NSString *)ID privateKey:(NSString *)privateKey publicKey:(NSString *)publicKey;
++ (id)saveBunkrCard:(NSString *)ID publicKey:(NSString *)publicKey bunkrJSON:(NSString *)bunkrJSON;
++ (NSArray<BKPubKey *> *)bunkrKeys;
 + (NSMutableArray *)all;
 + (NSInteger)count;
 - (BOOL)isEncrypted;
