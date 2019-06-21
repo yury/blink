@@ -88,56 +88,67 @@ NSData *bunkr_sign(NSString *fileID, NSString *capID, NSData *data, NSString *al
 }
 
 int bunkr_genkey(NSString *bunkrSchema, NSString *keyName) {
-  Pki * pki = [[Pki alloc] initWithType:BK_KEYTYPE_ECDSA andBits:256];
-  NSString *privateKey = pki.privateKey;
-  NSString *publicKey = [pki publicKeyWithComment:keyName];
+  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/gen-sshkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
+  call.xURL = [NSURL URLWithString:urlStr];
   
-  return 0;
+  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], call);
 }
 
 int bunkr_linkkey(NSString *bunkrSchema, NSString *keyName) {
-  
-  BlinkXCall *call = [[BlinkXCall alloc] init];
   NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
   call.xURL = [NSURL URLWithString:urlStr];
   
-  int result = [call execute];
-  if (result == 0) {
-    puts("success");
-    
-    NSString *b64pubkey = call.resultParams[@"b64pubkey"];
-    if (!b64pubkey) {
-      puts("no public key");
-      return -1;
-    }
-    NSData * pubKeyData = [[NSData alloc] initWithBase64EncodedString:b64pubkey options:kNilOptions];
-    NSString * pubKey = [[NSString alloc] initWithData:pubKeyData encoding:NSUTF8StringEncoding];
-    
-    if (!pubKey) {
-      puts("invalid public key");
-      return -1;
-    }
-    
-    NSDictionary *key = @{
-                          @"fileID": call.resultParams[@"fileID"] ?: NSNull.null,
-                          @"capID": call.resultParams[@"capID"] ?: NSNull.null,
-                          @"env": call.resultParams[@"env"] ?: NSNull.null
-                          };
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:key options:kNilOptions error:nil];
-    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    [BKPubKey saveBunkrCard:keyName publicKey:pubKey bunkrJSON:jsonStr];
-    
-    NSUInteger count = [BKPubKey bunkrKeys].count;
-    NSString * output = [NSString stringWithFormat:@"fileID: %@\npubkey: %@. count: %@", call.resultParams[@"fileID"], b64pubkey, @(count)];
-    puts(output.UTF8String);
-  } else if (result == -1) {
-    puts("error");
-  } else if (result == -2) {
-    puts("canceled");
+  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], call);
+}
+
+int _save_sshkey_from_xcall(NSURL *url, NSString *keyName) {
+  BKPubKey *card = [BKPubKey withID:keyName];
+
+  if (card) {
+    NSString *msg = [NSString stringWithFormat:@"Key with name `%@` already exists.", keyName];
+    puts(msg.);
+    return result;
   }
   
+  BlinkXCall *call = [[BlinkXCall alloc] init];
+  call.xURL = url;
+  int result = [call execute];
+  if (result == -2) {
+    puts("canceled");
+    return result;
+  }
+  if (result != 0) {
+    puts("error");
+    return result;
+  }
+    
+  NSString *b64pubkey = call.resultParams[@"b64pubkey"];
+  if (!b64pubkey) {
+    puts("no public key");
+    return -1;
+  }
+  NSData * pubKeyData = [[NSData alloc] initWithBase64EncodedString:b64pubkey options:kNilOptions];
+  NSString * pubKey = [[NSString alloc] initWithData:pubKeyData encoding:NSUTF8StringEncoding];
+  
+  if (!pubKey) {
+    puts("invalid public key");
+    return -1;
+  }
+    
+  NSDictionary *key = @{
+                        @"fileID": call.resultParams[@"fileID"] ?: NSNull.null,
+                        @"capID": call.resultParams[@"capID"] ?: NSNull.null,
+                        @"env": call.resultParams[@"env"] ?: NSNull.null
+                        };
+  
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:key options:kNilOptions error:nil];
+  NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  
+  [BKPubKey saveBunkrCard:keyName publicKey:pubKey bunkrJSON:jsonStr];
+  
+  NSUInteger count = [BKPubKey bunkrKeys].count;
+  NSString * output = [NSString stringWithFormat:@"fileID: %@\npubkey: %@. count: %@", call.resultParams[@"fileID"], b64pubkey, @(count)];
+  puts(output.UTF8String);
   return 0;
 }
 
