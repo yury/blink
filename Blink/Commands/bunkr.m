@@ -39,29 +39,31 @@
 #import "MCPSession.h"
 #import "BKPubKey.h"
 
-NSArray *bunkrLoadKeys() {
-  NSString *path = [BlinkPaths.blink stringByAppendingPathComponent:@"bunkr.keys"];
-  
-  NSData *data = [NSData dataWithContentsOfFile:path];
-  if (!data) {
-    return @[];
-  }
-  
-  NSMutableDictionary *keysJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-  if (!keysJSON) {
-    keysJSON = [[NSMutableDictionary alloc] init];
-  }
-  NSMutableArray *keysList = [[NSMutableArray alloc] init];
-  id keys = keysJSON[@"keys"];
-  if (keys && [keys isKindOfClass: [NSMutableArray class]]) {
-    keysList = keys;
-  }
-  return keysList;
-}
 
-NSData *bunkr_sign(NSString *fileID, NSString *capID, NSData *data, NSString *alg) {
+NSData *bunkr_sign(NSString *keyID, NSData *data, NSString *alg) {
+  BKPubKey *key = [BKPubKey withID:keyID];
+  if (!key) {
+    return nil;
+  }
+  
+  NSData *jsonData = [key.bunkrJSON dataUsingEncoding:NSUTF8StringEncoding];
+  if (!jsonData) {
+    return nil;
+  }
+  
+  id json = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error: nil];
+  if (!json) {
+    return nil;
+  }
+  
+  NSString *fileID = json[@"fileID"];
+  NSString *capID = json[@"fileID"];
+  NSString *env = json[@"env"];
+  
   BlinkXCall *call = [[BlinkXCall alloc] init];
-  NSURLComponents *comps = [NSURLComponents componentsWithString:@"bunkr://x-callback-url/sign-ssh"];
+  NSURLComponents *comps = [NSURLComponents componentsWithString:
+                            [NSString stringWithFormat:@"%@://x-callback-url/sign-ssh", env]
+                            ];
   
   comps.queryItems = @[
                        [NSURLQueryItem queryItemWithName:@"x-source" value:@"Blink"],
@@ -87,27 +89,14 @@ NSData *bunkr_sign(NSString *fileID, NSString *capID, NSData *data, NSString *al
   return nil;
 }
 
-int bunkr_genkey(NSString *bunkrSchema, NSString *keyName) {
-  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/gen-sshkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
-  call.xURL = [NSURL URLWithString:urlStr];
-  
-  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], call);
-}
-
-int bunkr_linkkey(NSString *bunkrSchema, NSString *keyName) {
-  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
-  call.xURL = [NSURL URLWithString:urlStr];
-  
-  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], call);
-}
 
 int _save_sshkey_from_xcall(NSURL *url, NSString *keyName) {
   BKPubKey *card = [BKPubKey withID:keyName];
 
   if (card) {
     NSString *msg = [NSString stringWithFormat:@"Key with name `%@` already exists.", keyName];
-    puts(msg.);
-    return result;
+    puts(msg.UTF8String);
+    return -1;
   }
   
   BlinkXCall *call = [[BlinkXCall alloc] init];
@@ -152,14 +141,26 @@ int _save_sshkey_from_xcall(NSURL *url, NSString *keyName) {
   return 0;
 }
 
+int bunkr_keygen(NSString *bunkrSchema, NSString *keyName) {
+  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/ssh-keygen?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
+  
+  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], keyName);
+}
+
+int bunkr_keylink(NSString *bunkrSchema, NSString *keyName) {
+  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
+  
+  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], keyName);
+}
+
 int bunkr_main(int argc, char *argv[]) {
   NSString *bunkrSchema = @(argv[0]);
   
   thread_optind = 1;
   
   NSString *usage = [@[
-                      @"Usage: bunkr linkkey <name>",
-                      @"       bunkr genkey <name>"
+                      [NSString stringWithFormat:@"Usage: %@ keylink <name>", bunkrSchema],
+                      [NSString stringWithFormat:@"       %@ keygen <name>", bunkrSchema],
                       ] componentsJoinedByString:@"\n"];;
   
   if (argc <= 2) {
@@ -170,14 +171,13 @@ int bunkr_main(int argc, char *argv[]) {
   NSString *command = @(argv[1]);
   NSString *keyName = @(argv[2]);
   
-  if ([@"linkkey" isEqual:command]) {
-    return bunkr_linkkey(bunkrSchema, keyName);
-  } else if ([@"linkkey" isEqual:command]) {
-    return bunkr_genkey(bunkrSchema, keyName);
+  if ([@"keylink" isEqual:command]) {
+    return bunkr_keylink(bunkrSchema, keyName);
+  } else if ([@"keygen" isEqual:command]) {
+    return bunkr_keygen(bunkrSchema, keyName);
   }
   
   puts(usage.UTF8String);
-  
   return -1;
 }
 

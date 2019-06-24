@@ -91,6 +91,7 @@
 
 #include "blink-compat.h"
 #include "bunkr.h"
+#include "BKPubKey.h"
 
 #ifdef ENABLE_PKCS11
 #include "ssh-pkcs11.h"
@@ -619,28 +620,17 @@ send:
 }
 
 static void load_bunkr_keys() {
-  NSArray *bunkrKeys = bunkrLoadKeys();
+  NSArray *bunkrKeys = [BKPubKey bunkrKeys];
   
-  for (NSDictionary *keyJSON in bunkrKeys) {
-    NSString *fileID = keyJSON[@"fileID"];
-    NSString *capID = keyJSON[@"capID"];
-    NSString *bunkrID = [NSString stringWithFormat:@"%@:%@", fileID, capID];
-    NSData * pkData = [[NSData alloc] initWithBase64EncodedString:keyJSON[@"b64pubkey"] options:kNilOptions];
-    
-    if (!pkData || [pkData isEqual: NSNull.null]) {
+  for (BKPubKey *pubKey in bunkrKeys) {
+    id json = pubKey.bunkrJSON;
+    if (json == nil) {
       continue;
     }
     
-    if (!fileID || [fileID isEqual: NSNull.null]) {
-      continue;
-    }
-    
-    if (!capID || [capID isEqual: NSNull.null]) {
-      continue;
-    }
     
     struct sshkey *key = sshkey_new(KEY_ECDSA);
-    char * buf = strdup(pkData.bytes);
+    char *buf = (char *)pubKey.publicKey.UTF8String;
     if (sshkey_read(key, &buf) != 0) {
       sshkey_free(key);
       continue;
@@ -659,9 +649,9 @@ static void load_bunkr_keys() {
       sshkey_free(id->key);
       free(id->comment);
     }
-    id->blink_id = strdup(bunkrID.UTF8String);
+    id->blink_id = strdup(pubKey.ID.UTF8String);
     id->key = key;
-    id->comment = buf;
+    id->comment = strdup(buf);
     id->death = 0;
     id->confirm = 0;
   }
@@ -678,14 +668,10 @@ sshkey_bunkr_sign(char *bunkr_id,
     *lenp = 0;
   if (datalen > SSH_KEY_MAX_SIGN_DATA_SIZE)
     return SSH_ERR_INVALID_ARGUMENT;
-  
-  NSArray<NSString *> *fileIDAndCapID = [@(bunkr_id) componentsSeparatedByString:@":"];
-  NSString *fileID = fileIDAndCapID[0];
-  NSString *capID = fileIDAndCapID[1];
-  
+
   NSData *nsData = [NSData dataWithBytes:data length:datalen];
   
-  NSData *sig = bunkr_sign(fileID, capID, nsData, alg != NULL ? @(alg) : @"alg");
+  NSData *sig = bunkr_sign(@(bunkr_id), nsData, alg != NULL ? @(alg) : @"alg");
   
   if (sig) {
     *lenp = sig.length;

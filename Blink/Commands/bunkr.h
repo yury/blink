@@ -33,8 +33,7 @@
 #ifndef xcall_h
 #define xcall_h
 
-NSArray *bunkrLoadKeys();
-NSData *bunkr_sign(NSString *fileID, NSString *capID, NSData *data, NSString *alg);
+NSData *bunkr_sign(NSString *keyID, NSData *data, NSString *alg);
 NSDictionary *bunkrKeyForId(NSString *fileIDAndCapId);
 
 #endif /* xcall_h */
