@@ -57,7 +57,7 @@ NSData *bunkr_sign(NSString *keyID, NSData *data, NSString *alg) {
   }
   
   NSString *fileID = json[@"fileID"];
-  NSString *capID = json[@"fileID"];
+  NSString *capID = json[@"capID"];
   NSString *env = json[@"env"];
   
   BlinkXCall *call = [[BlinkXCall alloc] init];
@@ -90,7 +90,7 @@ NSData *bunkr_sign(NSString *keyID, NSData *data, NSString *alg) {
 }
 
 
-int _save_sshkey_from_xcall(NSURL *url, NSString *keyName) {
+int _save_sshkey_from_xcall(NSURL *url, NSString *keyName, NSString *env) {
   BKPubKey *card = [BKPubKey withID:keyName];
 
   if (card) {
@@ -127,7 +127,7 @@ int _save_sshkey_from_xcall(NSURL *url, NSString *keyName) {
   NSDictionary *key = @{
                         @"fileID": call.resultParams[@"fileID"] ?: NSNull.null,
                         @"capID": call.resultParams[@"capID"] ?: NSNull.null,
-                        @"env": call.resultParams[@"env"] ?: NSNull.null
+                        @"env": env ?: NSNull.null
                         };
   
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:key options:kNilOptions error:nil];
@@ -142,15 +142,17 @@ int _save_sshkey_from_xcall(NSURL *url, NSString *keyName) {
 }
 
 int bunkr_keygen(NSString *bunkrSchema, NSString *keyName) {
-  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/ssh-keygen?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
+  NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/ssh-keygen?name=%@&x-source=Blink.app&infoTitle=Blink.app+Generate+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with",
+                      bunkrSchema,
+                      [keyName stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]];
   
-  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], keyName);
+  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], keyName, bunkrSchema);
 }
 
 int bunkr_keylink(NSString *bunkrSchema, NSString *keyName) {
   NSString *urlStr = [NSString stringWithFormat:@"%@://x-callback-url/get-pubkey?x-source=Blink.app&infoTitle=Blink.app+Request+Key&infoDescription=Select+a+key+Bunkr+will+sign+operations+with", bunkrSchema];
   
-  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], keyName);
+  return _save_sshkey_from_xcall([NSURL URLWithString:urlStr], keyName, bunkrSchema);
 }
 
 int bunkr_main(int argc, char *argv[]) {

@@ -521,7 +521,7 @@ NSString *__get_passphrase(UIViewController *ctrl) {
   return @"public.text";
 }
 
-- (NSArray<BKPubKey *> *)bunkrKeys {
++ (NSArray<BKPubKey *> *)bunkrKeys {
   return [[BKPubKey all] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bunkrJSON != nil"]];
 }
 
