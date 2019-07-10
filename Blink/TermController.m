@@ -43,7 +43,7 @@ NSString * const BKUserActivityTypeCommandLine = @"com.blink.cmdline";
 NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
 
 
-@interface TermController () <SessionDelegate, TermDeviceDelegate, WidgetProtocol>
+@interface TermController () <SessionDelegate, TermDeviceDelegate>
 @end
 
 @implementation TermController {
@@ -54,12 +54,10 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   TermView *_termView;
 }
 
-@synthesize widgetID;
-
-- (instancetype)initWithWidgetID:(NSString *)widgetID {
+- (instancetype)initWithSessionKey:(NSString *)sessionKey {
   self = [super init];
   if (self) {
-    self.widgetID = widgetID ?: [NSProcessInfo.processInfo globallyUniqueString];
+    self.sessionStateKey  = sessionKey ?: [NSProcessInfo.processInfo globallyUniqueString];
   }
   return self;
 }
@@ -67,10 +65,6 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
 - (void)loadView
 {
   [super loadView];
-  
-  if (_sessionStateKey == nil) {
-    _sessionStateKey = [[NSProcessInfo processInfo] globallyUniqueString];
-  }
   
   _termDevice = [[TermDevice alloc] init];
   _termDevice.delegate = self;

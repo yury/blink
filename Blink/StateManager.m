@@ -46,8 +46,7 @@ NSString * const StatesKey = @"StatesKey";
   return self;
 }
 
-- (NSMutableDictionary *)_loadStates
-{
+- (NSMutableDictionary *)_loadStates {
   NSFileManager *fileManager = [NSFileManager defaultManager];
   NSURL *fileURL = [self _filePath];
   
@@ -56,12 +55,14 @@ NSString * const StatesKey = @"StatesKey";
   }
   
   @try {
-    NSData *data = [NSData dataWithContentsOfFile:[fileURL path]];
-    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-    [unarchiver setRequiresSecureCoding:YES];
-    
     NSSet *classes = [[NSSet alloc] initWithObjects:[NSDictionary class], [NSString class], [MCPSessionParameters class], nil];
-    NSDictionary *dict = [unarchiver decodeObjectOfClasses:classes forKey:StatesKey];
+    
+    NSData *data = [NSData dataWithContentsOfFile:[fileURL path]];
+    NSDictionary *dict =
+      [NSKeyedUnarchiver unarchivedObjectOfClasses:classes
+                                          fromData:data
+                                             error:nil];
+    
     if (dict) {
       return [dict mutableCopy];
     } else {
@@ -89,25 +90,19 @@ NSString * const StatesKey = @"StatesKey";
   return [url URLByAppendingPathComponent:@"states"] ;
 }
 
-- (void)load
-{
+- (void)load {
   _states = [self _loadStates];
 }
 
-- (void)reset
-{
+- (void)reset {
   _states = [[NSMutableDictionary alloc] init];
 }
 
 - (void)save
 {
-  NSDictionary *copy = [[NSDictionary alloc] initWithDictionary:_states];
-  
-  NSMutableData *data = [[NSMutableData alloc] init];
-  NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    [archiver setRequiresSecureCoding:YES];
-  [archiver encodeObject:copy forKey:StatesKey];
-  [archiver finishEncoding];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[_states copy]
+                                       requiringSecureCoding:YES
+                                                       error:nil];
   
   NSString *filePath = [[self _filePath] path];
   NSDataWritingOptions options = NSDataWritingAtomic | NSDataWritingFileProtectionComplete;
@@ -120,8 +115,7 @@ NSString * const StatesKey = @"StatesKey";
   }
 }
 
-- (void)snapshotState:(id<SecureRestoration>)object
-{
+- (void)snapshotState:(id<SecureRestoration>)object {
   _states[object.sessionStateKey] = object.sessionParameters;
 }
 

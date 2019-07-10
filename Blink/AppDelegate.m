@@ -42,6 +42,8 @@
 #import <ios_system/ios_system.h>
 #include <libssh/callbacks.h>
 #include "xcall.h"
+#include "WidgetsManager.h"
+#include "StateManager.h"
 
 
 @import CloudKit;
@@ -130,11 +132,17 @@ void __setupProcessEnv() {
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
   
-  return [UISceneConfiguration configurationWithName:@"main" sessionRole:connectingSceneSession.role];
+  return [UISceneConfiguration
+          configurationWithName:@"main"
+          sessionRole:connectingSceneSession.role];
+}
+
+- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
+  [self startMonitoringForSuspending];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-  [[BKiCloudSyncHandler sharedHandler]checkForReachabilityAndSync:nil];
+  [[BKiCloudSyncHandler sharedHandler] checkForReachabilityAndSync:nil];
   // TODO: pass completion handler.
 }
 
@@ -168,6 +176,7 @@ void __setupProcessEnv() {
   [self _suspendApplicationOnWillTerminate];
 }
 
+
 - (void)startMonitoringForSuspending
 {
   if (_suspendedMode) {
@@ -175,6 +184,19 @@ void __setupProcessEnv() {
   }
   
   UIApplication *application = [UIApplication sharedApplication];
+  
+  int foregroundCount = 0;
+  for (UIScene *scene in application.connectedScenes) {
+    UISceneActivationState state = scene.activationState;
+    if (state == UISceneActivationStateForegroundActive ||
+        state == UISceneActivationStateForegroundInactive) {
+      foregroundCount ++;
+    }
+  }
+  
+  if (foregroundCount > 0) {
+    return;
+  }
   
   if (_suspendTaskId != UIBackgroundTaskInvalid) {
     [application endBackgroundTask:_suspendTaskId];
@@ -191,11 +213,6 @@ void __setupProcessEnv() {
                                                  selector:@selector(_suspendApplicationWithSuspendTimer)
                                                  userInfo:nil
                                                   repeats:NO];
-}
-
-- (void) application:(UIApplication *)application didDecodeRestorableStateWithCoder:(NSCoder *)coder
-{
-  [[ScreenController shared] finishRestoring];
 }
 
 - (void)cancelApplicationSuspend
@@ -237,7 +254,7 @@ void __setupProcessEnv() {
     return;
   }
   
-  [[ScreenController shared] suspend];
+  [WidgetsManager.shared suspend];
   _suspendedMode = YES;
   
   if (_suspendTaskId != UIBackgroundTaskInvalid) {

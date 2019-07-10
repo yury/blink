@@ -92,7 +92,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 @implementation TermView {
   WKWebView *_webView;
   UIImageView *_snapshotImageView;
-  NSTimer *_activeTimer;
   
   BOOL _focused;
   BOOL _jsIsBusy;
@@ -130,10 +129,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   _snapshotImageView = imageView;
   [self addSubview:imageView];
   
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(_willResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-  [nc addObserver:self selector:@selector(_didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-  
   _deadZoneLeft = [[UIView alloc] initWithFrame:CGRectZero];
   _deadZoneRight = [[UIView alloc] initWithFrame:CGRectZero];
   
@@ -141,11 +136,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 //  [self addSubview:_deadZoneRight];
 
   return self;
-}
-
-- (void)dealloc
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)layoutSubviews {
@@ -171,51 +161,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (UIEdgeInsets)safeAreaInsets {
   return UIEdgeInsetsZero;
-}
-
-- (void)_willResignActive
-{
-  if (_activeTimer) {
-    [_activeTimer invalidate];
-    _activeTimer = nil;
-    return;
-  }
-  
-  if (self.window == nil) {
-    return;
-  }
-  
-  [_webView takeSnapshotWithConfiguration:nil completionHandler:^(UIImage * _Nullable snapshotImage, NSError * _Nullable error) {
-    _snapshotImageView.image = snapshotImage;
-    _snapshotImageView.frame = _webView.frame;
-    _snapshotImageView.alpha = 1;
-    [self addSubview:_snapshotImageView];
-    [_webView removeFromSuperview];
-  }];
-}
-
-- (void)_didBecomeActive
-{
-  [_activeTimer invalidate];
-  _activeTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(_delayedDidBecomeActive) userInfo:nil repeats:NO];
-}
-
-- (void)_delayedDidBecomeActive
-{
-  [_activeTimer invalidate];
-  _activeTimer = nil;
-  
-  if (self.window == nil) {
-    return;
-  }
-  
-  if (_webView.superview) {
-    return;
-  }
-
-  [self insertSubview:_webView belowSubview:_snapshotImageView];
-  [_snapshotImageView removeFromSuperview];
-  [self setNeedsLayout];
 }
 
 - (CGRect)webViewFrame {
@@ -340,7 +285,6 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 - (void)focus {
   _focused = YES;
-  [self _didBecomeActive]; // Double check and attach if we are detached
   [_webView evaluateJavaScript:term_focus() completionHandler:nil];
 }
 
@@ -530,8 +474,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   
   CGRect rect = CGRectFromString(data[@"rect"]);
   [menu setMenuItems:items];
-  [menu setTargetRect:rect inView:self];
-  [menu setMenuVisible:YES animated:NO];
+  [menu showMenuFromView:self rect:rect];
 }
 
 - (void)modifySideOfSelection
@@ -599,7 +542,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 {
   [_webView copy:sender];
   UIMenuController * menu = [UIMenuController sharedMenuController];
-  [menu setMenuVisible:NO animated:YES];
+  [menu hideMenuFromView:self];
 }
 
 - (void)paste:(id)sender

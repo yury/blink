@@ -31,19 +31,16 @@
 
 
 #import <Foundation/Foundation.h>
+#import "StateManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol WidgetProtocol <NSObject>
-
-@property (strong) NSString *widgetID;
-
-@end
-
 @interface WidgetsManager : NSObject
 
-- (void)registerWidget:(id<WidgetProtocol>)widget;
-- (void)unRegisterWidget:(id<WidgetProtocol>)widget;
+- (void)registerWidget:(id<SecureRestoration>)widget;
+- (void)unRegisterWidget:(id<SecureRestoration>)widget;
+- (void)suspend;
+//- (NSArray<id<SecureRestoration>> *)allWidgets;
 
 + (WidgetsManager *) shared;
 

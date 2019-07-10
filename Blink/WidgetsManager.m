@@ -33,7 +33,7 @@
 #import "WidgetsManager.h"
 
 @implementation WidgetsManager {
-  NSMutableDictionary<NSString *, id<WidgetProtocol>> *_map;
+  NSMutableDictionary<NSString *, id<SecureRestoration>> *_map;
 }
 
 + (WidgetsManager *)shared {
@@ -53,12 +53,27 @@
   return self;
 }
 
-- (void)registerWidget:(id<WidgetProtocol>)widget {
-  _map[widget.widgetID] = widget;
+- (NSArray<id<SecureRestoration>> *)allWidgets {
+  return _map.allValues;
 }
 
-- (void)unRegisterWidget:(id<WidgetProtocol>)widget {
-  [_map removeObjectForKey:widget.widgetID];
+- (void)registerWidget:(id<SecureRestoration>)widget {
+  _map[widget.sessionStateKey] = widget;
+}
+
+- (void)unRegisterWidget:(id<SecureRestoration>)widget {
+  [_map removeObjectForKey:widget.sessionStateKey];
+}
+
+- (void)suspend {
+  StateManager *stateManager = [[StateManager alloc] init];
+  
+  for (id<SecureRestoration> widget in [WidgetsManager.shared allWidgets]) {
+    [widget suspend];
+    [stateManager snapshotState:widget];
+  }
+  
+  [stateManager save];
 }
 
 @end

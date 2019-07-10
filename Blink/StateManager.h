@@ -37,6 +37,7 @@
 
 @property NSString * sessionStateKey;
 @property SessionParameters *sessionParameters;
+- (void)suspend;
 
 @end
 

@@ -42,6 +42,7 @@
 #import "TouchOverlay.h"
 #import "BKTouchIDAuthManager.h"
 #import "GeoManager.h"
+#import "WidgetsManager.h"
 
 @interface SpaceController () <
   UIPageViewControllerDataSource,
@@ -70,8 +71,6 @@
   NSMutableArray<UIKeyCommand *> *_kbdCommandsWithoutDiscoverability;
   TermInput *_termInput;
   BOOL _unfocused;
-  NSTimer *_activeTimer;
-  NSTimer *_restoreLayoutTimer;
   CGFloat _proposedKBBottomInset;
   BOOL _active;
 }
@@ -147,7 +146,7 @@
 {
   [super viewDidAppear:animated];
 
-  if ([_termInput isFirstResponder]) {
+  if ([_termInput isFirstResponder] && self.view.window.keyWindow) {
     [self _attachInputToCurrentTerm];
     return;
   }
@@ -257,19 +256,10 @@
                         name:UIKeyboardWillChangeFrameNotification
                       object:nil];
   
-  [defaultCenter addObserver:self
-                    selector:@selector(_appDidBecomeActive)
-                        name:UIApplicationDidBecomeActiveNotification
-                      object:nil];
   
   [defaultCenter addObserver:self
                     selector:@selector(_focusOnShell)
                         name:BKUserAuthenticated
-                      object:nil];
-  
-  [defaultCenter addObserver:self
-                    selector:@selector(_appWillResignActive)
-                        name:UIApplicationWillResignActiveNotification
                       object:nil];
   
   
@@ -282,45 +272,11 @@
                     selector:@selector(_onGeoLock)
                         name:BLGeoLockNotification
                       object:nil];
-}
-
-- (void)_appDidBecomeActive
-{
-  [_activeTimer invalidate];
-  _activeTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(_delayedDidBecomeActive) userInfo:nil repeats:NO];
-}
-
-- (void)_delayedDidBecomeActive
-{
-  [_activeTimer invalidate];
-  _activeTimer = nil;
   
-  _active = YES;
-  _restoreLayoutTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(_restoreLayoutAfterBecomeActive) userInfo:nil repeats:NO];
-}
-
-- (void)_restoreLayoutAfterBecomeActive {
-  [_restoreLayoutTimer invalidate];
-  _restoreLayoutTimer = nil;
-  [self updateKbBottomSafeMargins:_proposedKBBottomInset];
-  [self.view setNeedsLayout];
-}
-
--(void)_appWillResignActive
-{
-  if (_activeTimer) {
-    [_activeTimer invalidate];
-    _activeTimer = nil;
-    return;
-  }
-  
-  if (_restoreLayoutTimer) {
-    [_restoreLayoutTimer invalidate];
-    _restoreLayoutTimer = nil;
-  }
-  
-  _active = NO;
-  _unfocused = ![_termInput isFirstResponder];
+  [defaultCenter addObserver:self
+                    selector:@selector(_didBecomeKeyWindow)
+                        name:UIWindowDidBecomeKeyNotification
+                      object:nil];
 }
 
 - (void)_focusOnShell
@@ -330,9 +286,20 @@
   [self _attachInputToCurrentTerm];
 }
 
-
-
 #pragma mark Events
+
+- (void)_didBecomeKeyWindow {
+  UIWindow *window = self.view.window;
+  if (!window) {
+    return;
+  }
+  
+  if (window.keyWindow) {
+    [self _focusOnShell];
+  } else {
+    [self.currentTerm.termDevice.view blur];
+  }
+}
 
 // The Space will be responsible to accommodate the work environment for widgets, adjusting the size, making sure it doesn't overlap content,
 // moving widgets or scrolling to them when necessary, etc...
@@ -567,10 +534,9 @@
                             animated:(BOOL)animated
                           completion:(void (^)(BOOL finished))completion
 {
-  TermController *term = [[TermController alloc] initWithWidgetID:sessionStateKey];
+  TermController *term = [[TermController alloc] initWithSessionKey: sessionStateKey];
   [[WidgetsManager shared] registerWidget:term];
   
-  term.sessionStateKey = sessionStateKey;
   term.delegate = self;
   term.userActivity = userActivity;
   term.bgColor = self.view.backgroundColor ?: [UIColor blackColor];
@@ -725,6 +691,12 @@
                                                     action: @selector(switchToShellN:)];
     
     [_kbdCommands addObject:cmd];
+    
+    UIKeyCommand * winCmd = [UIKeyCommand keyCommandWithInput:input
+                                             modifierFlags: UIKeyModifierAlternate | UIKeyModifierCommand
+                                                    action: @selector(switchToWinN:)];
+    
+    [_kbdCommands addObject:winCmd];
   }
   
   for (UIKeyCommand *command in _kbdCommands) {
@@ -857,6 +829,27 @@
   
   targetIdx -= 1;
   [self switchToTargetIndex:targetIdx];
+}
+
+- (void)switchToWinN:(UIKeyCommand *)cmd
+{
+  NSInteger targetIdx = [cmd.input integerValue];
+  if (targetIdx <= 0) {
+    targetIdx = 10;
+  }
+  
+  targetIdx -= 1;
+  
+  UIApplication *app = [UIApplication sharedApplication];
+  
+  int i = 0;
+  for (UISceneSession *s in app.openSessions) {
+    if (i == targetIdx) {
+      [app requestSceneSessionActivation:s userActivity:nil options:nil errorHandler:nil];
+      return;
+    }
+    i++;
+  }
 }
 
 - (void)switchToTargetIndex:(NSInteger)targetIdx

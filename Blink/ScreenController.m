@@ -240,6 +240,7 @@ NSString * const SecondarySpaceControllerKey = @"SecondarySpaceControllerKey";
 {
   StateManager *stateManager = [[StateManager alloc] init];
   
+  
   for (UIWindow *win in _windows) {
     [[win spaceController] suspendWith:stateManager];
   }

@@ -51,16 +51,16 @@
 }
 
 - (void)sceneDidEnterBackground:(UIScene *)scene {
-  AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
-  
-  // TODO: check if we are last active scene here
+  UIApplication *app = UIApplication.sharedApplication;
+  AppDelegate *appDelegate = (AppDelegate *)app.delegate;
   [appDelegate startMonitoringForSuspending];
 }
 
 - (void)sceneWillEnterForeground:(UIScene *)scene {
-  
+  UIApplication *app = UIApplication.sharedApplication;
+  AppDelegate *appDelegate = (AppDelegate *)app.delegate;
+  [appDelegate cancelApplicationSuspend];
 }
-
 
 - (NSUserActivity *)stateRestorationActivityForScene:(UIScene *)scene {
   return [[NSUserActivity alloc] initWithActivityType:@"state.restoration.activity"];
