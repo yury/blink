@@ -42,7 +42,6 @@
 NSString * const BKUserActivityTypeCommandLine = @"com.blink.cmdline";
 NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
 
-
 @interface TermController () <SessionDelegate, TermDeviceDelegate>
 @end
 
@@ -62,14 +61,15 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   return self;
 }
 
-- (void)loadView
-{
+- (void)loadView {
   [super loadView];
   
   _termDevice = [[TermDevice alloc] init];
   _termDevice.delegate = self;
   
-  _termView = [[TermView alloc] initWithFrame:self.view.bounds andBgColor: self.bgColor];
+  _termView = [[TermView alloc] initWithFrame:self.view.bounds
+                                   andBgColor:self.bgColor];
+  
   _termView.restorationIdentifier = @"TermView";
   [_termDevice attachView:_termView];
   
@@ -89,14 +89,12 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
     return;
   }
   NSUserActivity * activity = [[NSUserActivity alloc] initWithActivityType:BKUserActivityTypeCommandLine];
+  
   activity.eligibleForPublicIndexing = NO;
   activity.eligibleForSearch = YES;
   activity.eligibleForHandoff = YES;
-  
-  if (@available(iOS 12.0, *)) {
-    activity.eligibleForPrediction = YES;
-    activity.persistentIdentifier = cmdLine;
-  }
+  activity.eligibleForPrediction = YES;
+  activity.persistentIdentifier = cmdLine;
   
   _activityKey = [NSString stringWithFormat:@"run: %@ ", cmdLine];
   [activity setTitle:_activityKey];
@@ -129,8 +127,7 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   return [_session isRunningCmd];
 }
 
-- (void)restoreUserActivityState:(NSUserActivity *)activity
-{
+- (void)restoreUserActivityState:(NSUserActivity *)activity {
   [super restoreUserActivityState:activity];
   
   if (![activity.activityType isEqualToString: BKUserActivityTypeCommandLine]) {
@@ -152,8 +149,7 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   }
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
   [super viewDidLoad];
   
   if (_sessionParameters == nil) {
@@ -163,8 +159,7 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   [_termView loadWith:_sessionParameters];
 }
 
-- (void)_initSessionParameters
-{
+- (void)_initSessionParameters {
   _sessionParameters = [[MCPSessionParameters alloc] init];
   _sessionParameters.fontSize = [[BKDefaults selectedFontSize] integerValue];
   _sessionParameters.fontName = [BKDefaults selectedFontName];
@@ -177,16 +172,14 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   _sessionParameters.layoutMode = BKDefaults.layoutMode;
 }
 
-- (void)startSession
-{
+- (void)startSession {
   _session = [[MCPSession alloc] initWithDevice:_termDevice andParametes:_sessionParameters];
   _session.delegate = self;
   [_session executeWithArgs:@""];
 }
 
 
-- (void)dealloc
-{
+- (void)dealloc {
   [_termDevice attachView:nil];
   _termDevice = nil;
   _session.device = nil;
@@ -197,8 +190,7 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
 
 #pragma mark SessionDelegate
 
-- (void)sessionFinished
-{
+- (void)sessionFinished {
   if ([_sessionParameters hasEncodedState]) {
     return;
   }
@@ -208,16 +200,14 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
 
 #pragma mark - TermDeviceDelegate
 
-- (void)deviceIsReady
-{
+- (void)deviceIsReady {
   [self startSession];
   if (self.userActivity) {
     [self restoreUserActivityState:self.userActivity];
   }
 }
 
-- (void)deviceSizeChanged
-{
+- (void)deviceSizeChanged {
   _sessionParameters.rows = _termDevice->win.ws_row;
   _sessionParameters.cols = _termDevice->win.ws_col;
   
@@ -227,24 +217,20 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   [_session sigwinch];
 }
 
-- (void)viewFontSizeChanged:(NSInteger)newSize
-{
+- (void)viewFontSizeChanged:(NSInteger)newSize {
   _sessionParameters.fontSize = newSize;
   [_termDevice.input reset];
 }
   
-- (BOOL)handleControl:(NSString *)control
-{
+- (BOOL)handleControl:(NSString *)control {
   return [_session handleControl:control];
 }
   
-- (void)deviceFocused
-{
+- (void)deviceFocused {
   return [_session setActiveSession];
 }
 
-- (UIViewController *)viewController
-{
+- (UIViewController *)viewController {
   return self;
 }
 
@@ -278,21 +264,17 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
 
 #pragma mark Notifications
 
-
-- (void)terminate
-{
+- (void)terminate {
   [_termView terminate];
   [_session kill];
 }
 
-- (void)suspend
-{
+- (void)suspend {
   [_sessionParameters cleanEncodedState];
   [_session suspend];
 }
 
-- (void)resume
-{
+- (void)resume {
   if (![_sessionParameters hasEncodedState]) {
     return;
   }
@@ -318,8 +300,7 @@ NSString * const BKUserActivityCommandLineKey = @"com.blink.cmdline.key";
   }
 }
 
-- (void)scaleWithPich:(UIPinchGestureRecognizer *)pinch
-{
+- (void)scaleWithPich:(UIPinchGestureRecognizer *)pinch {
   switch (pinch.state) {
     case UIGestureRecognizerStateBegan:
     case UIGestureRecognizerStateEnded:

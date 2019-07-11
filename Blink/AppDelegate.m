@@ -91,6 +91,8 @@ void __setupProcessEnv() {
   addCommandList([[NSBundle mainBundle] pathForResource:@"blinkCommandsDictionary" ofType:@"plist"]); // Load blink commands to ios_system
   __setupProcessEnv(); // we should call this after ios_system initializeEnvironment to override its defaults.
   
+  [WidgetsManager.shared restore];
+  
   return YES;
 }
 

@@ -45,6 +45,8 @@
 
 - (void)snapshotState:(id<SecureRestoration>) object;
 - (void)restoreState:(id<SecureRestoration>) object;
+- (NSArray<NSString *> *)keys;
+- (SessionParameters *)parametersForKey:(NSString *)key;
 
 - (void)load;
 - (void)save;

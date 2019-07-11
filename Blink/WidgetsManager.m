@@ -31,6 +31,7 @@
 
 
 #import "WidgetsManager.h"
+#import "TermController.h"
 
 @implementation WidgetsManager {
   NSMutableDictionary<NSString *, id<SecureRestoration>> *_map;
@@ -73,6 +74,26 @@
     [stateManager snapshotState:widget];
   }
   
+  [stateManager save];
+}
+
+- (void)restore {
+  StateManager *stateManager = [[StateManager alloc] init];
+  [stateManager load];
+  
+  [_map removeAllObjects];
+  
+  // TODO: find a way to do it lazily
+  NSArray<NSString *> *keys = stateManager.keys;
+  for (NSString *key in keys) {
+    SessionParameters *params = [stateManager parametersForKey:key];
+     TermController *term = [[TermController alloc] initWithSessionKey:key];
+    term.sessionParameters = (MCPSessionParameters *)params;
+    
+    [self registerWidget:term];
+  }
+  
+  [stateManager reset];
   [stateManager save];
 }
 

@@ -55,7 +55,11 @@ NSString * const StatesKey = @"StatesKey";
   }
   
   @try {
-    NSSet *classes = [[NSSet alloc] initWithObjects:[NSDictionary class], [NSString class], [MCPSessionParameters class], nil];
+    NSSet *classes = [NSSet setWithObjects:
+                        [NSDictionary class],
+                        [NSString class],
+                        [MCPSessionParameters class],
+                        nil];
     
     NSData *data = [NSData dataWithContentsOfFile:[fileURL path]];
     NSDictionary *dict =
@@ -98,8 +102,7 @@ NSString * const StatesKey = @"StatesKey";
   _states = [[NSMutableDictionary alloc] init];
 }
 
-- (void)save
-{
+- (void)save {
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[_states copy]
                                        requiringSecureCoding:YES
                                                        error:nil];
@@ -123,6 +126,13 @@ NSString * const StatesKey = @"StatesKey";
   if (object.sessionParameters == nil) {
     object.sessionParameters = _states[object.sessionStateKey];
   }
+}
+
+- (NSArray<NSString *> *)keys {
+  return _states.allKeys;
+}
+- (SessionParameters *)parametersForKey:(NSString *)key {
+  return _states[key];
 }
 
 @end

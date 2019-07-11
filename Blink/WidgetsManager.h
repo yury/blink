@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerWidget:(id<SecureRestoration>)widget;
 - (void)unRegisterWidget:(id<SecureRestoration>)widget;
 - (void)suspend;
-//- (NSArray<id<SecureRestoration>> *)allWidgets;
+- (void)restore;
 
 + (WidgetsManager *) shared;
 

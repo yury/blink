@@ -213,9 +213,7 @@
   [self.view layoutIfNeeded];
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-  [super encodeRestorableStateWithCoder:coder];
+- (void)updateRestorationUserActivity:(NSUserActivity *)activity {
   NSMutableArray *sessionStateKeys = [[NSMutableArray alloc] init];
   
   for (TermController *term in _viewports) {
@@ -226,13 +224,18 @@
   if(idx == NSNotFound) {
     idx = 0;
   }
-  [coder encodeInteger:idx forKey:@"idx"];
-  [coder encodeObject:sessionStateKeys forKey:@"sessionStateKeys"];
-  [coder encodeBool:_unfocused forKey:@"_unfocused"];
-  [coder encodeObject:self.view.backgroundColor forKey:@"bgColor"];
+  activity.userInfo = @{
+    @"idx":  @(idx),
+    @"sessionStateKeys": [sessionStateKeys copy],
+    @"_unfocused": @(_unfocused),
+    @"bgColor": self.view.backgroundColor
+  };
 }
 
-//applicationFinishedRestoringState
+- (void)restoreRestorationUserActivityState:(NSUserActivity *)activity {
+  
+}
+
 
 - (void)applicationFinishedRestoringState {
     if ([_termInput isFirstResponder]) {

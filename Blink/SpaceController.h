@@ -43,4 +43,7 @@
 - (void)resumeWith: (StateManager *)stateManager;
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder andStateManager: (StateManager *)stateManager;
 
+- (void)updateRestorationUserActivity:(NSUserActivity *)activity;
+- (void)restoreRestorationUserActivityState:(NSUserActivity *)activity;
+
 @end
