@@ -89,6 +89,7 @@ class SpaceController: UICollectionViewController {
       }
 //      term.termDevice.attachInput(SmarterTermInput.shared)
 //      term.termDevice.focus()
+      
     }
   }
   
@@ -140,7 +141,7 @@ class SpaceController: UICollectionViewController {
     collectionView.contentInsetAdjustmentBehavior = .never
     collectionView.isPagingEnabled = true
     collectionView.alwaysBounceHorizontal = true
-    collectionView.dropDelegate = self
+//    collectionView.dropDelegate = self
     
     
     collectionView.register(TermCell.self, forCellWithReuseIdentifier: TermCell.identifier)
@@ -168,8 +169,8 @@ class SpaceController: UICollectionViewController {
     }
     _dataSource.apply(_termsSnapshot, animatingDifferences: false)
     
-    _touchOverlay.frame = view.bounds
-    view.addSubview(_touchOverlay)
+//    _touchOverlay.frame = view.bounds
+//    view.addSubview(_touchOverlay)
     _touchOverlay.touchDelegate = self
     
     _commandsHUD.delegate = self
@@ -780,7 +781,7 @@ extension SpaceController: UICollectionViewDropDelegate {
   }
   
   func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
-    return true
+    return false
   }
   
   

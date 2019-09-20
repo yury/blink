@@ -80,27 +80,13 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
 @end
 
-@implementation UIView (Scrolling)
-
-- (void)dropTouches {
-  for (UIGestureRecognizer *rec in self.gestureRecognizers) {
-    BOOL isEnabled = rec.isEnabled;
-    [rec setEnabled:NO];
-    [rec setEnabled:isEnabled];
-  }
-  for (UIView *view in self.subviews) {
-    [view dropTouches];
-  }
-}
-
-@end
-
 
 @interface TermView () <WKScriptMessageHandler>
 @end
 
 @implementation TermView {
   WKWebView *_webView;
+  WKWebViewScroller *_scroller;
   
   BOOL _focused;
   BOOL _jsIsBusy;
@@ -129,6 +115,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
 
   [self _addWebView];
   _coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+  
 //  [self addSubview:_coverView];
 //  _coverView.backgroundColor = [UIColor redColor];
 
@@ -161,6 +148,8 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
     return;
   }
   
+  
+  
   __weak typeof(self) weakSelf = self;
   _layoutDebounceTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 repeats:NO block:^(NSTimer * _Nonnull timer) {
     [weakSelf _actualLayoutSubviews];
@@ -172,6 +161,7 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   
   if (!CGRectEqualToRect(_webView.frame, webViewFrame)) {
     _webView.frame = webViewFrame;
+    _scroller.frame = webViewFrame;
   }
 
   _currentBounds = self.bounds;
@@ -207,7 +197,10 @@ struct winsize __winSizeFromJSON(NSDictionary *json) {
   _webView.scrollView.scrollEnabled = NO;
   _webView.scrollView.panGestureRecognizer.enabled = NO;
   
+  _scroller = [_webView createScrollerWithJsScrollerPath:@"t.scrollPort_.scroller_"];
+  
   [self addSubview:_webView];
+  [self addSubview:_scroller];
 }
 
 - (NSString *)title {

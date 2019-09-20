@@ -239,6 +239,7 @@
 		D2C8D30A21B544B100AC39C3 /* say.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C8D30921B544B100AC39C3 /* say.m */; };
 		D2CB353323334A5800088765 /* TermCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CB353223334A5800088765 /* TermCell.swift */; };
 		D2CB353B23339D5C00088765 /* UIView+Touches.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CB353A23339D5C00088765 /* UIView+Touches.swift */; };
+		D2CB35402334DFEE00088765 /* WKWebViewScroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CB353F2334DFEE00088765 /* WKWebViewScroller.swift */; };
 		D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
 		D2D75EE021AFDA10007336B6 /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
 		D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
@@ -698,6 +699,7 @@
 		D2C8D30921B544B100AC39C3 /* say.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = say.m; sourceTree = "<group>"; };
 		D2CB353223334A5800088765 /* TermCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermCell.swift; sourceTree = "<group>"; };
 		D2CB353A23339D5C00088765 /* UIView+Touches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Touches.swift"; sourceTree = "<group>"; };
+		D2CB353F2334DFEE00088765 /* WKWebViewScroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewScroller.swift; sourceTree = "<group>"; };
 		D2D6D78420527651003CBEC4 /* TermDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TermDevice.h; sourceTree = "<group>"; };
 		D2D6D78520527651003CBEC4 /* TermDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TermDevice.m; sourceTree = "<group>"; };
 		D2D75EDE21AFDA10007336B6 /* LayoutManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutManager.h; sourceTree = "<group>"; };
@@ -755,8 +757,9 @@
 		0716B5231CFFAB9300268B5B /* Blink */ = {
 			isa = PBXGroup;
 			children = (
-				D265FBC7231904B50017EAC4 /* Foundation */,
 				D2A52225231304A90010AC04 /* UIKit */,
+				D2CB35472334E08E00088765 /* WebKit */,
+				D265FBC7231904B50017EAC4 /* Foundation */,
 				D241CB93230406E2003D64A5 /* SmarterKeys */,
 				073D26AE1DC4137000965AB2 /* SmartKeys */,
 				D2A0C63E20AAD98D001CF38F /* ios_error.h */,
@@ -1430,6 +1433,14 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
+		D2CB35472334E08E00088765 /* WebKit */ = {
+			isa = PBXGroup;
+			children = (
+				D2CB353F2334DFEE00088765 /* WKWebViewScroller.swift */,
+			);
+			path = WebKit;
+			sourceTree = "<group>";
+		};
 		D2E4F92A20B2BB4500B30F7B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1812,6 +1823,7 @@
 				D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */,
 				D2C0F31020E64FAD00E48F3A /* SSHClientConnectedChannel.m in Sources */,
 				D2071B86215135A9000156D7 /* openssl-compat.c in Sources */,
+				D2CB35402334DFEE00088765 /* WKWebViewScroller.swift in Sources */,
 				D241CBDC23040734003D64A5 /* KBKeyViewVertical2.swift in Sources */,
 				D23D0FAD2008DAEB00B33A9F /* TermInput.m in Sources */,
 				07AA06501E08B12E008310B7 /* SetPasscodeState.swift in Sources */,
