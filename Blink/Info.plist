@@ -124,6 +124,7 @@
 	</dict>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>RunCmdIntent</string>
 		<string>com.blink.cmdline</string>
 		<string>com.blink.session</string>
 	</array>

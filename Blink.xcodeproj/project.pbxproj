@@ -238,6 +238,52 @@
 		D2D8DD8523C71CC500BFF223 /* LocalAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D8DD8423C71CC500BFF223 /* LocalAuth.swift */; };
 		D2D8DD9023C84A6E00BFF223 /* StuckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D8DD8F23C84A6E00BFF223 /* StuckView.swift */; };
 		D2D8DD9823C8506900BFF223 /* LockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D8DD9723C8506900BFF223 /* LockView.swift */; };
+		D2DE01AB23D98C6E005F9C6B /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = D2DE01AA23D98C6E005F9C6B /* Intents.intentdefinition */; };
+		D2DE01B723D98D9C005F9C6B /* BlinkIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2DE01B023D98D9C005F9C6B /* BlinkIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D2DE01BB23D9947C005F9C6B /* MCPSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670661D05EEE200C0A53C /* MCPSession.m */; };
+		D2DE01BC23D99638005F9C6B /* awk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; };
+		D2DE01BD23D99638005F9C6B /* awk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F520690C24006BB305 /* awk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2DE01BF23D9963D005F9C6B /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; };
+		D2DE01C023D9963D005F9C6B /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22E1F3332036EE86001FCC5C /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2DE01C123D99641005F9C6B /* libmoshios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */; };
+		D2DE01C223D99641005F9C6B /* libmoshios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD4F1DB6BD9400F6D997 /* libmoshios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2DE01C323D99647005F9C6B /* libssh2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F05F1D062BB300AB5438 /* libssh2.framework */; };
+		D2DE01C423D99647005F9C6B /* libssh2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F05F1D062BB300AB5438 /* libssh2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2DE01C523D99760005F9C6B /* BKPubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E0081D6B612300B89F69 /* BKPubKey.m */; };
+		D2DE01C623D9A61D005F9C6B /* SessionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248E67D22DE14100057FE67 /* SessionParams.swift */; };
+		D2DE01C723D9A636005F9C6B /* NSCoder+CodingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D265FBC8231905AC0017EAC4 /* NSCoder+CodingKey.swift */; };
+		D2DE01C823D9A649005F9C6B /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BC514C2355C3AE0034FDD4 /* History.swift */; };
+		D2DE01C923D9A65B005F9C6B /* BlinkPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E142A20A970C3000FCF5C /* BlinkPaths.m */; };
+		D2DE01CA23D9A685005F9C6B /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706C1D05EEE200C0A53C /* Session.m */; };
+		D2DE01CB23D9A689005F9C6B /* MoshSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670681D05EEE200C0A53C /* MoshSession.m */; };
+		D2DE01CC23D9A68C005F9C6B /* SSHSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F670701D05EEE200C0A53C /* SSHSession.m */; };
+		D2DE01D023D9A7D2005F9C6B /* BKHosts.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00E1D6B612300B89F69 /* BKHosts.m */; };
+		D2DE01D323D9AF43005F9C6B /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28DB3AB210B110B008A1139 /* libcompression.tbd */; };
+		D2DE01D423D9AF55005F9C6B /* ios_system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4F320690BE6006BB305 /* ios_system.framework */; };
+		D2DE01D523D9AF60005F9C6B /* shell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E320690B70006BB305 /* shell.framework */; };
+		D2DE01D623D9AF75005F9C6B /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1281D06324200AB5438 /* libcurses.tbd */; };
+		D2DE01D723D9AF77005F9C6B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F1261D06323A00AB5438 /* libz.tbd */; };
+		D2DE01D823D9AF89005F9C6B /* network_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E820690B71006BB305 /* network_ios.framework */; };
+		D2DE01D923D9AF8C005F9C6B /* tar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E720690B71006BB305 /* tar.framework */; };
+		D2DE01DA23D9AF96005F9C6B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B700AED71DD0F2C200100EBF /* CloudKit.framework */; };
+		D2DE01DB23D9B077005F9C6B /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FBD511DB6BE1D00F6D997 /* libprotobuf.a */; };
+		D2DE01DC23D9B09E005F9C6B /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
+		D2DE01DD23D9B0F8005F9C6B /* text.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; };
+		D2DE01DE23D9B11B005F9C6B /* ssh_cmd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E620690B71006BB305 /* ssh_cmd.framework */; };
+		D2DE01DF23D9B12E005F9C6B /* curl_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E920690B71006BB305 /* curl_ios.framework */; };
+		D2DE01E023D9B134005F9C6B /* files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A949492067FD5E003A0666 /* files.framework */; };
+		D2DE01E123D9B194005F9C6B /* SSHCopyIDSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6706E1D05EEE200C0A53C /* SSHCopyIDSession.m */; };
+		D2DE01E223D9B5F7005F9C6B /* BKDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00A1D6B612300B89F69 /* BKDefaults.m */; };
+		D2DE01E323D9B62E005F9C6B /* LayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D75EDF21AFDA10007336B6 /* LayoutManager.m */; };
+		D2DE01E423D9B6CC005F9C6B /* TermDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D6D78520527651003CBEC4 /* TermDevice.m */; };
+		D2DE01E523D9B6EA005F9C6B /* TermStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D27BBA1B20529FFF00AEA303 /* TermStream.m */; };
+		D2DE01E623D9B6FD005F9C6B /* BKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E00C1D6B612300B89F69 /* BKFont.m */; };
+		D2DE01E723D9B710005F9C6B /* BKResource.m in Sources */ = {isa = PBXBuildFile; fileRef = C94437561D8311960096F84E /* BKResource.m */; };
+		D2DE01E823D9B89F005F9C6B /* cpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2499BEB2362EFD40009C701 /* cpp.cpp */; };
+		D2DE01E923D9B8AF005F9C6B /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D28F301921AD8A6B00E5259F /* DeviceInfo.m */; };
+		D2DE01EB23D9BA96005F9C6B /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DE019A23D98BA3005F9C6B /* IntentHandler.swift */; };
+		D2DE01EC23D9BAAC005F9C6B /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DE019A23D98BA3005F9C6B /* IntentHandler.swift */; };
+		D2DE01EE23D9BBF5005F9C6B /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = D2DE01AA23D98C6E005F9C6B /* Intents.intentdefinition */; };
 		D2ED4A6F239BB12E000DC67F /* KeyCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED4A6E239BB12E000DC67F /* KeyCaptureView.swift */; };
 		D2EFE1F520B7FAFC0087888B /* link_files.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EFE1EE20B7FAFC0087888B /* link_files.m */; };
 		D2F30EAD205009CD008C5F35 /* base64js.min.js in Resources */ = {isa = PBXBuildFile; fileRef = D2F30EAC205009CD008C5F35 /* base64js.min.js */; };
@@ -321,6 +367,20 @@
 			remoteGlobalIDString = 1777D3DF1D757AF50037C7F1;
 			remoteInfo = "MBProgressHUD Framework tvOS";
 		};
+		D2DE01B523D98D9C005F9C6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA0BA1831C0CC57B00719C1A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2DE01AF23D98D9C005F9C6B;
+			remoteInfo = BlinkIntents;
+		};
+		D2DE01D123D9AE57005F9C6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0732F1101D062C9F00AB5438 /* UICKeyChainStore.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 14796A461C1CD9A500169D09;
+			remoteInfo = UICKeyChainStore;
+		};
 		D2E4F92D20B2BB4500B30F7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */;
@@ -350,6 +410,31 @@
 				D2A3F50420690D7E006BB305 /* ssh_cmd.framework in Embed Frameworks */,
 				D2A3F4FE20690D23006BB305 /* text.framework in Embed Frameworks */,
 				D2A3F50620690D8A006BB305 /* curl_ios.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2DE01A023D98BA3005F9C6B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D2DE01B723D98D9C005F9C6B /* BlinkIntents.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2DE01BE23D99638005F9C6B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D2DE01C423D99647005F9C6B /* libssh2.framework in Embed Frameworks */,
+				D2DE01BD23D99638005F9C6B /* awk.framework in Embed Frameworks */,
+				D2DE01C023D9963D005F9C6B /* openssl.framework in Embed Frameworks */,
+				D2DE01C223D99641005F9C6B /* libmoshios.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,6 +751,11 @@
 		D2D8DD8423C71CC500BFF223 /* LocalAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuth.swift; sourceTree = "<group>"; };
 		D2D8DD8F23C84A6E00BFF223 /* StuckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StuckView.swift; sourceTree = "<group>"; };
 		D2D8DD9723C8506900BFF223 /* LockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockView.swift; sourceTree = "<group>"; };
+		D2DE019A23D98BA3005F9C6B /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		D2DE019C23D98BA3005F9C6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2DE01AA23D98C6E005F9C6B /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		D2DE01B023D98D9C005F9C6B /* BlinkIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BlinkIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2DE01ED23D9BAF0005F9C6B /* BlinkIntents.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BlinkIntents.entitlements; sourceTree = "<group>"; };
 		D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = curl_ios_static.xcodeproj; path = ios_system/curl_ios_static.xcodeproj; sourceTree = "<group>"; };
 		D2ED4A6E239BB12E000DC67F /* KeyCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCaptureView.swift; sourceTree = "<group>"; };
 		D2EFE1EE20B7FAFC0087888B /* link_files.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = link_files.m; sourceTree = "<group>"; };
@@ -685,6 +775,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2DE01AD23D98D9C005F9C6B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2DE01D323D9AF43005F9C6B /* libcompression.tbd in Frameworks */,
+				D2DE01C323D99647005F9C6B /* libssh2.framework in Frameworks */,
+				D2DE01BC23D99638005F9C6B /* awk.framework in Frameworks */,
+				D2DE01BF23D9963D005F9C6B /* openssl.framework in Frameworks */,
+				D2DE01C123D99641005F9C6B /* libmoshios.framework in Frameworks */,
+				D2DE01D423D9AF55005F9C6B /* ios_system.framework in Frameworks */,
+				D2DE01E023D9B134005F9C6B /* files.framework in Frameworks */,
+				D2DE01D523D9AF60005F9C6B /* shell.framework in Frameworks */,
+				D2DE01D823D9AF89005F9C6B /* network_ios.framework in Frameworks */,
+				D2DE01D923D9AF8C005F9C6B /* tar.framework in Frameworks */,
+				D2DE01DF23D9B12E005F9C6B /* curl_ios.framework in Frameworks */,
+				D2DE01DD23D9B0F8005F9C6B /* text.framework in Frameworks */,
+				D2DE01DA23D9AF96005F9C6B /* CloudKit.framework in Frameworks */,
+				D2DE01DE23D9B11B005F9C6B /* ssh_cmd.framework in Frameworks */,
+				D2DE01DB23D9B077005F9C6B /* libprotobuf.a in Frameworks */,
+				D2DE01DC23D9B09E005F9C6B /* libsshd.a in Frameworks */,
+				D2DE01D623D9AF75005F9C6B /* libcurses.tbd in Frameworks */,
+				D2DE01D723D9AF77005F9C6B /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,6 +1438,16 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		D2DE019923D98BA3005F9C6B /* BlinkIntents */ = {
+			isa = PBXGroup;
+			children = (
+				D2DE01ED23D9BAF0005F9C6B /* BlinkIntents.entitlements */,
+				D2DE019A23D98BA3005F9C6B /* IntentHandler.swift */,
+				D2DE019C23D98BA3005F9C6B /* Info.plist */,
+			);
+			path = BlinkIntents;
+			sourceTree = "<group>";
+		};
 		D2E4F92A20B2BB4500B30F7B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1359,9 +1484,11 @@
 		EA0BA1821C0CC57B00719C1A = {
 			isa = PBXGroup;
 			children = (
+				D2DE01AA23D98C6E005F9C6B /* Intents.intentdefinition */,
 				D2C243F7238E44960082C69C /* KB */,
 				C9B2E0031D6B612300B89F69 /* Settings */,
 				D265FBBB2317DD3C0017EAC4 /* BlinkTests */,
+				D2DE019923D98BA3005F9C6B /* BlinkIntents */,
 				0732F04F1D062BB300AB5438 /* Frameworks */,
 				0732F0481D062B9A00AB5438 /* Resources */,
 				074F30781D062A2800A73445 /* main.m */,
@@ -1379,6 +1506,7 @@
 			children = (
 				EA0BA18B1C0CC57B00719C1A /* Blink.app */,
 				D265FBBA2317DD3C0017EAC4 /* BlinkTests.xctest */,
+				D2DE01B023D98D9C005F9C6B /* BlinkIntents.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1404,6 +1532,25 @@
 			productReference = D265FBBA2317DD3C0017EAC4 /* BlinkTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D2DE01AF23D98D9C005F9C6B /* BlinkIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2DE01B823D98D9C005F9C6B /* Build configuration list for PBXNativeTarget "BlinkIntents" */;
+			buildPhases = (
+				D2DE01AC23D98D9C005F9C6B /* Sources */,
+				D2DE01AD23D98D9C005F9C6B /* Frameworks */,
+				D2DE01AE23D98D9C005F9C6B /* Resources */,
+				D2DE01BE23D99638005F9C6B /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D2DE01D223D9AE57005F9C6B /* PBXTargetDependency */,
+			);
+			name = BlinkIntents;
+			productName = BlinkIntents;
+			productReference = D2DE01B023D98D9C005F9C6B /* BlinkIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		EA0BA18A1C0CC57B00719C1A /* Blink */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA0BA1AD1C0CC57C00719C1A /* Build configuration list for PBXNativeTarget "Blink" */;
@@ -1412,12 +1559,14 @@
 				EA0BA1881C0CC57B00719C1A /* Frameworks */,
 				EA0BA1891C0CC57B00719C1A /* Resources */,
 				07A06D8C1D0618FC00ABEAFA /* Embed Frameworks */,
+				D2DE01A023D98BA3005F9C6B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0732F1211D062DDB00AB5438 /* PBXTargetDependency */,
 				D24AFD5B222410E700CFD3C1 /* PBXTargetDependency */,
+				D2DE01B623D98D9C005F9C6B /* PBXTargetDependency */,
 			);
 			name = Blink;
 			productName = Blink;
@@ -1431,7 +1580,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = "";
-				LastSwiftUpdateCheck = 1100;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Carlos Cabañero Projects SL";
 				TargetAttributes = {
@@ -1440,6 +1589,11 @@
 						DevelopmentTeam = HV2S48975V;
 						ProvisioningStyle = Automatic;
 						TestTargetID = EA0BA18A1C0CC57B00719C1A;
+					};
+					D2DE01AF23D98D9C005F9C6B = {
+						CreatedOnToolsVersion = 11.3.1;
+						DevelopmentTeam = HV2S48975V;
+						ProvisioningStyle = Automatic;
 					};
 					EA0BA18A1C0CC57B00719C1A = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -1504,6 +1658,7 @@
 			targets = (
 				EA0BA18A1C0CC57B00719C1A /* Blink */,
 				D265FBB92317DD3C0017EAC4 /* BlinkTests */,
+				D2DE01AF23D98D9C005F9C6B /* BlinkIntents */,
 			);
 		};
 /* End PBXProject section */
@@ -1575,6 +1730,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D2DE01AE23D98D9C005F9C6B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA0BA1891C0CC57B00719C1A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1638,6 +1800,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D2DE01AC23D98D9C005F9C6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2DE01EE23D9BBF5005F9C6B /* Intents.intentdefinition in Sources */,
+				D2DE01E723D9B710005F9C6B /* BKResource.m in Sources */,
+				D2DE01D023D9A7D2005F9C6B /* BKHosts.m in Sources */,
+				D2DE01E323D9B62E005F9C6B /* LayoutManager.m in Sources */,
+				D2DE01EB23D9BA96005F9C6B /* IntentHandler.swift in Sources */,
+				D2DE01CA23D9A685005F9C6B /* Session.m in Sources */,
+				D2DE01CB23D9A689005F9C6B /* MoshSession.m in Sources */,
+				D2DE01C923D9A65B005F9C6B /* BlinkPaths.m in Sources */,
+				D2DE01C823D9A649005F9C6B /* History.swift in Sources */,
+				D2DE01E923D9B8AF005F9C6B /* DeviceInfo.m in Sources */,
+				D2DE01E423D9B6CC005F9C6B /* TermDevice.m in Sources */,
+				D2DE01BB23D9947C005F9C6B /* MCPSession.m in Sources */,
+				D2DE01E123D9B194005F9C6B /* SSHCopyIDSession.m in Sources */,
+				D2DE01E623D9B6FD005F9C6B /* BKFont.m in Sources */,
+				D2DE01E223D9B5F7005F9C6B /* BKDefaults.m in Sources */,
+				D2DE01E523D9B6EA005F9C6B /* TermStream.m in Sources */,
+				D2DE01E823D9B89F005F9C6B /* cpp.cpp in Sources */,
+				D2DE01C623D9A61D005F9C6B /* SessionParams.swift in Sources */,
+				D2DE01C723D9A636005F9C6B /* NSCoder+CodingKey.swift in Sources */,
+				D2DE01C523D99760005F9C6B /* BKPubKey.m in Sources */,
+				D2DE01CC23D9A68C005F9C6B /* SSHSession.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA0BA1871C0CC57B00719C1A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1688,6 +1878,7 @@
 				D2AB612023AB5AE000BE6585 /* UIApplication+Version.h in Sources */,
 				D241CBD823040734003D64A5 /* KBLayout.swift in Sources */,
 				D2B1F8DF23265A4700634D67 /* CommandControl.swift in Sources */,
+				D2DE01AB23D98C6E005F9C6B /* Intents.intentdefinition in Sources */,
 				D2A52227231304FF0010AC04 /* UIGestureRecognizer.swift in Sources */,
 				D296198A214F96A10070935A /* poly1305.c in Sources */,
 				D2961975214F8A580070935A /* sshbuf.c in Sources */,
@@ -1735,6 +1926,7 @@
 				D2A90AE220D277E00073BF3D /* ssh.m in Sources */,
 				D241CBD223040734003D64A5 /* KBDevice.swift in Sources */,
 				D2334D1C21495DAE00D26AC3 /* udptunnel.m in Sources */,
+				D2DE01EC23D9BAAC005F9C6B /* IntentHandler.swift in Sources */,
 				C9B2E0311D6B612400B89F69 /* BKDefaults.m in Sources */,
 				D296199A214F995D0070935A /* blocks.c in Sources */,
 				D242157822E878950037E5A6 /* UIColor+Codable.swift in Sources */,
@@ -1825,6 +2017,16 @@
 			target = EA0BA18A1C0CC57B00719C1A /* Blink */;
 			targetProxy = D265FBBF2317DD3C0017EAC4 /* PBXContainerItemProxy */;
 		};
+		D2DE01B623D98D9C005F9C6B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2DE01AF23D98D9C005F9C6B /* BlinkIntents */;
+			targetProxy = D2DE01B523D98D9C005F9C6B /* PBXContainerItemProxy */;
+		};
+		D2DE01D223D9AE57005F9C6B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UICKeyChainStore;
+			targetProxy = D2DE01D123D9AE57005F9C6B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1903,6 +2105,103 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Blink.app/Blink";
+			};
+			name = Release;
+		};
+		D2DE01B923D98D9C005F9C6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BlinkIntents/BlinkIntents.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 209;
+				DEVELOPMENT_TEAM = HV2S48975V;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/**",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"BLINK_INTENTS=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = $PROJECT_DIR/Frameworks/include;
+				INFOPLIST_FILE = BlinkIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Frameworks/lib",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				MARKETING_VERSION = 13.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-DBLINK_INTENTS";
+				PRODUCT_BUNDLE_IDENTIFIER = Com.CarlosCabanero.BlinkShell.BlinkIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT_DIR}/Blink/Blink-bridge.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Blink-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D2DE01BA23D98D9C005F9C6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BlinkIntents/BlinkIntents.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 209;
+				DEVELOPMENT_TEAM = HV2S48975V;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/**",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = "BLINK_INTENTS=1";
+				HEADER_SEARCH_PATHS = $PROJECT_DIR/Frameworks/include;
+				INFOPLIST_FILE = BlinkIntents/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Frameworks/lib",
+					"$(PROJECT_DIR)/Frameworks",
+				);
+				MARKETING_VERSION = 13.3;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-DBLINK_INTENTS";
+				PRODUCT_BUNDLE_IDENTIFIER = Com.CarlosCabanero.BlinkShell.BlinkIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT_DIR}/Blink/Blink-bridge.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Blink-Swift.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2013,6 +2312,7 @@
 		EA0BA1AE1C0CC57C00719C1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Blink/Blink.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2058,6 +2358,7 @@
 		EA0BA1AF1C0CC57C00719C1A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Blink/Blink.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2102,6 +2403,15 @@
 			buildConfigurations = (
 				D265FBC22317DD3C0017EAC4 /* Debug */,
 				D265FBC32317DD3C0017EAC4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D2DE01B823D98D9C005F9C6B /* Build configuration list for PBXNativeTarget "BlinkIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2DE01B923D98D9C005F9C6B /* Debug */,
+				D2DE01BA23D98D9C005F9C6B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

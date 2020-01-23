@@ -40,6 +40,7 @@
 @interface MCPSession : Session
 
 @property (strong) MCPParams *sessionParams;
+@property (strong, readonly) dispatch_queue_t cmdQueue;
 
 - (void)registerSSHClient:(SSHClient *)sshClient;
 - (void)unregisterSSHClient:(SSHClient *)sshClient;

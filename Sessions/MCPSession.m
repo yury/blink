@@ -62,7 +62,6 @@
   Session *_childSession;
   NSString *_currentCmd;
   NSMutableArray<WeakSSHClient *> *_sshClients;
-  dispatch_queue_t _cmdQueue;
   TermStream *_cmdStream;
   NSString *_currentCmdLine;
 }

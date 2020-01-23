@@ -45,4 +45,8 @@
 #import "KBWebViewBase.h"
 #import "openurl.h"
 
+#ifdef BLINK_INTENTS
+#import "RunCmdIntent.h"
+#endif
+
 #endif /* Blink_bridge_h */
