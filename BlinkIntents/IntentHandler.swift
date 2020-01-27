@@ -40,10 +40,57 @@ class IntentHandler: INExtension, RunCmdIntentHandling {
   
   override init() {
     _termDevice = TermDevice()
-    _mcpSession = MCPSession(device: _termDevice, andParams: nil)
+    let params = MCPParams()
+    params.fontSize = 16;
+    params.cols = 100
+    params.rows = 100
+    
+    _termDevice.cols = params.cols
+    _termDevice.rows = params.rows
+    
+    _mcpSession = MCPSession(device: _termDevice, andParams: params)
 
     super.init()
+    initEnv()
+  }
+  
+  func initEnv() {
     
+    
+    let mainBundler = Bundle.main
+    
+    sideLoading = false; // Turn off extra commands from iOS system
+    initializeEnvironment(); // initialize environment variables for iOS syste
+    addCommandList(mainBundler.path(forResource: "blinkCommandsDictionary", ofType: "plist"))
+    
+    
+    let forceOverwrite: Int32 = 1
+    
+    let SSL_CERT_FILE = mainBundler.path(forResource: "cacert", ofType: "pem")!
+    setenv("SSL_CERT_FILE", SSL_CERT_FILE, forceOverwrite)
+    
+    let localesPath = mainBundler.path(forResource: "locales", ofType: "bundle")!
+    setenv("PATH_LOCALE", localesPath, forceOverwrite)
+    setenv("LC_CTYPE", "UTF-8", forceOverwrite);
+    setlocale(LC_CTYPE, "UTF-8");
+    setlocale(LC_ALL, "UTF-8");
+    setenv("TERM", "xterm-256color", forceOverwrite);
+    
+//    __setupProcessEnv(); // we should call this after ios_system initializeEnvironment to override its defaults.
+
+    //      ssh_threads_set_callbacks(ssh_threads_get_pthread());
+    //      ssh_init();
+
+//
+//    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+//      signal(SIGPIPE, __on_pipebroken_signal);
+//
+//      dispatch_queue_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+//      dispatch_async(bgQueue, ^{
+//        [BlinkPaths linkICloudDriveIfNeeded];
+//      });
+//
+
   }
   
   
@@ -52,12 +99,14 @@ class IntentHandler: INExtension, RunCmdIntentHandling {
     let cmd = intent.cmdLine ?? "help"
     
     
-    let tmpFile = BlinkPaths.blinkURL()!.appendingPathComponent(UUID().uuidString).path
+    let tmpFile = BlinkPaths.documentsURL()!.appendingPathComponent(UUID().uuidString).path
     
-    _mcpSession.enqueueCommand("\(cmd) > \(tmpFile)")
+    let command = "\(cmd) > \(tmpFile)"
+    debugPrint(command)
+    _mcpSession.enqueueCommand(command)
     
     
-    _mcpSession.cmdQueue?.async {
+    _mcpSession.cmdQueue?.sync {
       let response = RunCmdIntentResponse(code: .success, userActivity: nil)
       let result = (try? String(contentsOfFile: tmpFile)) ?? ""
       response.stdOut = result
@@ -66,7 +115,7 @@ class IntentHandler: INExtension, RunCmdIntentHandling {
   }
   
   func resolveCmdLine(for intent: RunCmdIntent, with completion: @escaping (INStringResolutionResult) -> Void) {
-    completion(.success(with: "help"))
+    completion(.success(with: intent.cmdLine ?? "help"))
   }
   
     

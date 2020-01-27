@@ -138,6 +138,21 @@
 		D24AFD58222410E700CFD3C1 /* MBProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; };
 		D24AFD59222410E700CFD3C1 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0732F10D1D062BF700AB5438 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E4F92E20B2BB4500B30F7B /* curl_ios_static.framework */; };
+		D253DC0523DEBB6A006AF1E7 /* commandDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE548208DC860004679D0 /* commandDictionary.plist */; };
+		D253DC0623DEBB6A006AF1E7 /* blinkCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2C21F3220FCD6CD00F125E0 /* blinkCommandsDictionary.plist */; };
+		D253DC0723DEBB6A006AF1E7 /* extraCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */; };
+		D253DC0823DEBB6A006AF1E7 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = D209465B204D3FC5003C4F72 /* cacert.pem */; };
+		D253DC0F23DEBB88006AF1E7 /* help.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F330C920A6CB840074ADD7 /* help.m */; };
+		D253DC1023DEBB92006AF1E7 /* Complete.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25D580F2358897B00D1BCAE /* Complete.swift */; };
+		D253DC1123DEBB9C006AF1E7 /* CompleteUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20CBA592360324100D93301 /* CompleteUtils.swift */; };
+		D253DC1223DEC196006AF1E7 /* locales.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0732F04A1D062B9A00AB5438 /* locales.bundle */; };
+		D253DC1323DEC4BC006AF1E7 /* UIApplication+Version.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AB611D23AB5ACD00BE6585 /* UIApplication+Version.m */; };
+		D253DC1423DEC885006AF1E7 /* ssh.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A90ADB20D277DF0073BF3D /* ssh.m */; };
+		D253DC1523DEC898006AF1E7 /* SSHClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D2060A5320E2644400CF5122 /* SSHClient.m */; };
+		D253DC1623DEC8A3006AF1E7 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
+		D253DC1723DEC8AB006AF1E7 /* SSHClientOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A86D6820EB86F2000DF1DA /* SSHClientOptions.m */; };
+		D253DC1823DEC8B7006AF1E7 /* SSHClientConnectedChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C0F30F20E64FAD00E48F3A /* SSHClientConnectedChannel.m */; };
+		D253DC1923DEC8C2006AF1E7 /* bk_getopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D29568B821BE629100480A83 /* bk_getopts.c */; };
 		D25D58102358897B00D1BCAE /* Complete.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25D580F2358897B00D1BCAE /* Complete.swift */; };
 		D263489820BEBFE000A8E89F /* libsshd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D263489720BEBFE000A8E89F /* libsshd.a */; };
 		D265FBBD2317DD3C0017EAC4 /* BlinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D265FBBC2317DD3C0017EAC4 /* BlinkTests.swift */; };
@@ -1734,6 +1749,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D253DC0823DEBB6A006AF1E7 /* cacert.pem in Resources */,
+				D253DC1223DEC196006AF1E7 /* locales.bundle in Resources */,
+				D253DC0723DEBB6A006AF1E7 /* extraCommandsDictionary.plist in Resources */,
+				D253DC0523DEBB6A006AF1E7 /* commandDictionary.plist in Resources */,
+				D253DC0623DEBB6A006AF1E7 /* blinkCommandsDictionary.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1804,15 +1824,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D253DC1723DEC8AB006AF1E7 /* SSHClientOptions.m in Sources */,
 				D2DE01EE23D9BBF5005F9C6B /* Intents.intentdefinition in Sources */,
 				D2DE01E723D9B710005F9C6B /* BKResource.m in Sources */,
+				D253DC1323DEC4BC006AF1E7 /* UIApplication+Version.m in Sources */,
 				D2DE01D023D9A7D2005F9C6B /* BKHosts.m in Sources */,
 				D2DE01E323D9B62E005F9C6B /* LayoutManager.m in Sources */,
 				D2DE01EB23D9BA96005F9C6B /* IntentHandler.swift in Sources */,
+				D253DC1623DEC8A3006AF1E7 /* SSHClientPortListener.m in Sources */,
 				D2DE01CA23D9A685005F9C6B /* Session.m in Sources */,
 				D2DE01CB23D9A689005F9C6B /* MoshSession.m in Sources */,
 				D2DE01C923D9A65B005F9C6B /* BlinkPaths.m in Sources */,
 				D2DE01C823D9A649005F9C6B /* History.swift in Sources */,
+				D253DC1923DEC8C2006AF1E7 /* bk_getopts.c in Sources */,
 				D2DE01E923D9B8AF005F9C6B /* DeviceInfo.m in Sources */,
 				D2DE01E423D9B6CC005F9C6B /* TermDevice.m in Sources */,
 				D2DE01BB23D9947C005F9C6B /* MCPSession.m in Sources */,
@@ -1820,11 +1844,17 @@
 				D2DE01E623D9B6FD005F9C6B /* BKFont.m in Sources */,
 				D2DE01E223D9B5F7005F9C6B /* BKDefaults.m in Sources */,
 				D2DE01E523D9B6EA005F9C6B /* TermStream.m in Sources */,
+				D253DC1123DEBB9C006AF1E7 /* CompleteUtils.swift in Sources */,
 				D2DE01E823D9B89F005F9C6B /* cpp.cpp in Sources */,
+				D253DC1023DEBB92006AF1E7 /* Complete.swift in Sources */,
 				D2DE01C623D9A61D005F9C6B /* SessionParams.swift in Sources */,
+				D253DC1523DEC898006AF1E7 /* SSHClient.m in Sources */,
 				D2DE01C723D9A636005F9C6B /* NSCoder+CodingKey.swift in Sources */,
+				D253DC1423DEC885006AF1E7 /* ssh.m in Sources */,
 				D2DE01C523D99760005F9C6B /* BKPubKey.m in Sources */,
+				D253DC0F23DEBB88006AF1E7 /* help.m in Sources */,
 				D2DE01CC23D9A68C005F9C6B /* SSHSession.m in Sources */,
+				D253DC1823DEC8B7006AF1E7 /* SSHClientConnectedChannel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
