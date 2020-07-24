@@ -114,5 +114,12 @@
 		<string>ap:j:b:</string>
 		<string>no</string>
 	</array>
+  <key>node</key>
+  <array>
+    <string>MAIN</string>
+    <string>node_main</string>
+    <string>e</string>
+    <string>no</string>
+  </array>
 </dict>
 </plist>

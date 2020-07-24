@@ -22,7 +22,6 @@
 
 NSString *kReachabilityChangedNotification = @"kNetworkReachabilityChangedNotification";
 
-
 #pragma mark - Supporting functions
 
 #define kShouldPrintReachabilityFlags 1

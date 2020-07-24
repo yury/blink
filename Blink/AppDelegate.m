@@ -84,7 +84,7 @@ void __setupProcessEnv() {
   });
 
   sideLoading = false; // Turn off extra commands from iOS system
-  initializeEnvironment(); // initialize environment variables for iOS system
+  initializeEnvironment(); // initialize  variables for iOS system
   dispatch_async(bgQueue, ^{
     addCommandList([[NSBundle mainBundle] pathForResource:@"blinkCommandsDictionary" ofType:@"plist"]); // Load blink commands to ios_system
       __setupProcessEnv(); // we should call this after ios_system initializeEnvironment to override its defaults.

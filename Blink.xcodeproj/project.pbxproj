@@ -177,6 +177,10 @@
 		D29619AF214FB5EA0070935A /* ssh-ecdsa.c in Sources */ = {isa = PBXBuildFile; fileRef = D29619AC214FB5EA0070935A /* ssh-ecdsa.c */; };
 		D298D67D2110803600992CA4 /* SSHClientPortListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D298D67C2110803600992CA4 /* SSHClientPortListener.m */; };
 		D29D6C3122DB9CA700A84173 /* TermController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29D6C3022DB9CA700A84173 /* TermController.swift */; };
+		D29DB41024C87A13007E456A /* NodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29DB40924C87A13007E456A /* NodeMobile.framework */; };
+		D29DB41124C87AC1007E456A /* NodeMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D29DB40924C87A13007E456A /* NodeMobile.framework */; };
+		D29DB41224C87AC1007E456A /* NodeMobile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D29DB40924C87A13007E456A /* NodeMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D29DB41424C87B56007E456A /* node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29DB41324C87B56007E456A /* node.swift */; };
 		D29FE54A208DC860004679D0 /* commandDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE548208DC860004679D0 /* commandDictionary.plist */; };
 		D29FE54B208DC860004679D0 /* extraCommandsDictionary.plist in Resources */ = {isa = PBXBuildFile; fileRef = D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */; };
 		D2A3F4EA20690B71006BB305 /* text.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A3F4E120690B70006BB305 /* text.framework */; };
@@ -341,6 +345,7 @@
 				D24AFD59222410E700CFD3C1 /* MBProgressHUD.framework in Embed Frameworks */,
 				D2A3F4FC20690D08006BB305 /* shell.framework in Embed Frameworks */,
 				22A9494C2067FD5E003A0666 /* tar.framework in Embed Frameworks */,
+				D29DB41224C87AC1007E456A /* NodeMobile.framework in Embed Frameworks */,
 				22E1F3352036EE87001FCC5C /* openssl.framework in Embed Frameworks */,
 				22E1F3362036EE87001FCC5C /* libssh2.framework in Embed Frameworks */,
 				D2A3F4F820690CB0006BB305 /* awk.framework in Embed Frameworks */,
@@ -604,6 +609,8 @@
 		D298D67B2110803600992CA4 /* SSHClientPortListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHClientPortListener.h; sourceTree = "<group>"; };
 		D298D67C2110803600992CA4 /* SSHClientPortListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHClientPortListener.m; sourceTree = "<group>"; };
 		D29D6C3022DB9CA700A84173 /* TermController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermController.swift; sourceTree = "<group>"; };
+		D29DB40924C87A13007E456A /* NodeMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NodeMobile.framework; sourceTree = "<group>"; };
+		D29DB41324C87B56007E456A /* node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = node.swift; sourceTree = "<group>"; };
 		D29FE548208DC860004679D0 /* commandDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = commandDictionary.plist; sourceTree = "<group>"; };
 		D29FE549208DC860004679D0 /* extraCommandsDictionary.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = extraCommandsDictionary.plist; sourceTree = "<group>"; };
 		D2A0C63E20AAD98D001CF38F /* ios_error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ios_error.h; sourceTree = "<group>"; };
@@ -696,6 +703,8 @@
 				D2512AC520BD4C3000A80257 /* curl_ios_static.framework in Frameworks */,
 				0732F1291D06324200AB5438 /* libcurses.tbd in Frameworks */,
 				0732F1271D06323A00AB5438 /* libz.tbd in Frameworks */,
+				D29DB41124C87AC1007E456A /* NodeMobile.framework in Frameworks */,
+				D29DB41024C87A13007E456A /* NodeMobile.framework in Frameworks */,
 				D2A3F4F920690CDF006BB305 /* ios_system.framework in Frameworks */,
 				076FBD521DB6BE1D00F6D997 /* libprotobuf.a in Frameworks */,
 				0732F11E1D062DDB00AB5438 /* UICKeyChainStore.framework in Frameworks */,
@@ -799,6 +808,7 @@
 		0732F04F1D062BB300AB5438 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D29DB40924C87A13007E456A /* NodeMobile.framework */,
 				D28DB3AB210B110B008A1139 /* libcompression.tbd */,
 				D2E4F92920B2BB4500B30F7B /* curl_ios_static.xcodeproj */,
 				D2A3F4F520690C24006BB305 /* awk.framework */,
@@ -1352,6 +1362,7 @@
 				D27AD9BD222FDD5700379872 /* xcall.h */,
 				D27AD9BB222FDD3D00379872 /* xcall.m */,
 				D2F330D120A6EF020074ADD7 /* showkey.m */,
+				D29DB41324C87B56007E456A /* node.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -1747,6 +1758,7 @@
 				D2D6D78620527651003CBEC4 /* TermDevice.m in Sources */,
 				D2D8DD8523C71CC500BFF223 /* LocalAuth.swift in Sources */,
 				D296199C214F995D0070935A /* ed25519.c in Sources */,
+				D29DB41424C87B56007E456A /* node.swift in Sources */,
 				D2C24424238E44AB0082C69C /* KBWebViewBase.m in Sources */,
 				C9B2E0331D6B612400B89F69 /* BKHosts.m in Sources */,
 				D2F330D220A6EF030074ADD7 /* showkey.m in Sources */,
