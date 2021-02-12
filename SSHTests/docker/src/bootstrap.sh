@@ -8,6 +8,7 @@ adduser no-password
 echo no-password:U6aMy0wojraho | chpasswd -e
 
 # Partial
+adduser partial
 chmod 700 /home/partial/.ssh
 chmod 644 /home/partial/.ssh/authorized_keys
 adduser -m -d /home/partial partial
