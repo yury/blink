@@ -1,6 +1,8 @@
+UsePAM yes
 ChallengeResponseAuthentication yes
 PermitEmptyPasswords yes
-
+GatewayPorts yes
+AllowTcpForwarding yes
 PasswordAuthentication yes
 AcceptEnv LANG LC_* TEST
 ClientAliveInterval 300

@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk --update add openssh curl && rm -rf /var/cache/apk/*
+RUN apk --update add openssh-server-pam curl && rm -rf /var/cache/apk/*
 ADD src/ .
 RUN sh /bootstrap.sh && rm /bootstrap.sh
 
