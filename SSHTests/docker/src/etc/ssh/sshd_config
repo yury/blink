@@ -1,0 +1,14 @@
+ChallengeResponseAuthentication yes
+PermitEmptyPasswords yes
+
+PasswordAuthentication yes
+AcceptEnv LANG LC_* TEST
+ClientAliveInterval 300
+Subsystem sftp internal-sftp
+
+Match User partial
+	AuthenticationMethods publickey,password
+
+Match User admin
+	ChrootDirectory /home/admin
+	ForceCommand internal-sftp
